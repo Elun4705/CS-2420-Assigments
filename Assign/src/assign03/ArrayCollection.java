@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
+/** 
  * @author Daniel Kopta and ??
  * Implements the Collection interface using an array as storage.
  * The array must grow as needed.
