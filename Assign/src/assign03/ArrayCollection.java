@@ -47,7 +47,9 @@ public class ArrayCollection<T> implements Collection<T> {
 		
 		T arr = (T) new Object[((this.data).length) * 2];
 		
-		((Collection<T>) arr).add((T) this.data);
+		((Collection<T>) arr).add((T) this.data); // change add to addAll after addAll is written
+		
+		this.data = (T[]) arr;
 		
 		// You will need to use something similar to the code in the constructor above to create a new array.
 	}
@@ -68,10 +70,8 @@ public class ArrayCollection<T> implements Collection<T> {
 	}
 
 	public boolean contains(Object arg0) {
-		int j = 0;
-		for(Object i : this.data) {
-			j++;
-			if (data[j].equals(arg0))
+		for(int i = 0; i < this.size; i++) {
+			if (data[i].equals(arg0))
 				return true;
 			else {
 				continue;
@@ -81,8 +81,14 @@ public class ArrayCollection<T> implements Collection<T> {
 	}
 
 	public boolean containsAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+		for(int i = 0; i < this.size; i++) {
+			if (data[i].equals(arg0))
+				continue;
+			else {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean isEmpty() {
@@ -112,7 +118,7 @@ public class ArrayCollection<T> implements Collection<T> {
 
 	public int size() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.size;
 	}
 
 	public Object[] toArray() {
