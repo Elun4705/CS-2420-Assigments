@@ -57,11 +57,30 @@ public class ArrayCollection<T> implements Collection<T> {
 
 	public boolean add(T arg0) {
 		// TODO Auto-generated method stub
-		return false;
+		for(int i = 0; i < this.size; i++) {
+			if (data[i].equals(arg0))
+				return false;
+			else {
+				continue;
+			}
+		}
+		
+		if (this.size == this.data.length)
+			return false;
+		else
+			data[this.size + 1] = arg0;
+		
+		return true;
 	}
 
 	public boolean addAll(Collection<? extends T> arg0) {
 		// TODO Auto-generated method stub
+		
+		
+		for(int i = 0; i < this.size; i++) {
+			//arg0[i] = this.data[i];
+		}
+		
 		return false;
 	}
 
