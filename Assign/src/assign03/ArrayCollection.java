@@ -135,6 +135,10 @@ public class ArrayCollection<T> implements Collection<T> {
 
 	public boolean removeAll(Collection<?> arg0) {
 		// TODO Auto-generated method stub
+		for(int i = 0; i < this.size; i++) {
+			arg0[i] = null;
+		}
+		
 		return false;
 	}
 
