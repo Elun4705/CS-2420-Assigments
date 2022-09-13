@@ -66,9 +66,9 @@ public class ArrayCollection<T> implements Collection<T> {
 		}
 		
 		if (this.size == this.data.length)
-			return false;
-		else
-			data[this.size + 1] = arg0;
+			this.grow();
+		
+		data[this.size + 1] = arg0;
 		
 		return true;
 	}
@@ -76,12 +76,17 @@ public class ArrayCollection<T> implements Collection<T> {
 	public boolean addAll(Collection<? extends T> arg0) {
 		// TODO Auto-generated method stub
 		
+		Iterator<? extends T> it = arg0.iterator();
 		
-		for(int i = 0; i < this.size; i++) {
-			//arg0[i] = this.data[i];
+		if (this.containsAll(arg0)) {
+			return false;
 		}
 		
-		return false;
+		while(it.hasNext()) {
+			if(this.contains(it.next()));
+				
+		}
+		return true;
 	}
 
 	public void clear() {
@@ -92,9 +97,6 @@ public class ArrayCollection<T> implements Collection<T> {
 		for(int i = 0; i < this.size; i++) {
 			if (data[i].equals(arg0))
 				return true;
-			else {
-				continue;
-			}
 		}
 		return false;
 	}
@@ -199,17 +201,18 @@ public class ArrayCollection<T> implements Collection<T> {
 		}
 
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
+			if(this.hasNext()) {
+				return true;
+			}
 			return false;
 		}
 
 		public T next() {
-			// TODO Auto-generated method stub
-			return null;
+			return this.next();
 		}
 
 		public void remove() {
-			// TODO Auto-generated method stub
+			this.remove();
 		}
 
 	}
