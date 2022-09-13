@@ -112,6 +112,14 @@ public class ArrayCollection<T> implements Collection<T> {
 
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
+		for(int i = 0; i < this.size; i++) {
+			if (data[i].equals(null))
+				continue;
+			else {
+				return true;
+			}
+		}
+		
 		return false;
 	}
 
