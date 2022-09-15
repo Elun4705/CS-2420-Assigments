@@ -292,13 +292,18 @@ public class ArrayCollection<T> implements Collection<T> {
 	public ArrayList<T> toSortedList(Comparator<? super T> cmp)
 	{
 		ArrayList<T> finalList = new ArrayList<T>();
-		for(int i = 0; i < this.size - 1; i++) {
+		
+		for(int i = 0; i < size; i++) {
+			finalList.add(data[i]);
+		}
+		
+		for(int i = 0; i < finalList.size() - 1; i++) {
 			int j, minIndex;
-			for(j = i + 1, minIndex = i; j < this.size(); j++)
-				if(cmp.compare(this.get(j), this.get(minIndex)) < 0)
+			for(j = i + 1, minIndex = i; j < finalList.size(); j++)
+				if(cmp.compare(finalList.get(j), finalList.get(minIndex)) < 0)
 					minIndex = j;
-			T temp = this.get(j);
-			finalList.set(i, this.get(minIndex));
+			T temp = finalList.get(i);
+			finalList.set(i, finalList.get(minIndex));
 			finalList.set(minIndex, temp);
 		}
 		return finalList;
@@ -342,21 +347,21 @@ public class ArrayCollection<T> implements Collection<T> {
 	}
 	
 	public static void main(String[] args) {
-		ArrayCollection<String> arc1 = new ArrayCollection<String>();
-		ArrayCollection<String> arc2 = new ArrayCollection<String>();
-		arc1.add("a");
-		arc1.add("b");
-		arc1.add("C");
-		arc1.add("d");
-		arc2.add("a");
-		arc2.add("b");
-		arc2.add("D");
-		arc2.add("red");
-		System.out.println(arc1.retainAll(arc2));
-		System.out.println(arc1.contains("a"));
-		System.out.println(arc1.contains("b"));
-		System.out.println(arc1.contains("C"));
-		System.out.println(arc1.contains("d"));
+		ArrayCollection<Integer> arc1 = new ArrayCollection<Integer>();
+		ArrayList<Integer> arc2 = new ArrayList<Integer>();
+		
+		IntegerComparator intcmp = new IntegerComparator();
+		
+		arc1.add(1);
+		arc1.add(4);
+		arc1.add(2);
+		arc1.add(3);
+		
+		arc2 = arc1.toSortedList(intcmp);
+		
+		for (int i = 0; i < arc1.size(); i++) {
+			System.out.println(arc2.get(i));
+		}
+		
 	}
-	
 }
