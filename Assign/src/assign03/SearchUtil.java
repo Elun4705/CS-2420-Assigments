@@ -28,8 +28,8 @@ public class SearchUtil {
 		int left = 0;
 		int right = list.size();
 		int mid;
-		while (left < right) {
-			mid = left + (right - left)/2;
+		while (left <= right) {
+			mid = (left + right)/2;
 			if (cmp.compare(item, list.get(mid)) == 0)
 				return true;
 			if (cmp.compare(item,  list.get(mid)) > 0)
@@ -39,4 +39,5 @@ public class SearchUtil {
 		}
 		return false;
 	}	
+	
 }

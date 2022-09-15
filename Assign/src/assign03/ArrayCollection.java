@@ -345,23 +345,5 @@ public class ArrayCollection<T> implements Collection<T> {
 		}
 
 	}
-	
-	public static void main(String[] args) {
-		ArrayCollection<Integer> arc1 = new ArrayCollection<Integer>();
-		ArrayList<Integer> arc2 = new ArrayList<Integer>();
-		
-		IntegerComparator intcmp = new IntegerComparator();
-		
-		arc1.add(1);
-		arc1.add(4);
-		arc1.add(2);
-		arc1.add(3);
-		
-		arc2 = arc1.toSortedList(intcmp);
-		
-		for (int i = 0; i < arc1.size(); i++) {
-			System.out.println(arc2.get(i));
-		}
-		
-	}
+
 }

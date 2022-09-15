@@ -299,7 +299,9 @@ class ArrayCollectionTest {
 	void testToSortedList() {
 		ArrayCollection<Integer> arc1 = new ArrayCollection<Integer>();
 		ArrayCollection<Integer> arc2 = new ArrayCollection<Integer>();
-		ArrayList<Integer> arc3 = new ArrayList<Integer>();
+		ArrayCollection<Integer> arc3 = new ArrayCollection<Integer>();
+		ArrayList<Integer> arl4 = new ArrayList<Integer>();
+		ArrayList<Integer> arl5 = new ArrayList<Integer>();
 		
 		arc1.add(1);
 		arc1.add(2);
@@ -319,15 +321,46 @@ class ArrayCollectionTest {
 		arc2.add(8);
 		arc2.add(6);
 		
-		for(int i = 0; i < arc2.size(); i++) {
-			System.out.println(arc2.get(i));
-		}
+		arc3.add(1);
+		arc3.add(5);
+		arc3.add(2);
+		
 		
 		IntegerComparator intcmp = new IntegerComparator();
-		arc3 = arc2.toSortedList(intcmp);
+		arl4 = arc2.toSortedList(intcmp);
+		arl5 = arc3.toSortedList(intcmp);
 		
-		System.out.println(arc3.toString());
+		assertEquals(arc1.get(0), arl4.get(0));
+		assertEquals(arc1.get(1), arl4.get(1));
+		assertEquals(arc1.get(2), arl4.get(2));
+		assertEquals(arc1.get(3), arl4.get(3));
+		assertEquals(arc1.get(4), arl4.get(4));
+		assertEquals(arc1.get(5), arl4.get(5));
+		assertEquals(arc1.get(6), arl4.get(6));
+		assertEquals(arc1.get(7), arl4.get(7));
 		
 		
+		
+	}
+	
+	@Test
+	void TestBinarySearch() {
+		ArrayCollection<Integer> arc1 = new ArrayCollection<Integer>();
+		ArrayList<Integer> arc2 = new ArrayList<Integer>();
+		IntegerComparator intcmp = new IntegerComparator();
+		
+		arc1.add(1);
+		arc1.add(7);
+		arc1.add(3);
+		arc1.add(8);
+		arc1.add(5);
+		arc1.add(6);
+		
+		arc2 = arc1.toSortedList(intcmp);
+		
+		assertTrue(SearchUtil.binarySearch(arc2, 1, intcmp));
+		assertTrue(SearchUtil.binarySearch(arc2, 8, intcmp));
+		assertFalse(SearchUtil.binarySearch(arc2, 4, intcmp));
+		assertFalse(SearchUtil.binarySearch(arc2, 2, intcmp));
 	}
 }
