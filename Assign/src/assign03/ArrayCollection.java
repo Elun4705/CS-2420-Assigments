@@ -292,13 +292,13 @@ public class ArrayCollection<T> implements Collection<T> {
 	public ArrayList<T> toSortedList(Comparator<? super T> cmp)
 	{
 		ArrayList<T> finalList = new ArrayList<T>();
-		for(int i = 0; i < data.length - 1; i++) {
+		for(int i = 0; i < this.size - 1; i++) {
 			int j, minIndex;
-			for(j = i + 1, minIndex = i; j < data.length; j++)
-				if(cmp.compare(data[j], this.data[minIndex]) < 0)
+			for(j = i + 1, minIndex = i; j < this.size(); j++)
+				if(cmp.compare(this.get(j), this.get(minIndex)) < 0)
 					minIndex = j;
-			T temp = data[i];
-			finalList.set(i, data[minIndex]);
+			T temp = this.get(j);
+			finalList.set(i, this.get(minIndex));
 			finalList.set(minIndex, temp);
 		}
 		return finalList;

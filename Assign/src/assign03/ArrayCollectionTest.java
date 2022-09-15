@@ -2,6 +2,8 @@ package assign03;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -290,15 +292,6 @@ class ArrayCollectionTest {
 		assertEquals("a", arc1.get(0));
 		assertEquals("b", arc1.get(1));
 		
-		System.out.println(arc1.get(0));
-		System.out.println(arc1.get(1));
-		System.out.println(arc1.get(2));
-		System.out.println(arc1.get(3));
-		System.out.println(arc1.get(4));
-		System.out.println(arc1.get(5));
-		System.out.println(arc1.get(6));
-		System.out.println(arc1.get(7));
-		
 		assertNull(arc1.get(2));
 	}
 	
@@ -306,7 +299,7 @@ class ArrayCollectionTest {
 	void testToSortedList() {
 		ArrayCollection<Integer> arc1 = new ArrayCollection<Integer>();
 		ArrayCollection<Integer> arc2 = new ArrayCollection<Integer>();
-		ArrayCollection<Integer> arc3 = new ArrayCollection<Integer>();
+		ArrayList<Integer> arc3 = new ArrayList<Integer>();
 		
 		arc1.add(1);
 		arc1.add(2);
@@ -326,9 +319,14 @@ class ArrayCollectionTest {
 		arc2.add(8);
 		arc2.add(6);
 		
-		IntegerComparator intcmp = new IntegerComparator();
-		arc2.toSortedList(intcmp);
+		for(int i = 0; i < arc2.size(); i++) {
+			System.out.println(arc2.get(i));
+		}
 		
+		IntegerComparator intcmp = new IntegerComparator();
+		arc3 = arc2.toSortedList(intcmp);
+		
+		System.out.println(arc3.toString());
 		
 		
 	}
