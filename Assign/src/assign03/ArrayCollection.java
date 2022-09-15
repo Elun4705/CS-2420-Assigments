@@ -230,7 +230,6 @@ public class ArrayCollection<T> implements Collection<T> {
 	 * @return true if any objects were removed, false otherwise
 	 */
 	public boolean retainAll(Collection<?> arg0) {
-		Iterator<?> thisIt = this.iterator();
 
 		for (int i = 0; i < this.size; i++) {
 			if(arg0.contains(this.data[i])) {
