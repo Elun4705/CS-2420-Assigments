@@ -25,8 +25,18 @@ public class SearchUtil {
 	 */
 	public static <T> boolean binarySearch(ArrayList<T> list, T item, Comparator<? super T> cmp)
 	{
-	
-		//TODO: Fill in with a correct binary search implementation
+		int left = 0;
+		int right = list.size();
+		int mid;
+		while (left < right) {
+			mid = left + (right - left)/2;
+			if (cmp.compare(item, list.get(mid)) == 0)
+				return true;
+			if (cmp.compare(item,  list.get(mid)) > 0)
+				left = mid + 1;
+			if (cmp.compare(item, list.get(mid)) < 0)
+				right = mid - 1;
+		}
 		return false;
 	}	
 }

@@ -45,20 +45,38 @@ public class ArrayCollection<T> implements Collection<T> {
 	{
 		// TODO fill in
 		
-		T arr = (T) new Object[((this.data).length) * 2];
+		T arr[] = (T[]) new Object[((this.data).length) * 2];
 		
-		((Collection<T>) arr).add((T) this.data); // change add to addAll after addAll is written
+		for (int i = 0; i < size; i++) {
+			arr[i] = data[i];
+		}
 		
 		this.data = (T[]) arr;
 		
 		// You will need to use something similar to the code in the constructor above to create a new array.
 	}
+	
+	/**
+	 * A helper method for testing purposes
+	 * 
+	 * @param i the index of the item we need to access
+	 * @return the object from the given index
+	 */
+	public T get(int i){
+		return this.data[i];
+	}
 
 
+	/**
+	 * Adds an object to the end of the ArrayCollection
+	 * 
+	 * @param arg0 the object adding to the ArrayCollection
+	 * @return true if object was successfully added, false otherwise
+	 */
 	public boolean add(T arg0) {
 		// TODO Auto-generated method stub
 		for(int i = 0; i < this.size; i++) {
-			if (data[i].equals(arg0))
+			if (this.contains(arg0))
 				return false;
 			else {
 				continue;
@@ -68,11 +86,18 @@ public class ArrayCollection<T> implements Collection<T> {
 		if (this.size == this.data.length)
 			this.grow();
 		
-		data[this.size + 1] = arg0;
+		data[this.size] = arg0;
+		size++;
 		
 		return true;
 	}
 
+	/**
+	 * Adds all of the objects from the input Collection to the ArrayColection
+	 * 
+	 * @param arg0 the Collection we are adding from
+	 * @return true if anything was added, false otherwise
+	 */
 	public boolean addAll(Collection<? extends T> arg0) {
 		// TODO Auto-generated method stub
 		
@@ -83,16 +108,30 @@ public class ArrayCollection<T> implements Collection<T> {
 		}
 		
 		while(it.hasNext()) {
-			if(this.contains(it.next()));
-				
+			T obj = it.next();
+			if(this.contains(obj) == false) {
+				this.add(obj);
+			}		
 		}
 		return true;
 	}
 
+	/**
+	 * Sets all objects in the array list to null, effectively emptying it out
+	 */
 	public void clear() {
-		// TODO Auto-generated method stub
+		for (int i = 0; i < size; i++) {
+			data[i] = null;
+		}
+		size = 0;
 	}
 
+	/**
+	 * Checks to see if an ArrayCollection contains a certain object
+	 *
+	 * @param arg0 the object being searched for
+	 * @return true if the ArrayCollection contains the object, false otherwise
+	 */
 	public boolean contains(Object arg0) {
 		for(int i = 0; i < this.size; i++) {
 			if (data[i].equals(arg0))
@@ -101,62 +140,132 @@ public class ArrayCollection<T> implements Collection<T> {
 		return false;
 	}
 
+	/**
+	 * Checks to see if an ArrayCollection contains all items in an input collection
+	 * 
+	 * @param arg0 the collection of objects being checked
+	 * @return true if the ArrayCollection contains all objects, false otherwise
+	 */
 	public boolean containsAll(Collection<?> arg0) {
-		for(int i = 0; i < this.size; i++) {
-			if (data[i].equals(arg0))
-				continue;
-			else {
+		for(int i = 0; i < arg0.size(); i++) {
+			Object[] arg0Array = arg0.toArray();
+			if (this.contains(arg0Array[i]) == false) {
 				return false;
 			}
 		}
 		return true;
 	}
 
+	/**
+	 * Checks to see if an ArrayCollection is empty
+	 * 
+	 * @return true if the collection is empty, false otherwise
+	 */
 	public boolean isEmpty() {
+		return (size == 0);		
+	}
+
+	/**
+	 * Returns a custom iterator for the purpose of this class
+	 * 
+	 * @return an ArrayCollectionIterator
+	 */
+	public Iterator<T> iterator() {
+		ArrayCollectionIterator ACI = new ArrayCollectionIterator();
+		return ACI;
+	}
+
+	/**
+	 * Removes an object from this ArrayCollection
+	 * 
+	 * @param arg0 the object to be removed
+	 * @return true if an object was successfuly removed, false otherwise
+	 */
+	public boolean remove(Object arg0) {
+		if (this.contains(arg0) == false) {
+			return false;
+		}
+		
+		for (int i = 0; i < this.size; i++) {
+			if (data[i] == arg0) {
+				for (int j = i; j < this.size; j++) {
+					data[j] = data[j+1];
+				}
+			}
+		}
+		size--;
+		return true;
+	}
+
+	/**
+	 * Removes all objects in the input list
+	 *
+	 * @param arg0 the input collection of objects to be removed
+	 * @return true if any objects were removed, false otherwise
+	 */
+	public boolean removeAll(Collection<?> arg0) {
 		// TODO Auto-generated method stub
-		for(int i = 0; i < this.size; i++) {
-			if (data[i].equals(null))
-				continue;
-			else {
+		
+		Iterator<?> it = arg0.iterator();
+		Iterator<?> check = arg0.iterator();
+		
+		while(check.hasNext()) {
+			if(this.contains(check.next())) {
+				while(it.hasNext()) {
+					Object obj = it.next();
+					if (this.contains(obj)) {
+						this.remove(obj);
+					}
+				}
 				return true;
 			}
 		}
-		
 		return false;
 	}
 
-	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean remove(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean removeAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		for(int i = 0; i < this.size; i++) {
-			arg0[i] = null;
-		}
-		
-		return false;
-	}
-
+	/**
+	 * Keeps only the objects which are contained in both ArrayCollection and the input collection
+	 * 
+	 * @param arg0 the input collection to check against
+	 * @return true if any objects were removed, false otherwise
+	 */
 	public boolean retainAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
+		Iterator<?> thisIt = this.iterator();
+
+		for (int i = 0; i < this.size; i++) {
+			if(arg0.contains(this.data[i])) {
+				for (int j = 0; j < this.size; j++) {
+					if(arg0.contains(this.data[j]) == false) {
+						this.remove(data[j]);
+						j--;
+					}
+				}
+					return true;
+			}	
+		}	
 		return false;
 	}
-
+	/**
+	 * Returns the number of objects in a collection
+	 * 
+	 * @return the number of objects in a collection
+	 */
 	public int size() {
-		// TODO Auto-generated method stub
 		return this.size;
 	}
 
+	/**
+	 * Returns the objects in ArrayCollection in array form 
+	 *
+	 * @return an array of the Objects in ArrayCollection
+	 */
+	@SuppressWarnings("unchecked")
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		T[] array = (T[]) new Object[size];
+		for (int i = 0; i < size; i++) {
+			array[i] = this.data[i];
+		}
+		return array;
 	}
 
 	/* 
@@ -182,8 +291,17 @@ public class ArrayCollection<T> implements Collection<T> {
 	 */
 	public ArrayList<T> toSortedList(Comparator<? super T> cmp)
 	{
-		// TODO fill in this method
-		return null;
+		ArrayList<T> finalList = new ArrayList<T>();
+		for(int i = 0; i < data.length - 1; i++) {
+			int j, minIndex;
+			for(j = i + 1, minIndex = i; j < data.length; j++)
+				if(cmp.compare(data[j], this.data[minIndex]) < 0)
+					minIndex = j;
+			T temp = data[i];
+			finalList.set(i, data[minIndex]);
+			finalList.set(minIndex, temp);
+		}
+		return finalList;
 	}
 
 
@@ -195,26 +313,50 @@ public class ArrayCollection<T> implements Collection<T> {
 	 */
 	private class ArrayCollectionIterator implements Iterator<T>
 	{
-		public ArrayCollectionIterator()
-		{
-			// TODO Auto-generated method stub
-		}
+		boolean removeable = false;
+		int index = 0;
 
 		public boolean hasNext() {
-			if(this.hasNext()) {
+			if (index < size && data[index] != null) {
 				return true;
 			}
 			return false;
 		}
 
-		public T next() {
-			return this.next();
+		public T next() throws NoSuchElementException {
+			if (this.hasNext()) {
+				removeable = true;
+				return data[index++];
+			} 
+			else {throw new NoSuchElementException();}	
 		}
 
-		public void remove() {
-			this.remove();
+		public void remove() throws IllegalStateException{
+			if (removeable) {
+				ArrayCollection.this.remove(index);
+				removeable = false;
+			}
+			else {throw new IllegalStateException();}
 		}
 
 	}
-
+	
+	public static void main(String[] args) {
+		ArrayCollection<String> arc1 = new ArrayCollection<String>();
+		ArrayCollection<String> arc2 = new ArrayCollection<String>();
+		arc1.add("a");
+		arc1.add("b");
+		arc1.add("C");
+		arc1.add("d");
+		arc2.add("a");
+		arc2.add("b");
+		arc2.add("D");
+		arc2.add("red");
+		System.out.println(arc1.retainAll(arc2));
+		System.out.println(arc1.contains("a"));
+		System.out.println(arc1.contains("b"));
+		System.out.println(arc1.contains("C"));
+		System.out.println(arc1.contains("d"));
+	}
+	
 }
