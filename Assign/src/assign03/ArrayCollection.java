@@ -230,6 +230,14 @@ public class ArrayCollection<T> implements Collection<T> {
 	 * @return true if any objects were removed, false otherwise
 	 */
 	public boolean retainAll(Collection<?> arg0) {
+		
+		if (this.size == 1) {
+			if(arg0.contains(this.data[0]) == false) {
+				this.remove(data[0]);
+				return true;
+			}
+			return false;
+		}
 
 		for (int i = 0; i < this.size; i++) {
 			if(arg0.contains(this.data[i])) {
@@ -239,7 +247,7 @@ public class ArrayCollection<T> implements Collection<T> {
 						j--;
 					}
 				}
-					return true;
+				return true;
 			}	
 		}	
 		return false;

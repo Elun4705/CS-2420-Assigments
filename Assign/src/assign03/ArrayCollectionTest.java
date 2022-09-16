@@ -289,11 +289,12 @@ class ArrayCollectionTest {
 		assertFalse(arc1.retainAll(arc4));
 		assertFalse(arc1.retainAll(arc3));
 		assertTrue(arc1.retainAll(arc2));
-		assertFalse(arc3.retainAll(arc4));
-		assertTrue(arc3.retainAll(arc2));
+		assertFalse(arc3.retainAll(arc2));
 		
 		assertEquals("a", arc1.get(0));
 		assertEquals("b", arc1.get(1));
+		
+		assertEquals("l", arc3.get(0));
 		
 		assertNull(arc1.get(2));
 	}
