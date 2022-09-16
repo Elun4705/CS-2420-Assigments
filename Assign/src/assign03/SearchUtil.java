@@ -29,7 +29,7 @@ public class SearchUtil {
 		int right = list.size();
 		int mid;
 		while (left <= right) {
-			mid = (left + right)/2;
+			mid = left + (right - left)/2;
 			if (cmp.compare(item, list.get(mid)) == 0)
 				return true;
 			if (cmp.compare(item,  list.get(mid)) > 0)
