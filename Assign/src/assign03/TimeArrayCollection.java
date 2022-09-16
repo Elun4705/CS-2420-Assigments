@@ -17,7 +17,7 @@ public class TimeArrayCollection {
 		ArrayCollection<Integer> testArray = new ArrayCollection<Integer>();
 		ArrayList<Integer> sortedArray = new ArrayList<Integer>();
 		IntegerComparator intcmp = new IntegerComparator();
-		int timesToLoop = 50;
+		int timesToLoop = 1000000;
 		sortedArray = testArray.toSortedList(intcmp);
 		
 
@@ -44,7 +44,7 @@ public class TimeArrayCollection {
 			startTime = System.currentTimeMillis();
 			
 			for (int i = 0; i < timesToLoop; i++) {
-				SearchUtil.binarySearch(sortedArray, randomInt(), intcmp);
+				testArray.contains(randomInt());
 			}
 			
 			midpointTime = System.currentTimeMillis();
