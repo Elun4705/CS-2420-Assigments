@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
-import assign02.Library;
-
 public class TimeArrayCollection {
+	
 	private static Random rand;
+	
 	public static void main(String[] args)
 	{
 		rand = new Random();
@@ -28,7 +28,6 @@ public class TimeArrayCollection {
 			while (testArray.size() < n) {
 				testArray.add(randomInt());
 			}
-//			sortedArray = testArray.toSortedList(intcmp);
 			
 			long startTime, midpointTime, stopTime, DebugTime;
 			
@@ -61,8 +60,7 @@ public class TimeArrayCollection {
 			// Average it over the number of runs.
 			double averageTime = ((midpointTime - startTime) - (stopTime - midpointTime)) / (double) timesToLoop;
 			System.out.println(n + "\t" + averageTime);
-	
-		//TODO: Write code to time your toSortedList, contains, and SearchUtil.binarySearch methods so you can plot the results.
+
 		}
 	}
 
