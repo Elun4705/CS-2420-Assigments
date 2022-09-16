@@ -26,13 +26,13 @@ public class SearchUtil {
 	public static <T> boolean binarySearch(ArrayList<T> list, T item, Comparator<? super T> cmp)
 	{
 		int left = 0;
-		int right = list.size();
+		int right = list.size() - 1;
 		int mid;
 		while (left <= right) {
-			mid = left + (right - left)/2;
+			mid = (left + right)/2;
 			if (cmp.compare(item, list.get(mid)) == 0)
 				return true;
-			if (cmp.compare(item,  list.get(mid)) > 0)
+			if (cmp.compare(item, list.get(mid)) > 0)
 				left = mid + 1;
 			if (cmp.compare(item, list.get(mid)) < 0)
 				right = mid - 1;
