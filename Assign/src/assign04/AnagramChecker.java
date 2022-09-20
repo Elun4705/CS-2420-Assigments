@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
-
+import java.util.Map.Entry;
 
 import assign03.IntegerComparator;
 
@@ -97,6 +97,7 @@ public class AnagramChecker {
 	public static String[] getLargestAnagramGroup(String[] stringArray) {
 		
 		HashMap<String, Integer> anagramSize = new HashMap<String, Integer>(stringArray.length);
+		String bigAna;
 		
 		for (int i = 0; i < stringArray.length-1; i++) {
 			
@@ -125,8 +126,14 @@ public class AnagramChecker {
 			}
 		}
 		
-		for(key )
+		for(int i = 1; i < stringArray.length-1; i++) {
+		    String key = stringArray[i];
+		    if(anagramSize.get(key) > anagramSize.get(stringArray[i-1]))
+		    	bigAna = key;
+		    
+		}
 		
+		return key;
 
 	}
 	
