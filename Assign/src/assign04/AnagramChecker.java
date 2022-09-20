@@ -3,6 +3,8 @@ package assign04;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+
 
 import assign03.IntegerComparator;
 
@@ -15,9 +17,19 @@ public class AnagramChecker {
 		
 		IntegerComparator intcmp = new IntegerComparator();
 		
+		Character[] stringArray = new Character[] {'v','g','d','b'};
+		
+		CharacterComparator chrcmp = new CharacterComparator();
+		
 		insertionSort(intArray, intcmp);
 		
-		System.out.println(Arrays.toString(intArray));
+		insertionSort(stringArray, chrcmp);
+		
+		System.out.println(Arrays.toString(stringArray));
+		
+		System.out.println(sort("abscsdfasdfasdfa"));
+		
+		System.out.println(areAnagrams("lkjhgfdsa", "asdfghjkl"));
 
 
 	}
@@ -26,8 +38,21 @@ public class AnagramChecker {
 	//The sorting must be accomplished using an insertion sort.
 	public static String sort(String word) {
 		
+		char[] list = word.toCharArray();
 		
-		return null;
+        for (int i = 1; i < list.length; ++i) {
+            char item = list[i];
+            int j = i - 1;
+  
+            while (j >= 0 && Character.compare(list[j], item) > 0) {
+                list[j + 1] = list[j];
+                j = j - 1;
+            }
+            list[j + 1] = item;
+        }
+        
+        String sortedWord = String.valueOf(list);
+        return sortedWord;
 		
 	}
 	
@@ -54,11 +79,14 @@ public class AnagramChecker {
 		if (word1.length() != word2.length())
 			return false;
 		
-		for (int i = 0; i < word1.length(); ++i) {		
-			//	
+		String sortedWord1 = sort(word1.toLowerCase());
+		String sortedWord2 = sort(word2.toLowerCase());
+		
+		if(sortedWord1.compareTo(sortedWord2) == 0) {
+			return true;
 		}
 		
-		return true;		
+		return false;		
 	}
 	
 	
@@ -68,8 +96,38 @@ public class AnagramChecker {
 	//method with a new Comparator class or lambda expression that you design.
 	public static String[] getLargestAnagramGroup(String[] stringArray) {
 		
-		return stringArray;
+		HashMap<String, Integer> anagramSize = new HashMap<String, Integer>(stringArray.length);
 		
+		for (int i = 0; i < stringArray.length-1; i++) {
+			
+			char[] charArray = stringArray[i].toCharArray();
+			Character[] CharacterArray = new Character[charArray.length];
+			
+			for(int j = 0; j < charArray.length-1; j++) {
+				CharacterArray[j] = Character.valueOf(charArray[j]);
+			}
+			
+			CharacterComparator chrcmp = new CharacterComparator();
+			insertionSort(CharacterArray, chrcmp);
+			
+			char[] sortedCharArray = new char[CharacterArray.length];
+			
+			for(int k = 0; k < sortedCharArray.length-1; k++) {
+				sortedCharArray[k] = (CharacterArray[k].charValue());
+			}
+			
+			String lexiOrder = sortedCharArray.toString();
+			
+			if(anagramSize.containsKey(lexiOrder)) {
+				anagramSize.put(lexiOrder, anagramSize.get(lexiOrder) + 1);
+			} else {
+				anagramSize.put(lexiOrder, 1);
+			}
+		}
+		
+		for(key )
+		
+
 	}
 	
 	//This method behaves the same as the previous method, but reads the list of words from the input filename.
@@ -82,6 +140,12 @@ public class AnagramChecker {
 		
 		return obsolete;
 		
+	}
+	
+	public static class CharacterComparator implements Comparator<Character> {
+		public int compare(Character o1, Character o2) {
+			return Character.compare(o1, o2);
+		}
 	}
 
 }
