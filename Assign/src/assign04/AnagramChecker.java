@@ -119,7 +119,7 @@ public class AnagramChecker {
 			String lexiOrder = sortedCharArray.toString();
 			
 			if(anagramSize.containsKey(lexiOrder)) {
-				anagramSize.put(lexiOrder, anagramSize.get(lexiOrder) + 1);
+				anagramSize.put(lexiOrder, anagramSize.get(lexiOrder) + 1); 
 			} else {
 				anagramSize.put(lexiOrder, 1);
 			}
