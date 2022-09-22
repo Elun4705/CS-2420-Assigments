@@ -43,7 +43,9 @@ public class AnagramChecker {
 	
 	//This method returns the lexicographically-sorted version of the input string.
 	//The sorting must be accomplished using an insertion sort.
-	public static String sort(String word) {
+	public static String sort(String input) {
+		
+		String word = input.toLowerCase();
 		
 		char[] list = word.toCharArray();
 		
@@ -157,19 +159,22 @@ public class AnagramChecker {
 	// This method must call your getLargestAnagramGroup(String[]) method.
 	public static String[] getLargestAnagramGroup(String filename) throws FileNotFoundException {
 		
+		//Create new file and scanners to read text file and translate into arrays
 		File file = new File(filename);
-		
 		Scanner lengthScanner = new Scanner(file);
 		Scanner fileScanner = new Scanner(file);
+		
+		//Create virtual array length
 		int arrayLength = 0;
 		
+		//Go through the file and count how many words there are, then create a new String Array of that length
 		while(lengthScanner.hasNextLine()) {
 			arrayLength++;
 			lengthScanner.nextLine();
 		}
-		
 		String[] stringArray = new String[arrayLength];
 		
+		//
 		for(int p = 0; p < arrayLength; p++) {
 			stringArray[p] = fileScanner.next();
 		}
