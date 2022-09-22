@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.Comparator;
 import java.util.Scanner;
 
+// Written by Andy Huo and Emmanuel Luna
+
 public class AnagramChecker {	
 
 	/**
@@ -15,11 +17,11 @@ public class AnagramChecker {
 	 */
 	public static String sort(String input) {
 		
-		// Creates a new word of the input in lowercase form-- this way, there is no
+		// Creates a new word of the input to return-- this way, there is no
 		// risk of affecting the input word itself.
-		String word = input.toLowerCase();
+		String word = input;
 		
-		// Turns the lowercased input word into an array of characters
+		// Turns the copied input word into an array of characters
 		char[] list = word.toCharArray();
 		
 		// A basic for-while function designed to sort a given character array into lexicographical
@@ -173,17 +175,34 @@ public class AnagramChecker {
 	 * consisting of the largest group of anagrams available.
 	 * 
 	 * @param filename The name of the file containing the words
-	 * @return A string array of the largest group of anagrams contained within the file
-	 * @throws FileNotFoundException 
+	 * @return A string array of the largest group of anagrams contained within the file q 
 	 */
 	@SuppressWarnings("resource")
-	public static String[] getLargestAnagramGroup(String filename) throws FileNotFoundException {
+	public static String[] getLargestAnagramGroup(String filename) {
 		
 		// Create new file and scanners to read text file and translate into arrays
 		File file = new File(filename);
-		@SuppressWarnings("resource")
-		Scanner lengthScanner = new Scanner(file);
-		Scanner fileScanner = new Scanner(file);
+		Scanner lengthScanner;
+		Scanner fileScanner;
+		
+		// Create a new empty array with length zero
+		String[] emptyArray = new String[0];
+		
+		
+		// Try to create new scanners of the given file.  If the file can't be found or doesn't exist, then returns
+		// an empty array.
+		try {
+			lengthScanner = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			return emptyArray;
+		}
+
+		try {
+			fileScanner = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			return emptyArray;
+		}
+		
 		
 		// Create virtual array length
 		int arrayLength = 0;
@@ -237,9 +256,6 @@ public class AnagramChecker {
 			currentCount = 0;
 		}
 		
-		// Create a new empty array with length zero
-		String[] emptyArray = new String[0];
-		
 		// A failsafe-- if the highestcount value is zero, this means that there are no
 		// anagram pairs within the list.  As such, an empty array is returned.
 		if (highestCount == 1) {
@@ -268,7 +284,6 @@ public class AnagramChecker {
 	
 	/**
 	 * A comparator which compares the lexicographical order of two input strings
-	 *
 	 */
 	public static class StringComparator implements Comparator<String> {
 		public int compare(String o1, String o2) {

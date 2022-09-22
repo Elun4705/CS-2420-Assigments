@@ -1,5 +1,7 @@
 package assign04;
 
+// Written by Andy Huo and Emmanuel Luna
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
@@ -30,8 +32,8 @@ public class AnagramCheckerTester {
 	
 	@Test
 	public void testCapitals() {
-		assertEquals("abcdefgh",AnagramChecker.sort("ABCDEFGH"));
-		assertEquals("abcdefgh",AnagramChecker.sort("CbDEHgfA"));
+		assertEquals("ABCDEFGH",AnagramChecker.sort("ABCDEFGH"));
+		assertEquals("ACDEHbfg",AnagramChecker.sort("CbDEHgfA"));
 	}
 	
 	@Test
@@ -73,12 +75,44 @@ public class AnagramCheckerTester {
 	public void testGetLargestAnagramGroupSortText() {
 		String[] stringArray = new String[] {"carets", "Caters", "caster", "crates", "Reacts", "recast", "traces"};
 		
-		try {
-			assertEquals(Arrays.toString(stringArray), Arrays.toString(AnagramChecker.getLargestAnagramGroup("sample_word_list.txt")));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		assertEquals(Arrays.toString(stringArray), Arrays.toString(AnagramChecker.getLargestAnagramGroup("sample_word_list.txt")));
 	}
 	
+	@Test
+	public void testGetLargestAnagramGroupEmptyArray() {
+		String[] stringArray = new String[0];
+		
+		assertEquals("[]",Arrays.toString(stringArray));
+	}
+	
+	@Test
+	public void testGetLargestAnagramGroupNoAnagrams() {
+		String[] stringArray = new String[] {"Analog", "Diary", "Wordsmith", "Riptide"};
+		
+		assertEquals("[]",Arrays.toString(AnagramChecker.getLargestAnagramGroup(stringArray)));
+	}
+	
+	@Test
+	public void testGetLargestAnagramGroupAllAnagrams() {
+		String[] stringArray = new String[] {"dRagon", "darNgo", "Dragno", "dragon", "Andrgo", "gradno", "gradon", "ragnod"};
+		String[] dragonArray = new String[] {"dRagon", "darNgo", "Dragno", "dragon", "Andrgo", "gradno", "gradon", "ragnod"};
+		
+		assertEquals(Arrays.toString(dragonArray), Arrays.toString(AnagramChecker.getLargestAnagramGroup(stringArray)));
+	}
+	
+	
+	@Test void testBadfileName() {
+		assertEquals("[]", Arrays.toString(AnagramChecker.getLargestAnagramGroup("useless_file.txt")));
+	}
+	
+	@Test void testEmptyFile() {
+		assertEquals("[]", Arrays.toString(AnagramChecker.getLargestAnagramGroup("blank.txt")));
+	}
+	
+	@Test
+	public void testGetLargestAnagramGroupFile() {
+		String[] expectedArray = new String[] {"carets", "Caters", "caster", "crates", "Reacts", "recast", "traces"};
+		
+		assertEquals(Arrays.toString(expectedArray), Arrays.toString(AnagramChecker.getLargestAnagramGroup("sample_word_list.txt")));
+	}
 }
