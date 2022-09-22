@@ -3,10 +3,7 @@ package assign04;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import assign04.AnagramChecker.StringComparator;
