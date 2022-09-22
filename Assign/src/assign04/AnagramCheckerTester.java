@@ -2,6 +2,7 @@ package assign04;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -46,6 +47,41 @@ public class AnagramCheckerTester {
 		AnagramChecker.insertionSort(stringArray, stringcmp);
 		
 		assertEquals(Arrays.toString(sortedArray), Arrays.toString(stringArray));
+	}
+	
+	@Test
+	public void testAnagrams() {
+		assertTrue(AnagramChecker.areAnagrams("Asdfer", "sdAFer"));
+		assertFalse(AnagramChecker.areAnagrams("Not", "Ana"));
+		assertTrue(AnagramChecker.areAnagrams("b", "b"));
+	}
+	
+	@Test
+	public void testLargeAnagrams() {
+		assertTrue(AnagramChecker.areAnagrams("basiparachromatin", "marsipobranchiata"));
+		assertTrue(AnagramChecker.areAnagrams("HydRoxyDesoXycorticosterone", "hydroxydEoxycortIcoSteRones"));
+	}
+	
+	@Test
+	public void testGetLargestAnagramGroupSort() {
+		String[] stringArray = new String[] {"Drow", "dRagon", "moon", "darNgo", "Dragno", "dragon", "Andrgo", "gradno", 
+				"gradon", "ragnod" ,"luna", "nula", "December", "implementGram", "unal", "impgramementl", "emberdec", 
+				"impgramlement", "gramimplement", "luna", "moon", "woRd"};
+		String[] dragonArray = new String[] {"dRagon", "darNgo", "Dragno", "dragon", "Andrgo", "gradno", "gradon", "ragnod"};
+		
+		assertEquals(Arrays.toString(dragonArray), Arrays.toString(AnagramChecker.getLargestAnagramGroup(stringArray)));
+	}
+	
+	@Test
+	public void testGetLargestAnagramGroupSortText() {
+		String[] stringArray = new String[] {"carets", "Caters", "caster", "crates", "Reacts", "recast", "traces"};
+		
+		try {
+			assertEquals(Arrays.toString(stringArray), Arrays.toString(AnagramChecker.getLargestAnagramGroup("sample_word_list.txt")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -2,45 +2,10 @@ package assign04;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
-import assign03.IntegerComparator;
-
-public class AnagramChecker {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		Integer[] intArray = new Integer[]{ 4,14,3,5,8,9001,3,2,3,0 };
-		
-		IntegerComparator intcmp = new IntegerComparator();
-		
-		String[] stringArray = new String[] {"word", "luna", "luna", "december", "implementgram", "implementgram"};
-		
-		StringComparator stringcmp = new StringComparator();
-		
-		insertionSort(intArray, intcmp);
-		
-		
-		try {
-			System.out.println(Arrays.toString(getLargestAnagramGroup("sample_word_list.txt")));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println(sort("abscsdfasdfasdfa"));
-		
-		System.out.println(areAnagrams("lkjhgfdsa", "asdfghjkl"));
-
-
-	}
-	
+public class AnagramChecker {	
 
 	/**
 	 * Returns the input word in lowercase lexicographical order
@@ -211,10 +176,12 @@ public class AnagramChecker {
 	 * @return A string array of the largest group of anagrams contained within the file
 	 * @throws FileNotFoundException 
 	 */
+	@SuppressWarnings("resource")
 	public static String[] getLargestAnagramGroup(String filename) throws FileNotFoundException {
 		
 		// Create new file and scanners to read text file and translate into arrays
 		File file = new File(filename);
+		@SuppressWarnings("resource")
 		Scanner lengthScanner = new Scanner(file);
 		Scanner fileScanner = new Scanner(file);
 		
