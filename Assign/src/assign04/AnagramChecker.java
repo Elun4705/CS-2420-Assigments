@@ -2,6 +2,7 @@ package assign04;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 
@@ -115,7 +116,9 @@ public class AnagramChecker {
 		}
 		
 		// Sorts the newly sorted words into lexicographical order
-		insertionSort(sortedArray, stringcmp);
+//		insertionSort(sortedArray, stringcmp);
+		
+		Arrays.sort(sortedArray, stringcmp);
 		
 		// Initializes a few values to keep track of anagram group sizes
 		int highestCount = 0;

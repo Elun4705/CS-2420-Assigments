@@ -9,7 +9,7 @@ private static Random rand;
 	{
 		rand = new Random();
 		
-		int timesToLoop = 1000;
+		int timesToLoop = 5;
 		
 		// For each problem size n . . .
 		for (int n = 1000; n <= 20000; n += 1000) {
@@ -35,9 +35,7 @@ private static Random rand;
 			startTime = System.currentTimeMillis();
 			
 			for (int i = 0; i < timesToLoop; i++) {
-				for(int j = 0; j < n; j++) {
-					AnagramChecker.areAnagrams(compareWord, testArray[j]);
-				}
+				AnagramChecker.getLargestAnagramGroup(testArray);
 			}
 			
 			midpointTime = System.currentTimeMillis();
