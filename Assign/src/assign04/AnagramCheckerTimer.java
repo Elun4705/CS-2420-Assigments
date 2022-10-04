@@ -9,7 +9,7 @@ private static Random rand;
 	{
 		rand = new Random();
 		
-		int timesToLoop = 5;
+		int timesToLoop = 10000;
 		
 		// For each problem size n . . .
 		for (int n = 1000; n <= 20000; n += 1000) {
@@ -35,7 +35,8 @@ private static Random rand;
 			startTime = System.currentTimeMillis();
 			
 			for (int i = 0; i < timesToLoop; i++) {
-				AnagramChecker.getLargestAnagramGroup(testArray);
+				for(int j = 0; j < n; j++)
+				AnagramChecker.areAnagrams(compareWord, testArray[j]);
 			}
 			
 			midpointTime = System.currentTimeMillis();
@@ -50,7 +51,7 @@ private static Random rand;
 			// Compute the time, subtract the cost of running the loop
 			// from the cost of running the loop and doing the lookups.
 			// Average it over the number of runs.
-			double averageTime = ((midpointTime - startTime) - (stopTime - midpointTime)) / (double) timesToLoop;
+			double averageTime = ((midpointTime - startTime) - (stopTime - midpointTime)) / ((double) timesToLoop);
 			System.out.println(n + "\t" + averageTime);
 
 		}
