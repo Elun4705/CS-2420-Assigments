@@ -8,7 +8,7 @@ public class ArrayListSorter {
 	private static int threshold = 3;
 
 	public static <T extends Comparable<? super T>> void mergesort(ArrayList<T> arr) {
-//		Create a temp space and ensure it is large enough
+		//Create a temp space and ensure it is large enough
 
 		ArrayList<T> temp = new ArrayList<T>();
 		
@@ -22,7 +22,7 @@ public class ArrayListSorter {
 	}
 
 	public static <T extends Comparable<? super T>> void quicksort(ArrayList<T> arr) {
-
+		quickSort(arr, 0, arr.size() - 1);
 	}
 
 	public static ArrayList<Integer> generateAscending(int size) {
@@ -87,6 +87,97 @@ public class ArrayListSorter {
 
 	}
 	
+	static <T> void swap(ArrayList<T> arr, int i, int j)
+    {
+        T temp = arr.get(i);
+        arr.set(i, arr.get(j));
+        arr.set(j, temp);
+    }
+	
+	static <T extends Comparable> int partition(ArrayList<T> arr, int low, int high)
+    {
+		
+      // pivot
+      T pivot = arr.get(high);
+
+//		int L = low, R = high - 1;
+//
+//		while (L <= R) {
+//			while (L < high && arr.get(L).compareTo(pivot) <= 0)
+//				L++;
+//			while (R >= low && arr.get(R).compareTo(pivot) >= 0)
+//				R--;
+//
+//			if (arr.get(L).compareTo(arr.get(R)) < 0)
+//				swap(arr, L, R);
+//		}
+//		swap(arr, L, high);
+  
+        // Index of smaller element and
+        // indicates the right position
+        // of pivot found so far
+        int i = (low - 1);
+  
+        for (int j = low; j <= high; j++) {
+  
+            // If current element is smaller
+            // than the pivot
+            if (arr.get(j).compareTo(pivot) < 0) {
+  
+                // Increment index of
+                // smaller element
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i + 1, high);
+        return (i + 1);
+    }
+  
+    /* The main function that implements QuickSort
+              arr[] --> Array to be sorted,
+              low --> Starting index,
+              high --> Ending index
+     */
+    static <T extends Comparable> void quickSort(ArrayList<T> arr, int low, int high)
+    {
+        if (low < high) {
+  
+            // pi is partitioning index, arr[p]
+            // is now at right place
+            int pi = partition(arr, low, high);
+  
+            // Separately sort elements before
+            // partition and after partition
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+    public static <T> T getPivotLow(ArrayList<T> arr) {
+    	return arr.get(0);
+    }
+    
+    public static <T> T getPivotHigh(ArrayList<T> arr) {
+    	return arr.get(arr.size());
+    }
+    
+    public static <T extends Comparable> T getPivotMedian(ArrayList<T> arr) {
+    	ArrayList<T> temp = new ArrayList<T>();
+    	
+    	int firstIndex = 0;
+    	int lastIndex = arr.size()-1;
+    	int middleIndex = (arr.size()-1)/2;
+    	
+    	temp.add(arr.get(firstIndex));
+    	temp.add(arr.get(lastIndex));
+    	temp.add(arr.get(middleIndex));
+    	
+    	insertionSort(temp);
+    	
+    	return temp.get(1);
+
+    }
+	
 	public static void main(String[]args) {
 		ArrayList<Integer> test = new ArrayList<Integer>();
 		test.add(1);
@@ -102,7 +193,7 @@ public class ArrayListSorter {
 		
 		System.out.println(test.size());
 		
-		mergesort(test);
+		quicksort(test);
 		
 		System.out.println(test);
 	}
