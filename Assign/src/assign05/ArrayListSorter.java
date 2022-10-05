@@ -1,4 +1,5 @@
 package assign05;
+// Written by A
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,11 +7,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+/**
+ * This class represents an ArrayList sorter with two different methods: a recursive quicksort,
+ * and a recursive mergesort.  The threshold instance variable determines the threshold at which 
+ * mergesort calls insertion sort.
+ * 
+ * @author Andy Huo and Emmanuel Luna
+ * @version October 5, 2022
+ */
 public class ArrayListSorter {
-	private static int threshold = 3;
+	private static int threshold = 4;
 
 	/**
-	 * This is driver mergesort
+	 * The driver method for our Recursive Mergesort
 	 * @param <T> Generic
 	 * @param arr is array list being inputed into mergesort
 	 */
@@ -29,6 +38,8 @@ public class ArrayListSorter {
 	}
 
 	/**
+	 * The Driver method for our Recursive Quicksort
+	 * 
 	 * @param <T> Generic
 	 * @param arr is the array being quicksorted
 	 */
@@ -38,6 +49,7 @@ public class ArrayListSorter {
 
 	/**
 	 * This is the recursive method of quicksort
+	 * 
 	 * @param <T> Generic
 	 * @param arr inputed array list
 	 * @param left is the left limit for quicksort
@@ -58,12 +70,16 @@ public class ArrayListSorter {
 	}
 
 	/**
+	 * Generates an Integer Arraylist in ascending order up to the input size
+	 * 
 	 * @param size
 	 * @return An array in ascending order of the inputed size
 	 */
 	public static ArrayList<Integer> generateAscending(int size) {
+		// Create a new Integer ArrayList
 		ArrayList<Integer> list = new ArrayList<Integer>(size);
-
+		
+		// Fill the ArrayList with Integers in order from 1 to the input size
 		for (int i = 1; i <= size; i++) {
 			list.add(i);
 		}
@@ -72,27 +88,36 @@ public class ArrayListSorter {
 	}
 
 	/**
+	 * Generates a randomly ordered integer ArrayList containing all integers from 1 to input size
+	 * 
 	 * @param size
 	 * @return An array in permuted order of the inputed size
 	 */
 	public static ArrayList<Integer> generatePermuted(int size) {
+		// Create a new Integer ArrayList
 		ArrayList<Integer> list = new ArrayList<Integer>(size);
-
+		
+		// Fill the ArrayList with Integers in order from 1 to the input size
 		for (int i = 1; i <= size; i++) {
 			list.add(i);
 		}
-
+		
+		// Shuffle the indices of the ArrayList
 		Collections.shuffle(list);
 		return list;
 	}
 
 	/**
+	 * Generates an Integer ArrayList in descending order of input size
+	 * 
 	 * @param size
 	 * @return An array in descending order of the inputed size
 	 */
 	public static ArrayList<Integer> generateDescending(int size) {
+		// Create a new Integer ArrayList
 		ArrayList<Integer> list = new ArrayList<Integer>();
-
+		
+		// Fill the ArrayList with Integers in order from the input size to 1
 		for (int i = size; i >= 1; i--) {
 			list.add(i);
 		}
@@ -100,6 +125,8 @@ public class ArrayListSorter {
 	}
 
 	/**
+	 * The recursive method for MergeSort
+	 * 
 	 * @param <T> Generic
 	 * @param arr is inputed array list
 	 * @param temp is the temporary array as a place holder, holder for all data before merging
@@ -128,7 +155,8 @@ public class ArrayListSorter {
 	
 	//
 	/**
-	 * This is the recursive merge used in mergesort
+	 * The method used to merge two arraylists together
+	 * 
 	 * @param <T> Generic
 	 * @param arr - Generic arr being inputed
 	 * @param temp - Temporary array as a place holder, holder for all data before merging
@@ -138,11 +166,12 @@ public class ArrayListSorter {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T extends Comparable> void merge(ArrayList<T> arr, ArrayList<T> temp, int start, int mid, int end) {
-
+		// Set positions for merge
 		int i = start;
 		int j = mid + 1;
 		int mergePos = start;
-
+		
+		// Merge the two lists together
 		while (i <= mid && j <= end) {
 			if (arr.get(i).compareTo(arr.get(j)) <= 0)
 				temp.set(mergePos++, arr.get(i++));
@@ -174,6 +203,15 @@ public class ArrayListSorter {
 
 	}
 
+	/**
+	 * Runs the partitioning code for the QuickSort algorithm
+	 * 
+	 * @param <T>
+	 * @param arr
+	 * @param leftBound
+	 * @param rightBound
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Comparable> int partition(ArrayList<T> arr, int leftBound, int rightBound) {
 		// Extreme Bounds
@@ -187,15 +225,18 @@ public class ArrayListSorter {
 		temp.add(low);
 		temp.add(high);
 		temp.add(median);
-
+		
 		insertionSort(temp);
 		
 		T pivot = temp.get(1);
 		
+		// Swap the pivot with the item at the right boundary
 		swap(arr, arr.indexOf(pivot), rightBound);
-
+		
+		// Initialize position trackers
 		int L = leftBound, R = rightBound - 1;
 
+		// Look for potential swap points and swap if found
 		while (L <= R) {
 			while (L < rightBound && arr.get(L).compareTo(pivot) <= 0)
 				L++;
@@ -206,7 +247,6 @@ public class ArrayListSorter {
 				swap(arr, L, R);
 		}
 
-		//
 		swap(arr, L, rightBound);
 
 		return L;
@@ -214,6 +254,8 @@ public class ArrayListSorter {
 	}
 
 	/**
+	 * Swaps two items in an ArrayList at the input indices
+	 * 
 	 * @param <T> Generic Type
 	 * @param arr The input array containing objects to be swapped
 	 * @param i The index of the first object to be swapped

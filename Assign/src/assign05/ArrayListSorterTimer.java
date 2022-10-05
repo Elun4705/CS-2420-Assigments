@@ -4,6 +4,14 @@ import java.util.ArrayList;
 
 import assign05.ArrayListSorter;
 
+/**
+ * This class is used to measure the time it takes to run both mergesort and quicksort,
+ * running each with scaling N levels multiple times and taking the average to determine
+ * the best measure of the time taken.
+ * 
+ * @author Andy Huo and Emmanuel Luna
+ * @version October 5, 2022
+ */
 public class ArrayListSorterTimer {
 	public static void main(String[] args) {
 
