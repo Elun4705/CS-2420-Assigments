@@ -2,7 +2,9 @@ package assign05;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 public class ArrayListSorter {
 	private static int threshold = 3;
@@ -42,15 +44,33 @@ public class ArrayListSorter {
 	}
 
 	public static ArrayList<Integer> generateAscending(int size) {
+		ArrayList<Integer> list = new ArrayList<Integer>(size);
+		
+		for(int i = 1; i <= size; i++) {
+			list.add(i);
+		}
+		return list;
 
 	}
 
 	public static ArrayList<Integer> generatePermuted(int size) {
-
+		ArrayList<Integer> list = new ArrayList<Integer>(size);
+		
+		for(int i = 1; i <= size; i++) {
+			list.add(i);
+		}
+		
+		Collections.shuffle(list);
+		return list;
 	}
 
 	public static ArrayList<Integer> generateDescending(int size) {
-
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		
+			for(int i = size; i >= 1; i--) {
+				list.add(i);
+			}
+		return list;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -106,22 +126,20 @@ public class ArrayListSorter {
 	@SuppressWarnings("unchecked")
 	public static <T extends Comparable> int partition(ArrayList<T> arr, int leftBound, int rightBound) {
 		// Extreme Bounds
-		// T pivot = arr.get(rightBound);
-		// T pivot = arr.get(leftBound);
+		 T pivot = arr.get(rightBound);
+//		T pivot = arr.get(leftBound);
 		
 		// Median Piv
-		T low = arr.get(leftBound), high = arr.get(rightBound), median = arr.get((rightBound-1)/2);
-		ArrayList<T> temp = new ArrayList<T>();
-		temp.add(low);
-		temp.add(high);
-		temp.add(median);
+//		T low = arr.get(leftBound), high = arr.get(rightBound), median = arr.get((rightBound-1)/2);
+//		ArrayList<T> temp = new ArrayList<T>();
+//		temp.add(low);
+//		temp.add(high);
+//		temp.add(median);
 		
-		insertionSort(temp);
-		
-		T pivot = temp.get(1);
+//		insertionSort(temp);
+//		
+//		T pivot = temp.get(1);
 		swap(arr, arr.indexOf(pivot), rightBound);
-		
-		System.out.println(arr.indexOf(pivot));
 
 		int L = leftBound, R = rightBound-1;
 
@@ -149,43 +167,12 @@ public class ArrayListSorter {
 		
 	}
 	
-	public static <T extends Comparable> T findPivotLow(ArrayList<T> arr) {
-		return arr.get(0);
-	}
-	
-	public static <T extends Comparable> T findPivotHigh(ArrayList<T> arr) {
-		return arr.get(arr.size() - 1);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T extends Comparable> T findPivotMedian(ArrayList<T> arr) {
-		T low = arr.get(0), high = arr.get(arr.size()-1), median = arr.get((arr.size()-1)/2);
-		ArrayList<T> temp = new ArrayList<T>();
-		temp.add(low);
-		temp.add(high);
-		temp.add(median);
-		
-		insertionSort(temp);
-		
-		return temp.get(1);
-	}
-	
 	public static void main(String[]args) {
-		ArrayList<Integer> test = new ArrayList<Integer>();
-		test.add(1);
-		test.add(9);
-		test.add(7);
-		test.add(8);
-		test.add(3);
-		test.add(4);
-		test.add(6);
-		test.add(5);
-		test.add(2);
-		test.add(10);
+		ArrayList<Integer> test = generateAscending(10);
+		ArrayList<Integer> test1 = generatePermuted(10);
 		
 		System.out.println(test);
-		quicksort(test);
-		System.out.println(test);
+		System.out.println(test1);
 	}
 
 }
