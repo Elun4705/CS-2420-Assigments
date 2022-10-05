@@ -177,20 +177,21 @@ public class ArrayListSorter {
 	@SuppressWarnings("unchecked")
 	public static <T extends Comparable> int partition(ArrayList<T> arr, int leftBound, int rightBound) {
 		// Extreme Bounds
-		T pivot = arr.get(rightBound);
-		// T pivot = arr.get(leftBound);
+//		T pivot = arr.get(rightBound);
+//		T pivot = arr.get(leftBound);
 
-		// Median Piv
-		// T low = arr.get(leftBound), high = arr.get(rightBound), median =
-		// arr.get((rightBound-1)/2);
-		// ArrayList<T> temp = new ArrayList<T>();
-		// temp.add(low);
-		// temp.add(high);
-		// temp.add(median);
+//		Median Piv
+		T low = arr.get(leftBound), high = arr.get(rightBound), median =
+		arr.get((rightBound-1)/2);
+		ArrayList<T> temp = new ArrayList<T>();
+		temp.add(low);
+		temp.add(high);
+		temp.add(median);
 
-		// insertionSort(temp);
-		//
-		// T pivot = temp.get(1);
+		insertionSort(temp);
+		
+		T pivot = temp.get(1);
+		
 		swap(arr, arr.indexOf(pivot), rightBound);
 
 		int L = leftBound, R = rightBound - 1;

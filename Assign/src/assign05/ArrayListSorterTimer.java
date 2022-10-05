@@ -7,7 +7,7 @@ import assign05.ArrayListSorter;
 public class ArrayListSorterTimer {
 	public static void main(String[] args) {
 
-		int timesToLoop = 10000;
+		int timesToLoop = 500;
 
 		// For each problem size n . . .
 		for (int n = 1000; n <= 20000; n += 1000) {
@@ -28,8 +28,7 @@ public class ArrayListSorterTimer {
 			startTime = System.currentTimeMillis();
 
 			for (int i = 0; i < timesToLoop; i++) {
-				for (int j = 0; j < n; j++)
-					ArrayListSorter.mergesort(unsorted);
+					ArrayListSorter.quicksort(unsorted);
 			}
 
 			midpointTime = System.currentTimeMillis();
