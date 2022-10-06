@@ -15,12 +15,12 @@ import assign05.ArrayListSorter;
 public class ArrayListSorterTimer {
 	public static void main(String[] args) {
 
-		int timesToLoop = 500;
+		int timesToLoop = 1000;
 
 		// For each problem size n . . .
 		for (int n = 1000; n <= 20000; n += 1000) {
 
-			ArrayList<Integer> unsorted = ArrayListSorter.generatePermuted(n);
+			ArrayList<Integer> unsorted = ArrayListSorter.generateDescending(n);
 
 			long startTime, midpointTime, stopTime, DebugTime;
 
@@ -36,7 +36,7 @@ public class ArrayListSorterTimer {
 			startTime = System.currentTimeMillis();
 
 			for (int i = 0; i < timesToLoop; i++) {
-					ArrayListSorter.quicksort(unsorted);
+					ArrayListSorter.mergesort(unsorted);
 			}
 
 			midpointTime = System.currentTimeMillis();

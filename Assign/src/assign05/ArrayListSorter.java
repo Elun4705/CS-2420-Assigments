@@ -16,7 +16,7 @@ import java.util.Random;
  * @version October 5, 2022
  */
 public class ArrayListSorter {
-	private static int threshold = 4;
+	private static int threshold = 13;
 
 	/**
 	 * The driver method for our Recursive Mergesort
