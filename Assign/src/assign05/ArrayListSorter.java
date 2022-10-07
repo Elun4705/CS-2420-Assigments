@@ -137,7 +137,7 @@ public class ArrayListSorter {
 	public static <T extends Comparable> void mergesort(ArrayList<T> arr, ArrayList<T> temp, int start, int end) {
 		
 		// If the array size reaches a certain threshold, perform insertion sort
-		if (end <= threshold) {
+		if (end <= (arr.size()/10)) {
 			insertionSort(arr);
 			return;
 		}
