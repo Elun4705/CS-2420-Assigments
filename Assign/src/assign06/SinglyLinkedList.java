@@ -6,11 +6,11 @@ import java.util.NoSuchElementException;
 
 import assign03.ArrayCollection;
 
-public class SinglyLinkedList implements List<Object> {
-	
+public class SinglyLinkedList implements List<Object>, Iterable<Object> {
+
 	private Node head = null;
 	private int size = 0;
-	
+
 	private class Node {
 		Object element;
 		Node next;
@@ -23,51 +23,99 @@ public class SinglyLinkedList implements List<Object> {
 			prev = null;
 		}
 
-		
-
 	}
 
 	public SinglyLinkedList() {
 
 	}
-	
-	void add(Object data)
-    {
- 
-        // Creating new node with given value
-        Node temp = new Node(data);
- 
-        // Checking if list is empty
-        // and assigning new value to head node
-        if (this.head == null) {
-            head = temp;
-        }
- 
-        // If list already exists
-        else {
- 
-            // Temporary node for traversal
-            Node X = head;
- 
-            // Iterating till end of the List
-            while (X.next != null) {
-                X = X.next;
-            }
- 
-            // Adding new valued node at the end of the list
-            X.next = temp;
-        }
- 
-        // Increasing length after adding new node
-        size++;
-    }
+
+	public static void main(String[] args) {
+		SinglyLinkedList test = new SinglyLinkedList();
+		test.add("word");
+		test.add("pizza");
+		test.add("panic");
+
+		test.insertFirst("blah");
+
+		System.out.println(test.get(0));
+		System.out.println(test.get(1));
+		System.out.println(test.get(2));
+		System.out.println(test.get(3));
+		
+		test.deleteFirst();
+		
+		System.out.println();
+		
+		System.out.println(test.get(0));
+		System.out.println(test.get(1));
+		System.out.println(test.get(2));
+
+	}
+
+	void add(Object data) {
+
+		// Creating new node with given value
+		Node temp = new Node(data);
+
+		// Checking if list is empty
+		// and assigning new value to head node
+		if (this.head == null) {
+			head = temp;
+		}
+
+		// If list already exists
+		else {
+
+			// Temporary node for traversal
+			Node X = head;
+
+			// Iterating till end of the List
+			while (X.next != null) {
+				X = X.next;
+			}
+
+			// Adding new valued node at the end of the list
+			X.next = temp;
+		}
+
+		// Increasing length after adding new node
+		size++;
+	}
 
 	@Override
 	public void insertFirst(Object element) {
+
+		Node temp = new Node(element);
+
+		temp.next = head;
+
+		head = temp;
+
+		size++;
+
 	}
 
 	@Override
 	public void insert(int index, Object element) throws IndexOutOfBoundsException {
+
+		if (index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		Node insert = new Node(element);
+		Node temp = head;
+
+		for (int i = 0; i < index - 1; i++) {
+			temp = temp.next;
+		}
+
+		Node after = temp.next;
+
+		temp.next = insert;
+
+		insert.next = after;
+
+		size++;
 
 	}
 
@@ -87,10 +135,30 @@ public class SinglyLinkedList implements List<Object> {
 
 	@Override
 	public Object deleteFirst() throws NoSuchElementException {
+		
+		Node oldHead = head;
+		Node newHead = head.next;
+		
+		head = newHead;
+
+		size--;
+		
+		return oldHead.element;
 	}
 
 	@Override
 	public Object delete(int index) throws IndexOutOfBoundsException {
+		Node temp = head;
+		for (int i = 0; i < index-1; i++) {
+			temp = temp.next;
+		}
+		
+		Node delt = temp.next;
+		temp.next = temp.next.next;
+
+		size--;
+		
+		return delt;
 	}
 
 	@Override
@@ -118,7 +186,39 @@ public class SinglyLinkedList implements List<Object> {
 
 	@Override
 	public Iterator<Object> iterator() {
-		return null;
+		Iterator<Object> it = new listIterator();
+		return it;
+	}
+
+	private class listIterator implements Iterator<Object> {
+		boolean removeable = false;
+		int index = 0;
+
+		public boolean hasNext() {
+			if (index < size) {
+				return true;
+			}
+			return false;
+		}
+
+		public Object next() throws NoSuchElementException {
+			if (this.hasNext()) {
+				removeable = true;
+				return data[index++];
+			} else {
+				throw new NoSuchElementException();
+			}
+		}
+
+		public void remove() throws IllegalStateException {
+			if (removeable) {
+				ArrayCollection.this.remove(index);
+				removeable = false;
+			} else {
+				throw new IllegalStateException();
+			}
+		}
+
 	}
 
 }
