@@ -1,6 +1,7 @@
 package assign06;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -35,20 +36,15 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 		test.add("pizza");
 		test.add("panic");
 
-		test.insertFirst("blah");
-
-		System.out.println(test.get(0));
-		System.out.println(test.get(1));
-		System.out.println(test.get(2));
-		System.out.println(test.get(3));
-		
-		test.deleteFirst();
+		test.indexOf("word");
+		System.out.println(test.isEmpty());
 		
 		System.out.println();
+		Object[] list = test.toArray();
+		System.out.println(Arrays.toString(list));
 		
-		System.out.println(test.get(0));
-		System.out.println(test.get(1));
-		System.out.println(test.get(2));
+		test.clear();
+		System.out.println(test.isEmpty());
 
 	}
 
@@ -163,6 +159,18 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 
 	@Override
 	public int indexOf(Object element) {
+		
+		Node temp = head;
+		
+		for(int index = 0; index < size-1; index++) {
+			if(temp.element == element) {
+				return index;
+			}
+			
+			temp = temp.next;
+		}
+		
+		return -1;
 	}
 
 	@Override
@@ -172,16 +180,28 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 
 	@Override
 	public boolean isEmpty() {
+		if(head == null)
+			return true;
+		
+		return false;
 	}
 
 	@Override
 	public void clear() {
+		head = null;
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Node value = head;
+		Object temp[] = new Object[size];
+		
+		for(int index = 0; index < size; index++) {
+			temp[index] = value.element;
+			value = value.next;
+		}
+		return temp;
 	}
 
 	@Override
@@ -204,7 +224,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 		public Object next() throws NoSuchElementException {
 			if (this.hasNext()) {
 				removeable = true;
-				return data[index++];
+				return get(index++);
 			} else {
 				throw new NoSuchElementException();
 			}
@@ -212,7 +232,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 
 		public void remove() throws IllegalStateException {
 			if (removeable) {
-				ArrayCollection.this.remove(index);
+				delete(index);
 				removeable = false;
 			} else {
 				throw new IllegalStateException();
