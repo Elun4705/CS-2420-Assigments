@@ -35,16 +35,22 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 		test.add("word");
 		test.add("pizza");
 		test.add("panic");
+		
+		System.out.println(Arrays.toString(test.toArray()));
+		
+		test.delete(0);
+		
+		System.out.println(Arrays.toString(test.toArray()));
 
-		test.indexOf("word");
-		System.out.println(test.isEmpty());
-		
-		System.out.println();
-		Object[] list = test.toArray();
-		System.out.println(Arrays.toString(list));
-		
-		test.clear();
-		System.out.println(test.isEmpty());
+//		test.indexOf("word");
+//		System.out.println(test.isEmpty());
+//		
+//		System.out.println();
+//		Object[] list = test.toArray();
+//		System.out.println(Arrays.toString(list));
+//		
+//		test.clear();
+//		System.out.println(test.isEmpty());
 
 	}
 
@@ -117,11 +123,21 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 
 	@Override
 	public Object getFirst() throws NoSuchElementException {
+		
+		if(head == null) {
+			throw new NoSuchElementException();
+		}
+		
 		return head.element;
 	}
 
 	@Override
 	public Object get(int index) throws IndexOutOfBoundsException {
+		
+		if(index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+		
 		Node temp = head;
 		for (int i = 0; i < index; i++) {
 			temp = temp.next;
@@ -131,6 +147,10 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 
 	@Override
 	public Object deleteFirst() throws NoSuchElementException {
+		
+		if(head == null) {
+			throw new NoSuchElementException();
+		}
 		
 		Node oldHead = head;
 		Node newHead = head.next;
@@ -144,8 +164,17 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 
 	@Override
 	public Object delete(int index) throws IndexOutOfBoundsException {
+		
+		if(index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		 
+		if (index == 0) {
+			return deleteFirst();
+		}
+		
 		Node temp = head;
-		for (int i = 0; i < index-1; i++) {
+		for (int i = 0; i < index; i++) {
 			temp = temp.next;
 		}
 		
