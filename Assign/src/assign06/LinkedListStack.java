@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class LinkedListStack implements Stack<Object> {
 	
-	SinglyLinkedList backdrop = new SinglyLinkedList();
+	private SinglyLinkedList backdrop = new SinglyLinkedList();
 
 	
 	public LinkedListStack() {
@@ -24,11 +24,17 @@ public class LinkedListStack implements Stack<Object> {
 
 	@Override
 	public Object peek() throws NoSuchElementException {
+		if (backdrop.isEmpty())
+			throw new NoSuchElementException();
+		
 		return backdrop.get(backdrop.size()-1);
 	}
 
 	@Override
 	public Object pop() throws NoSuchElementException {
+		if (backdrop.isEmpty())
+			throw new NoSuchElementException();
+		
 		return backdrop.delete(backdrop.size()-1);
 	}
 
