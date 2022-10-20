@@ -100,24 +100,39 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	@Override
 	public void insert(int index, Object element) throws IndexOutOfBoundsException {
 
-		if (index > size) {
+		if (index > size || index < 0) {
 			throw new IndexOutOfBoundsException();
 		}
-
-		Node insert = new Node(element);
-		Node temp = head;
-
-		for (int i = 0; i < index - 1; i++) {
-			temp = temp.next;
+		
+		if ( index == 0) {
+			insertFirst(element);
 		}
+		
+		
+		else {
+			
+			if (index == size)
+				add(element);
+			
+			else {
+				
+				Node insert = new Node(element);
+				Node temp = head;
 
-		Node after = temp.next;
+				for (int i = 0; i < index - 1; i++) {
+					temp = temp.next;
+				}
 
-		temp.next = insert;
+				Node after = temp.next;
 
-		insert.next = after;
+				temp.next = insert;
 
-		size++;
+				insert.next = after;
+
+				size++;
+			}
+				
+		}
 
 	}
 
@@ -134,7 +149,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	@Override
 	public Object get(int index) throws IndexOutOfBoundsException {
 		
-		if(index > size) {
+		if(index >= size || index < 0) {
 			throw new IndexOutOfBoundsException();
 		}
 		
@@ -165,7 +180,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	@Override
 	public Object delete(int index) throws IndexOutOfBoundsException {
 		
-		if(index >= size) {
+		if(index >= size || index < 0) {
 			throw new IndexOutOfBoundsException();
 		}
 		 
@@ -174,7 +189,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 		}
 		
 		Node temp = head;
-		for (int i = 0; i < index; i++) {
+		for (int i = 0; i < index - 1; i++) {
 			temp = temp.next;
 		}
 		
@@ -183,7 +198,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 
 		size--;
 		
-		return delt;
+		return delt.element;
 	}
 
 	@Override
@@ -191,7 +206,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 		
 		Node temp = head;
 		
-		for(int index = 0; index < size-1; index++) {
+		for(int index = 0; index < size; index++) {
 			if(temp.element == element) {
 				return index;
 			}
@@ -218,6 +233,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	@Override
 	public void clear() {
 		head = null;
+		size = 0;
 	}
 
 	@Override
