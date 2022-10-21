@@ -2,9 +2,9 @@ package assign06;
 
 import java.util.NoSuchElementException;
 
-public class LinkedListStack implements Stack<Object> {
+public class LinkedListStack <E> implements Stack<E> {
 	
-	private SinglyLinkedList backdrop = new SinglyLinkedList();
+	private SinglyLinkedList<E> backdrop = new SinglyLinkedList<E>();
 
 	
 	public LinkedListStack() {
@@ -23,7 +23,7 @@ public class LinkedListStack implements Stack<Object> {
 	}
 
 	@Override
-	public Object peek() throws NoSuchElementException {
+	public E peek() throws NoSuchElementException {
 		if (backdrop.isEmpty())
 			throw new NoSuchElementException();
 		
@@ -31,7 +31,7 @@ public class LinkedListStack implements Stack<Object> {
 	}
 
 	@Override
-	public Object pop() throws NoSuchElementException {
+	public E pop() throws NoSuchElementException {
 		if (backdrop.isEmpty())
 			throw new NoSuchElementException();
 		
@@ -39,7 +39,7 @@ public class LinkedListStack implements Stack<Object> {
 	}
 
 	@Override
-	public void push(Object element) {
+	public void push(E element) {
 		backdrop.add(element);
 		
 	}
@@ -47,13 +47,6 @@ public class LinkedListStack implements Stack<Object> {
 	@Override
 	public int size() {
 		return backdrop.size();
-	}
-	
-	public static void main(String[] args) {
-		LinkedListStack test = new LinkedListStack();
-		test.push("word");
-		
-		System.out.println(test.pop());
 	}
 
 }

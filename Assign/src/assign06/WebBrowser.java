@@ -12,7 +12,6 @@ public class WebBrowser {
 	
 	private ArrayStack<URL> back = new ArrayStack<URL>();
 	private ArrayStack<URL> forward = new ArrayStack<URL>();
-	private SinglyLinkedList<URL> browserHistory = new SinglyLinkedList<URL>();
 	URL current;
 	
 	public static void main(String[] args) throws MalformedURLException {
@@ -20,14 +19,24 @@ public class WebBrowser {
 		URL url1 = new URL("http://example.com");
 		URL url2 = new URL("http://example1.com");
 		URL url3 = new URL("http://example2.com");
-		test.visit(url1);
-		test.visit(url2);
-		
-		test.visit(url3);
 		
 		
+		SinglyLinkedList<URL> forBrowser = new SinglyLinkedList<URL>();
 		
-		System.out.println(Arrays.toString(test.browserHistory.toArray()));
+//		forBrowser.add(url1);
+//		forBrowser.add(url2);
+//		forBrowser.add(url3);
+		
+		WebBrowser testBrowser = new WebBrowser();
+		
+		testBrowser.visit(url3);
+		testBrowser.visit(url1);
+		testBrowser.visit(url2);
+		
+		System.out.println(testBrowser.back());
+		System.out.println(testBrowser.back());
+		System.out.println(testBrowser.back());
+		System.out.println(Arrays.toString(testBrowser.history().toArray()));
 		
 	}
 	
@@ -37,13 +46,12 @@ public class WebBrowser {
 	
 	public WebBrowser(SinglyLinkedList<URL> history) {
 		
-		browserHistory = history;
 		WebBrowser browser = new WebBrowser();
+
 	}
 	
 	public void visit(URL webpage) {
 		
-		browserHistory.insertFirst(webpage);
 		back.push(current);
 		
 		current = webpage;
@@ -52,13 +60,12 @@ public class WebBrowser {
 	
 	public URL back() throws NoSuchElementException{
 		
-		if (back.isEmpty()) {
+		if (back.isEmpty()s) {
 			throw new NoSuchElementException();
 		}
 		
 		forward.push(current);
 		
-		browserHistory.deleteFirst();
 		current = back.pop();
 		return current;
 		
@@ -71,7 +78,6 @@ public class WebBrowser {
 		}
 		
 		back.push(current);
-		browserHistory.insertFirst(current);
 		
 		current = forward.pop();
 		return current;
@@ -79,9 +85,23 @@ public class WebBrowser {
 	
 	public SinglyLinkedList<URL> history() {
 		
-		browserHistory.insertFirst(current);
+		ArrayStack<URL> temp = new ArrayStack<URL>();
+		SinglyLinkedList<URL> history = new SinglyLinkedList<URL>();
 		
-		return browserHistory;
+		while (back.isEmpty() == false) {
+			temp.push(back.pop());
+		}
+		
+		while (temp.isEmpty() == false) {
+			if(temp.peek() == null) {
+				temp.pop();
+			}
+			history.add(temp.peek());
+			back.push(temp.pop());
+		}
+		
+		history.insertFirst(current);
+		return history;
 		
 	}
 

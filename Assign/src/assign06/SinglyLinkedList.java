@@ -1,11 +1,7 @@
 package assign06;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import assign03.ArrayCollection;
 
 public class SinglyLinkedList<E> implements List<E>, Iterable<E> {
 
@@ -30,60 +26,42 @@ public class SinglyLinkedList<E> implements List<E>, Iterable<E> {
 
 	}
 
-	public static void main(String[] args) {
-		SinglyLinkedList test = new SinglyLinkedList();
-		test.add("word");
-		test.add("pizza");
-		test.add("panic");
-		
-		System.out.println(Arrays.toString(test.toArray()));
-		
-		test.delete(0);
-		
-		System.out.println(Arrays.toString(test.toArray()));
-
-//		test.indexOf("word");
-//		System.out.println(test.isEmpty());
-//		
-//		System.out.println();
-//		Object[] list = test.toArray();
-//		System.out.println(Arrays.toString(list));
-//		
-//		test.clear();
-//		System.out.println(test.isEmpty());
-
-	}
-
+	/**
+	 * Add's a new data 
+	 * 
+	 * @param data
+	 */
 	void add(E data) {
 
 		// Creating new node with given value
 		Node temp = new Node(data);
 
-		// Checking if list is empty
-		// and assigning new value to head node
+		// Check if list is empty, if so, make the new node the head
 		if (this.head == null) {
 			head = temp;
 		}
 
-		// If list already exists
 		else {
 
-			// Temporary node for traversal
-			Node X = head;
+			// Set head to travel node
+			Node travel = head;
 
-			// Iterating till end of the List
-			while (X.next != null) {
-				X = X.next;
+			// Travel to end of list
+			while (travel.next != null) {
+				travel = travel.next;
 			}
 
-			// Adding new valued node at the end of the list
-			X.next = temp;
+			// Adding new node to the end of the list
+			travel.next = temp;
 		}
 
-		// Increasing length after adding new node
+		// Increase size
 		size++;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void insertFirst(E element) {
 
