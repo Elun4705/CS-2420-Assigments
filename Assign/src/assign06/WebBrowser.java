@@ -14,32 +14,6 @@ public class WebBrowser {
 	private ArrayStack<URL> forward = new ArrayStack<URL>();
 	URL current;
 	
-	public static void main(String[] args) throws MalformedURLException {
-		WebBrowser test = new WebBrowser();
-		URL url1 = new URL("http://example.com");
-		URL url2 = new URL("http://example1.com");
-		URL url3 = new URL("http://example2.com");
-		
-		
-//		SinglyLinkedList<URL> forBrowser = new SinglyLinkedList<URL>();
-//		
-//		forBrowser.add(url1);
-//		forBrowser.add(url2);
-//		forBrowser.add(url3);
-//		
-		WebBrowser testBrowser = new WebBrowser();
-		
-		testBrowser.visit(url1);
-		testBrowser.visit(url2);
-		testBrowser.visit(url3);
-//		
-//		System.out.println(testBrowser.back());
-//		System.out.println(testBrowser.back());
-//		System.out.println(testBrowser.back());
-		System.out.println(Arrays.toString(testBrowser.history().toArray()));
-		
-	}
-	
 	public WebBrowser() {
 		
 	}
