@@ -21,21 +21,21 @@ public class WebBrowser {
 		URL url3 = new URL("http://example2.com");
 		
 		
-		SinglyLinkedList<URL> forBrowser = new SinglyLinkedList<URL>();
-		
+//		SinglyLinkedList<URL> forBrowser = new SinglyLinkedList<URL>();
+//		
 //		forBrowser.add(url1);
 //		forBrowser.add(url2);
 //		forBrowser.add(url3);
-		
+//		
 		WebBrowser testBrowser = new WebBrowser();
 		
-		testBrowser.visit(url3);
 		testBrowser.visit(url1);
 		testBrowser.visit(url2);
-		
-		System.out.println(testBrowser.back());
-		System.out.println(testBrowser.back());
-		System.out.println(testBrowser.back());
+		testBrowser.visit(url3);
+//		
+//		System.out.println(testBrowser.back());
+//		System.out.println(testBrowser.back());
+//		System.out.println(testBrowser.back());
 		System.out.println(Arrays.toString(testBrowser.history().toArray()));
 		
 	}
@@ -46,7 +46,12 @@ public class WebBrowser {
 	
 	public WebBrowser(SinglyLinkedList<URL> history) {
 		
+		
 		WebBrowser browser = new WebBrowser();
+		current = history.deleteFirst();
+		while(history.isEmpty() == false) {
+			back.push(history.deleteFirst());
+		}
 
 	}
 	
@@ -60,7 +65,7 @@ public class WebBrowser {
 	
 	public URL back() throws NoSuchElementException{
 		
-		if (back.isEmpty()s) {
+		if (back.isEmpty() || back.peek() == null) {
 			throw new NoSuchElementException();
 		}
 		
@@ -96,8 +101,10 @@ public class WebBrowser {
 			if(temp.peek() == null) {
 				temp.pop();
 			}
-			history.add(temp.peek());
+			else {
+			history.insertFirst(temp.peek());
 			back.push(temp.pop());
+			}
 		}
 		
 		history.insertFirst(current);
