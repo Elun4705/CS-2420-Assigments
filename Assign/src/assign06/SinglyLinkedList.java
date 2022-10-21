@@ -7,18 +7,18 @@ import java.util.NoSuchElementException;
 
 import assign03.ArrayCollection;
 
-public class SinglyLinkedList implements List<Object>, Iterable<Object> {
+public class SinglyLinkedList<E> implements List<E>, Iterable<E> {
 
 	private Node head = null;
 	private int size = 0;
 
 	private class Node {
-		Object element;
+		E element;
 		Node next;
 
 		Node prev;
 
-		Node(Object data) {
+		Node(E data) {
 			element = data;
 			next = null;
 			prev = null;
@@ -54,7 +54,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 
 	}
 
-	void add(Object data) {
+	void add(E data) {
 
 		// Creating new node with given value
 		Node temp = new Node(data);
@@ -85,7 +85,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	}
 
 	@Override
-	public void insertFirst(Object element) {
+	public void insertFirst(E element) {
 
 		Node temp = new Node(element);
 
@@ -98,7 +98,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	}
 
 	@Override
-	public void insert(int index, Object element) throws IndexOutOfBoundsException {
+	public void insert(int index, E element) throws IndexOutOfBoundsException {
 
 		if (index > size || index < 0) {
 			throw new IndexOutOfBoundsException();
@@ -137,7 +137,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	}
 
 	@Override
-	public Object getFirst() throws NoSuchElementException {
+	public E getFirst() throws NoSuchElementException {
 		
 		if(head == null) {
 			throw new NoSuchElementException();
@@ -147,7 +147,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	}
 
 	@Override
-	public Object get(int index) throws IndexOutOfBoundsException {
+	public E get(int index) throws IndexOutOfBoundsException {
 		
 		if(index >= size || index < 0) {
 			throw new IndexOutOfBoundsException();
@@ -161,7 +161,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	}
 
 	@Override
-	public Object deleteFirst() throws NoSuchElementException {
+	public E deleteFirst() throws NoSuchElementException {
 		
 		if(head == null) {
 			throw new NoSuchElementException();
@@ -178,7 +178,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	}
 
 	@Override
-	public Object delete(int index) throws IndexOutOfBoundsException {
+	public E delete(int index) throws IndexOutOfBoundsException {
 		
 		if(index >= size || index < 0) {
 			throw new IndexOutOfBoundsException();
@@ -250,12 +250,12 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 	}
 
 	@Override
-	public Iterator<Object> iterator() {
-		Iterator<Object> it = new listIterator();
+	public Iterator<E> iterator() {
+		Iterator<E> it = new listIterator();
 		return it;
 	}
 
-	private class listIterator implements Iterator<Object> {
+	private class listIterator implements Iterator<E> {
 		boolean removeable = false;
 		int index = 0;
 
@@ -266,7 +266,7 @@ public class SinglyLinkedList implements List<Object>, Iterable<Object> {
 			return false;
 		}
 
-		public Object next() throws NoSuchElementException {
+		public E next() throws NoSuchElementException {
 			if (this.hasNext()) {
 				removeable = true;
 				return get(index++);

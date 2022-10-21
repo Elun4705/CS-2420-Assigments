@@ -19,7 +19,7 @@ public class AssignTimings {
 		// Time adding N values to different kinds of queues
 		for(int N = 1000; N <= 15000; N += 1000)
 		{
-			timePushN(N);
+			timePeekN(N);
 		}
 
 		// Time adding then removing N values to different kinds of queues
@@ -39,7 +39,7 @@ public class AssignTimings {
 	private static void timePushN(int N)
 	{
 		long startTime, midpointTime, stopTime;
-		int timesToLoop = 500;
+		int timesToLoop = 5000;
 
 		// Generate random input before starting the timer
 		int[] testVals = new int[N];
@@ -52,8 +52,8 @@ public class AssignTimings {
 
 		for (int i = 0; i < timesToLoop; i++)
 		{
-			stack = new LinkedListStack();
-//			stack = new ArrayStack();
+//			stack = new LinkedListStack();
+			stack = new ArrayStack();
 			for(int j : testVals)
 				stack.push(j);
 		}
@@ -62,9 +62,11 @@ public class AssignTimings {
 
 		// Run an loop to capture the cost of the overhead
 		for (long i = 0; i < timesToLoop; i++) {
-			stack = new LinkedListStack();
-			//stack = new ArrayStack();
-			for(int j : testVals) {}
+//			stack = new LinkedListStack();
+			stack = new ArrayStack();
+			for(int j : testVals) {
+				//nothing
+			}
 		}
 
 		stopTime = System.nanoTime();
@@ -81,7 +83,7 @@ public class AssignTimings {
 	{
 		long startTime, midpointTime, stopTime;
 //		int timesToLoop = 10000;
-		int timesToLoop = 500;
+		int timesToLoop = 50000;
 
 		// Generate random input before starting the timer
 		int[] testVals = new int[N];
@@ -94,8 +96,8 @@ public class AssignTimings {
 
 		for (int i = 0; i < timesToLoop; i++)
 		{
-			stack = new LinkedListStack();
-			//stack = new ArrayStack();
+//			stack = new LinkedListStack();
+			stack = new ArrayStack();
 			for(int j : testVals)
 				stack.push(j);
 			for(int j = 0; j < N; j++)
@@ -106,11 +108,11 @@ public class AssignTimings {
 
 		// Run an loop to capture the cost of the overhead
 		for (long i = 0; i < timesToLoop; i++) {
-			stack = new LinkedListStack();
-			//stack = new ArrayStack();
+//			stack = new LinkedListStack();
+			stack = new ArrayStack();
 			for(int j : testVals) 
 			{
-				stack.push(j); // subtract the offer time since we are timing poll
+				stack.push(j); // subtract the offer time since we are timing pop
 			}
 			for(int j = 0; j < N; j++) {}
 		}
@@ -129,7 +131,7 @@ public class AssignTimings {
 	{
 		long startTime, midpointTime, stopTime;
 //		int timesToLoop = 10000;
-		int timesToLoop = 500;
+		int timesToLoop = 50000;
 
 		// Generate random input before starting the timer
 		int[] testVals = new int[N];
@@ -142,8 +144,8 @@ public class AssignTimings {
 
 		for (int i = 0; i < timesToLoop; i++)
 		{
-			stack = new LinkedListStack();
-			//stack = new ArrayStack();
+//			stack = new LinkedListStack();
+			stack = new ArrayStack();
 			for(int j : testVals)
 				stack.push(j);
 			for(int j = 0; j < N; j++) {
@@ -156,8 +158,8 @@ public class AssignTimings {
 
 		// Run an loop to capture the cost of the overhead
 		for (long i = 0; i < timesToLoop; i++) {
-			stack = new LinkedListStack();
-			//stack = new ArrayStack();
+//			stack = new LinkedListStack();
+			stack = new ArrayStack();
 			for(int j : testVals) 
 			{
 				stack.push(j); // subtract the offer time since we are timing poll
