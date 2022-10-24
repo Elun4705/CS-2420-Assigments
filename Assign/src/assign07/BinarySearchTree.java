@@ -9,7 +9,6 @@ import org.junit.jupiter.api.io.TempDir;
 public class BinarySearchTree<Type extends Comparable<? super Type>> implements SortedSet<Type> {
 	
 	private BinaryNode<Type> root = null;
-	private Type temp = root.data;
 	
 	@SuppressWarnings("hiding")
 	public class BinaryNode<Type> {
@@ -121,73 +120,71 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 	@Override
 	public boolean add(Type item) {
-
-//		if (this.contains(item)) {
-//			return false;
-//		}
-//		
-//		if (item.compareTo(temp) < 0) {
-//			setLeftChild(item);
-//			return true;
-//		}
-//		
-//		if (item.compareTo(temp) > 0) {
-//			this.leftChild = item;
-//			return true;
-//		}
+		
+		if (this.contains(item)) {
+			return false;
+		}
+		
+		else { 
+			
+			//add item to list 
+			
+		}
 		
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends Type> items) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		boolean changed = false;
+		
+		for (Type item : items) {
+			if (this.contains(item) == false) {
+				this.add(item);
+				changed = true;
+			}
+		}
+		
+		return changed;
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
+
+		this.root = null;
 		
 	}
 
 	@Override
 	public boolean contains(Type item) {
 		
-//		if (item.compareTo(this.temp) == 0) {
-//			return true;
-//		}
-//	
-//		if (item.compareTo(temp) < 0) {
-//			this.temp = root.rightChild.getData();
-//			contains(item);
-//		}
-//		
-//		if (item.compareTo(temp) > 0) {
-//			this.temp = root.leftChild.getData();
-//			contains(item);
-//		}
-		
-		
-		
-		return false;
+		// travel through list, if can't find, return false
 	}
 
 	@Override
 	public boolean containsAll(Collection<? extends Type> items) {
-		// TODO Auto-generated method stub
-		return false;
+
+		Boolean containsall = true;
+		
+		for (Type item : items) {
+			if (this.contains(item) == false);
+			containsall = false;
+		}
+		
+		return containsall;
+		
 	}
 
 	@Override
 	public Type first() throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+
+		return root.data;
+		
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (root.data == null);
 	}
 
 	@Override
