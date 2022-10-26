@@ -16,24 +16,24 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 	public static void main(String[] args) {
 		BinarySearchTree<Integer> test = new BinarySearchTree<Integer>();
 		
-//		test.add(8);
+		test.add(8);
 //		test.add(4);
-//		test.add(10);
+//		test.add(12);
 //		
 //		test.add(2);
 //		
-//		test.add(12);
+//		test.add(6);
+//		test.add(10);
 //		test.add(14);
+//		
+//		test.add(1);
+//		
 //		test.add(3);
-//		
-//		test.add(0);
-//		
-//		test.add(-1);
-		
-		test.add(8);
-		test.add(2);
-		test.add(10);
-		test.add(3);
+//		test.add(5);
+//		test.add(7);
+//		test.add(9);
+//		test.add(11);
+//		test.add(13);
 		
 		test.remove(8);
 		
@@ -109,7 +109,98 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		public void setParent(BinaryNode<Type> parent) {
 			this.parent = parent;
 		}
-
+		
+		public int getLeftOrRight() {
+			if(this == this.getParent().getLeftChild()) {
+				return -1;
+			}
+			if(this == this.getParent().getRightChild()) {
+				return 1;
+			}
+			return 0;
+		}
+		
+		public void removeNoChildren() {
+			
+			if(this.getLeftOrRight() > 0) {
+				this.parent.setRightChild(null);
+			}
+			
+			if (this.getLeftOrRight() < 0) {
+				this.parent.setLeftChild(null);
+			}
+			
+		}
+		
+		public void removeHasLeftChild() {
+			
+			BinaryNode<Type> left = this.leftChild;
+			BinaryNode<Type> thisParent = this.parent;
+			
+			if(this.getLeftOrRight() > 0) {
+				thisParent.setRightChild(left);
+				left.setParent(thisParent);
+			}
+			
+			if (this.getLeftOrRight() < 0) {
+				thisParent.setLeftChild(left);
+				left.setParent(thisParent);
+			}
+			
+		}
+		
+		public void removeHasRightChild() {
+			
+			BinaryNode<Type> right = this.rightChild;
+			BinaryNode<Type> thisParent = this.parent;
+			
+			if(this.getLeftOrRight() > 0) {
+				thisParent.setRightChild(right);
+				right.setParent(thisParent);
+			}
+			
+			if (this.getLeftOrRight() < 0) {
+				thisParent.setLeftChild(right);
+				right.setParent(thisParent);
+			}
+			
+		}
+		
+		public void removeHasTwoChildren() {
+			
+			BinaryNode<Type> successor = this.getSuccessor();
+			BinaryNode<Type> successorParent = successor.getParent();
+			BinaryNode<Type> thisParent = this.parent;
+			BinaryNode<Type> successorRight = null;
+			BinaryNode<Type> right = this.getRightChild();
+			BinaryNode<Type> left = this.getLeftChild();
+			
+			if (successor.getRightChild() != null) {
+				successorRight = successor.getRightChild();
+			}
+			
+			if(this.getLeftOrRight() > 0) {
+				thisParent.setRightChild(successor);
+				successor.setParent(thisParent);
+				
+			}
+			
+			if (this.getLeftOrRight() < 0) {
+				thisParent.setLeftChild(successor);
+				successor.setParent(thisParent);
+			}
+			
+			
+			if (successorRight != null) {
+				successorRight.setParent(successorParent);
+				successorParent.setLeftChild(successorRight);
+			} else {successorParent.setLeftChild(null);}
+			
+			successor.setLeftChild(left);
+			left.setParent(successor);
+			
+		}
+		
 		/**
 		 * @return reference to the leftmost node in the binary tree rooted at this node
 		 */
@@ -329,145 +420,37 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		while (removed == false) {
 			if (item.compareTo(temp.data) == 0) {
 				if(temp.getLeftChild() == null && temp.getRightChild() == null) {
-					if (temp.getParent() == null) {
+					if(temp.parent == null) {
 						root = null;
 						removed = true;
 						break;
+					} else {
+					temp.removeNoChildren();
+					removed = true;
+					break;
 					}
-					if(temp.getData().compareTo(temp.getParent().getLeftChild().getData()) == 0) {
-						temp.getParent().setLeftChild(null);
-					}
-					if(temp.getData().compareTo(temp.getParent().getRightChild().getData()) == 0) {
-						temp.getParent().setRightChild(null);
-					}
+				}
+				if(temp.getLeftChild() == null && temp.getRightChild() != null) {
+
+					temp.removeHasRightChild();
+					removed = true;
+					break;
+					
+				}
+		
+				if(temp.getLeftChild() != null && temp.getRightChild() == null) {
+
+					temp.removeHasLeftChild();
 					removed = true;
 					break;
 				}
 				
-				if(temp.getLeftChild() == null && temp.getRightChild() != null) {
-					if(temp.getParent() == null) {
-						root = temp.rightChild;
-						temp.setParent(null);
-						removed = true;
-						break;
-					}
-					if(temp.getData().compareTo(temp.getParent().getLeftChild().getData()) == 0) {
-						temp.getParent().setLeftChild(temp.getRightChild());
-						removed = true;
-						break;
-					}
-					if(temp.getData().compareTo(temp.getParent().getRightChild().getData()) == 0) {
-						temp.getParent().setRightChild(temp.getRightChild());
-						removed = true;
-						break;
-					}
-				}
-				
-				if(temp.getLeftChild() != null && temp.getRightChild() == null) {
-					if(temp.getParent() == null) {
-						root = temp.leftChild;
-						temp.setParent(null);
-						removed = true;
-						break;
-					}
-					if(temp.getData().compareTo(temp.getParent().getLeftChild().getData()) == 0) {
-						temp.getParent().setLeftChild(temp.getLeftChild());
-						removed = true;
-						break;
-					}
-					if(temp.getData().compareTo(temp.getParent().getRightChild().getData()) == 0) {
-						temp.getParent().setRightChild(temp.getLeftChild());
-						removed = true;
-						break;
-					}
-				}
-				
 				if(temp.getLeftChild() != null && temp.getRightChild() != null) {
-					BinaryNode<Type> successor = temp.getSuccessor();
-					BinaryNode<Type> successorRightChild = null;
-					if(successor.getRightChild() != null) {
-						successorRightChild = successor.getRightChild();
-					}
-					if(temp.getParent() == null) {
-						successor.setLeftChild(temp.getLeftChild());
-						successor.setRightChild(temp.getRightChild());
-						temp.getLeftChild().setParent(successor);
-						temp.getRightChild().setParent(successor);
-						if(successor.getData().compareTo(successor.getParent().getLeftChild().getData()) == 0) {
-							if (successorRightChild != null) {
-								successor.getParent().setLeftChild(successorRightChild);
-								successorRightChild.setParent(successor.getParent());
-							}
-							else {
-								successor.getParent().setLeftChild(null);
-							}
-							
-						}
-						if(successor.getData().compareTo(successor.getParent().getRightChild().getData()) == 0) {
-							if (successorRightChild != null) {
-								successor.getParent().setRightChild(successorRightChild);
-								successorRightChild.setParent(successor.getParent());
-							}
-							else {
-								successor.getParent().setRightChild(null);
-							}
-						}
-						root = successor;
-						successor.setParent(null);
-						removed = true;
-						break;
-
-					}
-					if(temp.getData().compareTo(temp.getParent().getLeftChild().getData()) == 0) {
-						temp.getParent().setLeftChild(successor);
-						if(successor.getData().compareTo(successor.getParent().getLeftChild().getData()) == 0) {
-							if (successorRightChild != null) {
-								successor.getParent().setLeftChild(successorRightChild);
-								successorRightChild.setParent(successor.getParent());
-							}
-							else {
-								successor.getParent().setLeftChild(null);
-							}
-							
-						}
-						if(successor.getData().compareTo(successor.getParent().getRightChild().getData()) == 0) {
-							if (successorRightChild != null) {
-								successor.getParent().setRightChild(successorRightChild);
-								successorRightChild.setParent(successor.getParent());
-							}
-							else {
-								successor.getParent().setRightChild(null);
-							}
-						}
-						removed = true;
-						break;
-					}
-					if(temp.getData().compareTo(temp.getParent().getRightChild().getData()) == 0) {
-						successor.getParent().setRightChild(successor);
-						if(successor.getData().compareTo(successor.getParent().getLeftChild().getData()) == 0) {
-							if (successorRightChild != null) {
-								successor.getParent().setLeftChild(successorRightChild);
-								successorRightChild.setParent(successor.getParent());
-							}
-							else {
-								successor.getParent().setLeftChild(null);
-							}
-							
-						}
-						if(successor.getData().compareTo(successor.getParent().getRightChild().getData()) == 0) {
-							if (successorRightChild != null) {
-								successor.getParent().setRightChild(successorRightChild);
-								successorRightChild.setParent(successor.getParent());
-							}
-							else {
-								successor.getParent().setRightChild(null);
-							}
-						}
-						removed = true;
-						break;
-					}
+					temp.removeHasTwoChildren();
+					removed = true;
+					break;
 				}
-				
+
 			} else {
 				if (item.compareTo(temp.data) > 0) {
 					if (temp.getRightChild() != null) {
@@ -504,23 +487,25 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		return size;
 	}
 	  
-	private void order(BinaryNode<Type> node) {  
-	    
-		BinaryNode<Type> temp = node;
-		
-	    if (temp.getLeftChild() != null) {
-	    	order(temp.leftChild);
+	private void order(BinaryNode<Type> node) {
+	    		
+	    if (node.getLeftChild() != null) {
+	    	order(node.leftChild);
 	    }
 	    
-	    inOrder.add(temp.data);
+	    inOrder.add(node.data);
 	    
-	    if (temp.getRightChild() != null) {
-	    	order(temp.rightChild);
+	    if (node.getRightChild() != null) {
+	    	order(node.rightChild);
 	    }	    
 	  }  
 	
 	@Override
 	public ArrayList<Type> toArrayList() {
+		if (root == null) {
+			return inOrder;
+		}
+		
 		order(root);
 		
 		return inOrder;
