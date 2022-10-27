@@ -96,6 +96,7 @@ public class BinarySearchTreeTiming {
 	private static void timeTest2(int N, ArrayList<Integer> test)
 	{
 		long startTimeUB, midpointTimeUB, stopTimeUB, startTimeB, midpointTimeB, stopTimeB;
+		long startTimeUBC, midpointTimeUBC, stopTimeUBC, startTimeBC, midpointTimeBC, stopTimeBC;
 		int timesToLoop = 5000;
 		
 		BinarySearchTree<Integer> treeUnbalanced = new BinarySearchTree<Integer>();
@@ -105,8 +106,7 @@ public class BinarySearchTreeTiming {
 
 		for (int i = 0; i < timesToLoop; i++)
 		{
-			treeShuffled.addAll(test);
-			//treeUnbalanced.addAll(testValues);
+			treeUnbalanced.addAll(test);
 		}
 
 		midpointTimeUB = System.nanoTime();
@@ -123,7 +123,7 @@ public class BinarySearchTreeTiming {
 		for (int i = 0; i < timesToLoop; i++)
 		{
 			
-			treeUnbalanced.addAll(test);
+			treeShuffled.addAll(test);
 		}
 
 		midpointTimeB = System.nanoTime();
@@ -134,110 +134,49 @@ public class BinarySearchTreeTiming {
 		}
 
 		stopTimeB = System.nanoTime();
+		
+		startTimeUBC = System.nanoTime();
+
+		for (int i = 0; i < timesToLoop; i++)
+		{
+			treeUnbalanced.containsAll(test);
+		}
+
+		midpointTimeUBC = System.nanoTime();
+
+		// Run an loop to capture the cost of the overhead
+		for (long i = 0; i < timesToLoop; i++) {
+			//nothing
+		}
+
+		stopTimeUBC = System.nanoTime();
+		
+		startTimeBC = System.nanoTime();
+
+		for (int i = 0; i < timesToLoop; i++)
+		{
+			treeShuffled.containsAll(test);
+		}
+
+		midpointTimeBC = System.nanoTime();
+
+		// Run an loop to capture the cost of the overhead
+		for (long i = 0; i < timesToLoop; i++) {
+			//nothing
+		}
+
+		stopTimeBC = System.nanoTime();
 
 		// Subtract the cost of running the loop
 		// from the cost of running the loop plus the real work.
 		// Average it over the number of runs.
 		double averageTimeUB = ((midpointTimeUB - startTimeUB) - (stopTimeUB - midpointTimeUB)) / timesToLoop;
 		double averageTimeB = ((midpointTimeB - startTimeB) - (stopTimeB - midpointTimeB)) / timesToLoop;
+		double averageTimeUBC = ((midpointTimeUBC - startTimeUBC) - (stopTimeUBC - midpointTimeUBC)) / timesToLoop;
+		double averageTimeBC = ((midpointTimeBC - startTimeBC) - (stopTimeBC - midpointTimeBC)) / timesToLoop;
 
 		
-		System.out.println(N + "\t"+ averageTimeUB + "\t" + averageTimeB);
+		System.out.println(N + "\t"+ averageTimeUB + "\t" + averageTimeB + "\t" + averageTimeUBC + "\t" + averageTimeBC);
 	}
 	
-	private static void timeRemove(int N)
-	{
-		long startTime, midpointTime, stopTime;
-//		int timesToLoop = 10000;
-		int timesToLoop = 50000;
-
-		// Generate random input before starting the timer
-		int[] testVals = new int[N];
-		for(int i=0; i < N; i++)
-			testVals[i] = randomInteger();
-
-		BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
-		
-		startTime = System.nanoTime();
-
-		for (int i = 0; i < timesToLoop; i++)
-		{
-			for(int j : testVals)
-				tree.add(j);
-			for(int j = 0; j < N; j++)
-				tree.remove(randomInteger());
-		}
-
-		midpointTime = System.nanoTime();
-
-		// Run an loop to capture the cost of the overhead
-		for (long i = 0; i < timesToLoop; i++) {
-			for(int j : testVals) 
-			{
-				tree.add(j); // subtract the offer time since we are timing pop
-			}
-			
-			for(int j = 0; j < N; j++) {}
-		}
-
-		stopTime = System.nanoTime();
-
-		// Subtract the cost of running the loop
-		// from the cost of running the loop plus the real work.
-		// Average it over the number of runs.
-		double averageTime = ((midpointTime - startTime) - (stopTime - midpointTime)) / timesToLoop;
-
-		System.out.println(N + "\t"+ averageTime);
-	}
-	
-	private static void timeContains(int N)
-	{
-		long startTime, midpointTime, stopTime;
-//		int timesToLoop = 10000;
-		int timesToLoop = 50000;
-
-		// Generate random input before starting the timer
-		int[] testVals = new int[N];
-		for(int i=0; i < N; i++)
-			testVals[i] = randomInteger();
-
-		BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
-		
-		startTime = System.nanoTime();
-
-		for (int i = 0; i < timesToLoop; i++)
-		{
-			for(int j : testVals)
-				tree.add(j);
-			for(int j = 0; j < N; j++) {
-				tree.contains(randomInteger());
-			}
-		}
-
-		midpointTime = System.nanoTime();
-
-		// Run an loop to capture the cost of the overhead
-		for (long i = 0; i < timesToLoop; i++) {
-			for(int j : testVals) 
-			{
-				tree.add(j); // subtract the offer time since we are timing poll
-			}
-		}
-
-		stopTime = System.nanoTime();
-
-		// Subtract the cost of running the loop
-		// from the cost of running the loop plus the real work.
-		// Average it over the number of runs.
-		double averageTime = ((midpointTime - startTime) - (stopTime - midpointTime)) / timesToLoop;
-
-		System.out.println(N + "\t"+ averageTime);
-	}
-
-
-	public static Integer randomInteger()
-	{
-		return rand.nextInt();
-	}
-
 }
