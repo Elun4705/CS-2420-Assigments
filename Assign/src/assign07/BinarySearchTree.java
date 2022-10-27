@@ -435,13 +435,17 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 	@Override
 	public Type first() throws NoSuchElementException {
 
-		return root.data;
+		if (root == null) {
+			throw new NoSuchElementException();
+		}
+		
+		return root.getLeftmostNode().getData();
 
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return (root.data == null);
+		return (root == null);
 	}
 
 	@Override
@@ -542,7 +546,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		boolean removed = false;
 
 		for (Type item : items) {
-			if (this.contains(item) == false) {
+			if (this.contains(item) == true) {
 				this.remove(item);
 				removed = true;
 			}
@@ -571,6 +575,8 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 	
 	@Override
 	public ArrayList<Type> toArrayList() {
+		inOrder.clear();
+		
 		if (root == null) {
 			return inOrder;
 		}
