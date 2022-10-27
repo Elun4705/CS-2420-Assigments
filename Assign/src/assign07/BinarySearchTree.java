@@ -15,30 +15,49 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 	
 	public static void main(String[] args) {
 		BinarySearchTree<Integer> test = new BinarySearchTree<Integer>();
+		BinarySearchTree<Integer> test2 = new BinarySearchTree<Integer>();
+		
+		ArrayList<Integer> testarr = new ArrayList<Integer>();
+		
+		testarr.add(8);
+		testarr.add(4);
+		testarr.add(12);
+		testarr.add(2);
+		testarr.add(6);
+		testarr.add(10);
+		testarr.add(14);
+		testarr.add(1);
+		testarr.add(3);
+		testarr.add(5);
+		testarr.add(7);
+		testarr.add(9);
+		testarr.add(11);
+		testarr.add(13);
+		testarr.add(15);
 		
 		test.add(8);
-//		test.add(4);
-//		test.add(12);
-//		
-//		test.add(2);
-//		
-//		test.add(6);
-//		test.add(10);
-//		test.add(14);
-//		
-//		test.add(1);
-//		
-//		test.add(3);
-//		test.add(5);
-//		test.add(7);
-//		test.add(9);
-//		test.add(11);
-//		test.add(13);
+		test.add(4);
+		test.add(12);
+		test.add(2);
+		test.add(6);
+		test.add(10);
+		test.add(14);
+		test.add(1);
+		test.add(3);
+		test.add(5);
+		test.add(7);
+		test.add(9);
+		test.add(11);
+		test.add(13);
+		test.add(15);
 		
-		test.remove(8);
-		
-		
-		System.out.println(test.toArrayList());
+//		test.remove(4);
+//		
+//		test.remove(6);
+//		
+		test2.addAll(testarr);
+		System.out.println(test.addAll(testarr));
+		System.out.println(test2.containsAll(testarr));
 	}
 
 	@SuppressWarnings("hiding")
@@ -199,6 +218,37 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 			successor.setLeftChild(left);
 			left.setParent(successor);
 			
+			successor.setRightChild(right);
+			right.setParent(successor);
+			
+		}
+		
+		public BinaryNode<Type> removeRootHasTwoChildren() {
+			
+			BinaryNode<Type> successor = this.getSuccessor();
+			BinaryNode<Type> successorParent = successor.getParent();
+			BinaryNode<Type> successorRight = null;
+			BinaryNode<Type> right = this.getRightChild();
+			BinaryNode<Type> left = this.getLeftChild();
+			
+			if (successor.getRightChild() != null) {
+				successorRight = successor.getRightChild();
+			}
+			
+			if (successorRight != null) {
+				successorRight.setParent(successorParent);
+				successorParent.setLeftChild(successorRight);
+			} else {successorParent.setLeftChild(null);}
+			
+			successor.setLeftChild(left);
+			left.setParent(successor);
+			
+			successor.setRightChild(right);
+			right.setParent(successor);
+			
+			successor.setParent(null);
+			
+			return successor;
 		}
 		
 		/**
@@ -373,8 +423,9 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		Boolean containsall = true;
 
 		for (Type item : items) {
-			if (this.contains(item) == false);
+			if (this.contains(item) == false) {
 			containsall = false;
+			}
 		}
 
 		return containsall;
@@ -431,24 +482,42 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 					}
 				}
 				if(temp.getLeftChild() == null && temp.getRightChild() != null) {
-
+					if(temp.parent == null){
+						BinaryNode<Type> newRoot = temp.getRightChild();
+						root = newRoot;
+						newRoot.setParent(null);
+						removed = true;
+						break;
+					} else {
 					temp.removeHasRightChild();
 					removed = true;
 					break;
-					
+					}
 				}
 		
 				if(temp.getLeftChild() != null && temp.getRightChild() == null) {
-
+					if(temp.parent == null){
+						BinaryNode<Type> newRoot = temp.getLeftChild();
+						root = newRoot;
+						newRoot.setParent(null);
+						removed = true;
+						break;
+					}	
 					temp.removeHasLeftChild();
 					removed = true;
 					break;
 				}
 				
 				if(temp.getLeftChild() != null && temp.getRightChild() != null) {
+					if (temp.parent == null) {
+						root = temp.removeRootHasTwoChildren();
+						removed = true;
+						break;
+					} else {
 					temp.removeHasTwoChildren();
 					removed = true;
 					break;
+					}
 				}
 
 			} else {
