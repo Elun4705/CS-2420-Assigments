@@ -4,62 +4,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
-import org.junit.jupiter.api.io.TempDir;
-
+/**
+ * A generic BinarySearchTree class
+ * 
+ * @author Emmanuel Luna and Andy Huo
+ *
+ * @param <Type>
+ */
 public class BinarySearchTree<Type extends Comparable<? super Type>> implements SortedSet<Type> {
 
 	private BinaryNode<Type> root = null;
 	private int size = 0;
-	
-	private ArrayList<Type> inOrder = new ArrayList<Type>();
-	
-	public static void main(String[] args) {
-		BinarySearchTree<Integer> test = new BinarySearchTree<Integer>();
-		BinarySearchTree<Integer> test2 = new BinarySearchTree<Integer>();
-		
-		ArrayList<Integer> testarr = new ArrayList<Integer>();
-		
-		testarr.add(8);
-		testarr.add(4);
-		testarr.add(12);
-		testarr.add(2);
-		testarr.add(6);
-		testarr.add(10);
-		testarr.add(14);
-		testarr.add(1);
-		testarr.add(3);
-		testarr.add(5);
-		testarr.add(7);
-		testarr.add(9);
-		testarr.add(11);
-		testarr.add(13);
-		testarr.add(15);
-		
-		test.add(8);
-		test.add(4);
-		test.add(12);
-		test.add(2);
-		test.add(6);
-		test.add(10);
-		test.add(14);
-		test.add(1);
-		test.add(3);
-		test.add(5);
-		test.add(7);
-		test.add(9);
-		test.add(11);
-		test.add(13);
-		test.add(15);
-		
-//		test.remove(4);
-//		
-//		test.remove(6);
-//		
-		test2.addAll(testarr);
-		System.out.println(test.addAll(testarr));
-		System.out.println(test2.containsAll(testarr));
-	}
 
+	private ArrayList<Type> inOrder = new ArrayList<Type>();
+
+	/**
+	 * A generic BinaryNode Class
+	 * 
+	 * @author Emmanuel Luna and Andy Huo
+	 *
+	 * @param <Type>
+	 */
 	@SuppressWarnings("hiding")
 	public class BinaryNode<Type> {
 
@@ -68,7 +33,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		private BinaryNode<Type> leftChild;
 
 		private BinaryNode<Type> rightChild;
-		
+
 		private BinaryNode<Type> parent;
 
 		public BinaryNode(Type data, BinaryNode<Type> leftChild, BinaryNode<Type> rightChild, BinaryNode<Type> parent) {
@@ -120,137 +85,170 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		public void setRightChild(BinaryNode<Type> rightChild) {
 			this.rightChild = rightChild;
 		}
-		
+
+		/**
+		 * @return reference to the parent node
+		 */
 		public BinaryNode<Type> getParent() {
 			return parent;
 		}
-		
+
+		/**
+		 * @param parent - reference of the parent node to be set
+		 */
 		public void setParent(BinaryNode<Type> parent) {
 			this.parent = parent;
 		}
-		
+
+		/**
+		 * Helper code for determining whether a node is the parent's left or right
+		 * child
+		 * 
+		 * @return a negative integer if it's the left child, a positive integer if it's
+		 *         the right
+		 */
 		public int getLeftOrRight() {
-			if(this == this.getParent().getLeftChild()) {
+			if (this == this.getParent().getLeftChild()) {
 				return -1;
 			}
-			if(this == this.getParent().getRightChild()) {
+			if (this == this.getParent().getRightChild()) {
 				return 1;
 			}
 			return 0;
 		}
-		
+
+		/**
+		 * Helper code for removing a node with no children
+		 */
 		public void removeNoChildren() {
-			
-			if(this.getLeftOrRight() > 0) {
+
+			if (this.getLeftOrRight() > 0) {
 				this.parent.setRightChild(null);
 			}
-			
+
 			if (this.getLeftOrRight() < 0) {
 				this.parent.setLeftChild(null);
 			}
-			
+
 		}
-		
+
+		/**
+		 * Helper code for removing a node with a left child
+		 */
 		public void removeHasLeftChild() {
-			
+
 			BinaryNode<Type> left = this.leftChild;
 			BinaryNode<Type> thisParent = this.parent;
-			
-			if(this.getLeftOrRight() > 0) {
+
+			if (this.getLeftOrRight() > 0) {
 				thisParent.setRightChild(left);
 				left.setParent(thisParent);
 			}
-			
+
 			if (this.getLeftOrRight() < 0) {
 				thisParent.setLeftChild(left);
 				left.setParent(thisParent);
 			}
-			
+
 		}
-		
+
+		/**
+		 * Helper code for removing a node which has one right child
+		 */
 		public void removeHasRightChild() {
-			
+
 			BinaryNode<Type> right = this.rightChild;
 			BinaryNode<Type> thisParent = this.parent;
-			
-			if(this.getLeftOrRight() > 0) {
+
+			if (this.getLeftOrRight() > 0) {
 				thisParent.setRightChild(right);
 				right.setParent(thisParent);
 			}
-			
+
 			if (this.getLeftOrRight() < 0) {
 				thisParent.setLeftChild(right);
 				right.setParent(thisParent);
 			}
-			
+
 		}
-		
+
+		/**
+		 * Helper code for removing a node which has two children
+		 */
 		public void removeHasTwoChildren() {
-			
+
 			BinaryNode<Type> successor = this.getSuccessor();
 			BinaryNode<Type> successorParent = successor.getParent();
 			BinaryNode<Type> thisParent = this.parent;
 			BinaryNode<Type> successorRight = null;
 			BinaryNode<Type> right = this.getRightChild();
 			BinaryNode<Type> left = this.getLeftChild();
-			
+
 			if (successor.getRightChild() != null) {
 				successorRight = successor.getRightChild();
 			}
-			
-			if(this.getLeftOrRight() > 0) {
+
+			if (this.getLeftOrRight() > 0) {
 				thisParent.setRightChild(successor);
 				successor.setParent(thisParent);
-				
+
 			}
-			
+
 			if (this.getLeftOrRight() < 0) {
 				thisParent.setLeftChild(successor);
 				successor.setParent(thisParent);
 			}
-			
-			
+
 			if (successorRight != null) {
 				successorRight.setParent(successorParent);
 				successorParent.setLeftChild(successorRight);
-			} else {successorParent.setLeftChild(null);}
-			
+			} else {
+				successorParent.setLeftChild(null);
+			}
+
 			successor.setLeftChild(left);
 			left.setParent(successor);
-			
+
 			successor.setRightChild(right);
 			right.setParent(successor);
-			
+
 		}
-		
+
+		/**
+		 * HelperCode for removing the root of a BST with two children
+		 * 
+		 * @return the successor node
+		 */
 		public BinaryNode<Type> removeRootHasTwoChildren() {
-			
+
 			BinaryNode<Type> successor = this.getSuccessor();
 			BinaryNode<Type> successorParent = successor.getParent();
 			BinaryNode<Type> successorRight = null;
 			BinaryNode<Type> right = this.getRightChild();
 			BinaryNode<Type> left = this.getLeftChild();
-			
+
 			if (successor.getRightChild() != null) {
 				successorRight = successor.getRightChild();
 			}
-			
+
 			if (successorRight != null) {
 				successorRight.setParent(successorParent);
 				successorParent.setLeftChild(successorRight);
-			} else {successorParent.setLeftChild(null);}
-			
+			} else {
+				successorParent.setLeftChild(null);
+			}
+
 			successor.setLeftChild(left);
 			left.setParent(successor);
-			
+
 			successor.setRightChild(right);
 			right.setParent(successor);
-			
+
 			successor.setParent(null);
-			
+
 			return successor;
 		}
-		
+
 		/**
 		 * @return reference to the leftmost node in the binary tree rooted at this node
 		 */
@@ -277,11 +275,15 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 				temp = temp.getRightChild();
 			return temp;
 		}
-		
+
+		/**
+		 * @return reference to the successor node, the leftmost node in the tree rooted
+		 *         at this node's right child
+		 */
 		public BinaryNode<Type> getSuccessor() {
-			
+
 			return this.getRightChild().getLeftmostNode();
-			
+
 		}
 
 		/**
@@ -307,6 +309,12 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		}
 	}
 
+	/**
+	 * Add's the item to it's correct place in the BST
+	 * 
+	 * @param item - the item to be added
+	 * @return whether the item has been added
+	 */
 	@Override
 	public boolean add(Type item) {
 
@@ -354,11 +362,18 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 			size++;
 			return added;
-			
+
 		}
 
 	}
 
+	/**
+	 * Adds all items within the collection that aren't already contained within the
+	 * BST to the BST
+	 * 
+	 * @param items - a collection of items to be added
+	 * @return true if even one item was added, false otherwise
+	 */
 	@Override
 	public boolean addAll(Collection<? extends Type> items) {
 
@@ -374,6 +389,9 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		return added;
 	}
 
+	/**
+	 * Clear's the BST
+	 */
 	@Override
 	public void clear() {
 
@@ -381,6 +399,12 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 	}
 
+	/**
+	 * Checks the BST to see if it contains the item
+	 * 
+	 * @param item - the item to be checked for
+	 * @return whether the BST contains the item
+	 */
 	@Override
 	public boolean contains(Type item) {
 
@@ -394,17 +418,19 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		while (found == false) {
 			if (item.compareTo(temp.data) == 0) {
 				found = true;
+				break;
 			} else {
 				if (item.compareTo(temp.data) > 0) {
 					if (temp.getRightChild() != null) {
 						temp = temp.rightChild;
+						continue;
 					} else {
 						return false;
 					}
-				}
-				if (item.compareTo(temp.data) < 0) {
+				} else {
 					if (temp.getLeftChild() != null) {
 						temp = temp.leftChild;
+						continue;
 					} else {
 						return false;
 					}
@@ -413,10 +439,14 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		}
 
 		return found;
-
-		// travel through list, if can't find, return false
 	}
 
+	/**
+	 * Checks to see if the BST contains all the items in the given collection
+	 * 
+	 * @param items - the items to be checked for
+	 * @return true if all items are contained in the list, false otherwise
+	 */
 	@Override
 	public boolean containsAll(Collection<? extends Type> items) {
 
@@ -424,7 +454,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 		for (Type item : items) {
 			if (this.contains(item) == false) {
-			containsall = false;
+				containsall = false;
 			}
 		}
 
@@ -432,40 +462,63 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 	}
 
+	/**
+	 * Returns the first (smallest) item in the BST
+	 * 
+	 * @return the smallest item
+	 * @throws NoSuchElementException
+	 */
 	@Override
 	public Type first() throws NoSuchElementException {
 
 		if (root == null) {
 			throw new NoSuchElementException();
 		}
-		
+
 		return root.getLeftmostNode().getData();
 
 	}
 
+	/**
+	 * Returns whether the BST is empty or not
+	 * 
+	 * @return true if the BST is empty, false otherwise
+	 */
 	@Override
 	public boolean isEmpty() {
 		return (root == null);
 	}
 
+	/**
+	 * Returns the last (largest) item in the BST
+	 * 
+	 * @return the largest item
+	 * @throws NoSuchElementException
+	 */
 	@Override
 	public Type last() throws NoSuchElementException {
 
 		if (root == null) {
 			throw new NoSuchElementException();
 		}
-		
+
 		return root.getRightmostNode().getData();
-		
+
 	}
 
+	/**
+	 * Removes the given item from the BST
+	 * 
+	 * @param item - the item to be removed
+	 * @return true if the item was removed, false otherwise
+	 */
 	@Override
 	public boolean remove(Type item) {
 		if (root == null) {
 			return false;
 		}
-		
-		if(this.contains(item) == false) {
+
+		if (this.contains(item) == false) {
 			return false;
 		}
 
@@ -474,53 +527,53 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 		while (removed == false) {
 			if (item.compareTo(temp.data) == 0) {
-				if(temp.getLeftChild() == null && temp.getRightChild() == null) {
-					if(temp.parent == null) {
+				if (temp.getLeftChild() == null && temp.getRightChild() == null) {
+					if (temp.parent == null) {
 						root = null;
 						removed = true;
 						break;
 					} else {
-					temp.removeNoChildren();
-					removed = true;
-					break;
+						temp.removeNoChildren();
+						removed = true;
+						break;
 					}
 				}
-				if(temp.getLeftChild() == null && temp.getRightChild() != null) {
-					if(temp.parent == null){
+				if (temp.getLeftChild() == null && temp.getRightChild() != null) {
+					if (temp.parent == null) {
 						BinaryNode<Type> newRoot = temp.getRightChild();
 						root = newRoot;
 						newRoot.setParent(null);
 						removed = true;
 						break;
 					} else {
-					temp.removeHasRightChild();
-					removed = true;
-					break;
+						temp.removeHasRightChild();
+						removed = true;
+						break;
 					}
 				}
-		
-				if(temp.getLeftChild() != null && temp.getRightChild() == null) {
-					if(temp.parent == null){
+
+				if (temp.getLeftChild() != null && temp.getRightChild() == null) {
+					if (temp.parent == null) {
 						BinaryNode<Type> newRoot = temp.getLeftChild();
 						root = newRoot;
 						newRoot.setParent(null);
 						removed = true;
 						break;
-					}	
+					}
 					temp.removeHasLeftChild();
 					removed = true;
 					break;
 				}
-				
-				if(temp.getLeftChild() != null && temp.getRightChild() != null) {
+
+				if (temp.getLeftChild() != null && temp.getRightChild() != null) {
 					if (temp.parent == null) {
 						root = temp.removeRootHasTwoChildren();
 						removed = true;
 						break;
 					} else {
-					temp.removeHasTwoChildren();
-					removed = true;
-					break;
+						temp.removeHasTwoChildren();
+						removed = true;
+						break;
 					}
 				}
 
@@ -538,9 +591,16 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 			}
 		}
 
+		size--;
 		return removed;
 	}
 
+	/**
+	 * Removes all of the items in the given collection
+	 * 
+	 * @param items - the given collection of items to be removed
+	 * @return true if any items were removed, false otherwise
+	 */
 	@Override
 	public boolean removeAll(Collection<? extends Type> items) {
 		boolean removed = false;
@@ -555,34 +615,47 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		return removed;
 	}
 
+	/**
+	 * Returns the number of objects in the array
+	 */
 	@Override
 	public int size() {
 		return size;
 	}
-	  
+
+	/**
+	 * Helper recursive code for putting the BST in order from smallest to largest
+	 * 
+	 * @param node
+	 */
 	private void order(BinaryNode<Type> node) {
-	    		
-	    if (node.getLeftChild() != null) {
-	    	order(node.leftChild);
-	    }
-	    
-	    inOrder.add(node.data);
-	    
-	    if (node.getRightChild() != null) {
-	    	order(node.rightChild);
-	    }	    
-	  }  
-	
+
+		if (node.getLeftChild() != null) {
+			order(node.leftChild);
+		}
+
+		inOrder.add(node.data);
+
+		if (node.getRightChild() != null) {
+			order(node.rightChild);
+		}
+	}
+
+	/**
+	 * Returns an ArrayList with the objects in the BST from smallest to largest
+	 * 
+	 * @return an ArrayList of the ordered BST
+	 */
 	@Override
 	public ArrayList<Type> toArrayList() {
 		inOrder.clear();
-		
+
 		if (root == null) {
 			return inOrder;
 		}
-		
+
 		order(root);
-		
+
 		return inOrder;
 	}
 
