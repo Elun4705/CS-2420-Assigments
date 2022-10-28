@@ -34,20 +34,15 @@ public class BinarySearchTreeTiming {
 			
 			Collections.shuffle(testValues);
 			
-			timeTest2(N, testValues);
-			
-			
+			timeTest1(N);
+				
 		}
-
-
-		
-
 	}
 
 	private static void timeTest1(int N)
 	{
 		long startTimeUB, midpointTimeUB, stopTimeUB, startTimeB, midpointTimeB, stopTimeB;
-		int timesToLoop = 5000;
+		int timesToLoop = 1000;
 
 		// Generate random input before starting the timer
 		ArrayList<Integer> testInOrder = new ArrayList<Integer>();
