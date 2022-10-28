@@ -46,7 +46,7 @@ public class BinarySearchTreeTiming {
 
 	private static void timeTest1(int N)
 	{
-		long startTime, midpointTime, stopTime;
+		long startTimeUB, midpointTimeUB, stopTimeUB, startTimeB, midpointTimeB, stopTimeB;
 		int timesToLoop = 5000;
 
 		// Generate random input before starting the timer
@@ -66,7 +66,7 @@ public class BinarySearchTreeTiming {
 		treeUnbalanced.addAll(testInOrder);
 		treeShuffled.addAll(testShuffled);
 		
-		startTime = System.nanoTime();
+		startTimeUB = System.nanoTime();
 
 		for (int i = 0; i < timesToLoop; i++)
 		{
@@ -74,23 +74,39 @@ public class BinarySearchTreeTiming {
 			// treeShuffled.containsAll(testInOrder);
 		}
 
-		midpointTime = System.nanoTime();
+		midpointTimeUB = System.nanoTime();
 
 		// Run an loop to capture the cost of the overhead
 		for (long i = 0; i < timesToLoop; i++) {
-			for(int j : testInOrder) {
-				//nothing
-			}
+			// nothing
 		}
 
-		stopTime = System.nanoTime();
+		stopTimeUB = System.nanoTime();
 
+		startTimeB = System.nanoTime();
+
+		for (int i = 0; i < timesToLoop; i++)
+		{
+			
+			treeShuffled.containsAll(testInOrder);
+		}
+
+		midpointTimeB = System.nanoTime();
+
+		// Run an loop to capture the cost of the overhead
+		for (long i = 0; i < timesToLoop; i++) {
+			// nothing
+		}
+
+		stopTimeB = System.nanoTime();
+		
 		// Subtract the cost of running the loop
 		// from the cost of running the loop plus the real work.
 		// Average it over the number of runs.
-		double averageTime = ((midpointTime - startTime) - (stopTime - midpointTime)) / timesToLoop;
+		double averageTimeUB = ((midpointTimeUB - startTimeUB) - (stopTimeUB - midpointTimeUB)) / timesToLoop;
+		double averageTimeB = ((midpointTimeB - startTimeB) - (stopTimeB - midpointTimeB)) / timesToLoop;
 
-		System.out.println(N + "\t"+ averageTime);
+		System.out.println(N + "\t"+ averageTimeUB + "\t" + averageTimeB);
 	}
 	
 	private static void timeTest2(int N, ArrayList<Integer> test)

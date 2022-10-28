@@ -73,7 +73,7 @@ public class SpellChecker {
 	 */
 	public List<String> spellCheck(File documentFile) {
 		
-		ArrayList<String> misspelledWords = new ArrayList<String>();
+		List<String> misspelledWords = new ArrayList<String>();
 
 		List<String> wordsToCheck = readFromFile(documentFile);
 
