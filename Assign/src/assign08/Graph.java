@@ -124,7 +124,7 @@ public class Graph {
 		start.visited = true;
 		
 		queue.offer(start);
-		Node current = new Node();
+		Node current = null;
 		
 		while (queue.isEmpty() == false) {
 			current = queue.poll();
@@ -132,7 +132,12 @@ public class Graph {
 				return length;
 			}
 
-			for (Node n : this.getNeighbors(current)) {
+			ArrayList<Node> neighbors = getNeighbors(current);
+			if (neighbors.size() == 0) {
+				return 0;
+			}
+			
+			for (Node n : neighbors) {
 				if (n.visited == false) {
 					n.visited = true;
 					n.cameFrom = current;
@@ -144,8 +149,9 @@ public class Graph {
 		
 		int temp = length;
 		while (temp > 0) {
-			
-			
+			current.cameFrom.isOnPath = true;
+			current = current.cameFrom;
+			temp--;
 			
 		}
 		
@@ -163,8 +169,48 @@ public class Graph {
 	 */
 	public int CalculateAPath()
 	{
-		// TODO: Fill in this method
-		return 0;		
+		int length = 0;
+		start.visited = true;
+		
+		Node current = start;
+		
+		length = DFS(current);
+		
+		int temp = length;
+		while (temp > 0) {
+			current.cameFrom.isOnPath = true;
+			current = current.cameFrom;
+			temp--;
+			
+		}
+		
+		return length;
+	}
+	
+	public int DFS(Node curr)
+	{
+		
+		int length = 0;
+		
+		Node current = curr;
+		
+		current.visited = true;
+		if(current.isGoal)
+			return 0 ;
+		
+		ArrayList<Node> neighbors = getNeighbors(current);
+		if (neighbors.size() == 0) {
+			return 0;
+		}
+		
+		for(Node next : neighbors) {
+			if(!next.visited) {
+				next.cameFrom = current;
+				length++;
+				DFS(next);		
+			}
+		}
+		return length;
 	}
 	
 	public ArrayList<Node> getNeighbors(Node n) {
