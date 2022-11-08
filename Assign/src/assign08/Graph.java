@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -115,8 +118,40 @@ public class Graph {
 	 */
 	public int CalculateShortestPath()
 	{
-		// TODO: Fill in this method
-		return 0;
+		LinkedList<Node> queue = new LinkedList<Node>();
+		
+		int length = 0;
+		start.visited = true;
+		
+		queue.offer(start);
+		Node current = new Node();
+		
+		while (queue.isEmpty() == false) {
+			current = queue.poll();
+			if (current.isGoal = true) {
+				return length;
+			}
+
+			for (Node n : this.getNeighbors(current)) {
+				if (n.visited == false) {
+					n.visited = true;
+					n.cameFrom = current;
+					queue.offer(n);
+					length++;	
+				}
+			}
+		}
+		
+		int temp = length;
+		while (temp > 0) {
+			
+			
+			
+		}
+		
+		
+		return length;
+		
 	}
 
 	
@@ -131,6 +166,30 @@ public class Graph {
 		// TODO: Fill in this method
 		return 0;		
 	}
+	
+	public ArrayList<Node> getNeighbors(Node n) {
+		
+		ArrayList<Node> neighbors = new ArrayList<Node>();
+		
+		if (nodes[n.row+1][n.col].isWall == false && nodes[n.row+1][n.col].visited == false) {
+			neighbors.add(nodes[n.row+1][n.col]);
+		}
+		
+		if (nodes[n.row-1][n.col].isWall == false && nodes[n.row-1][n.col].visited == false) {
+			neighbors.add(nodes[n.row-1][n.col]);
+		}
+		
+		if (nodes[n.row][n.col+1].isWall == false && nodes[n.row][n.col+1].visited == false) {
+			neighbors.add(nodes[n.row][n.col+1]);
+		}
+		
+		if (nodes[n.row][n.col-1].isWall == false && nodes[n.row][n.col-1].visited == false) {
+			neighbors.add(nodes[n.row][n.col-1]);
+		}
+		
+		return neighbors;
+		
+	}
 
 	
 	/**
@@ -140,8 +199,14 @@ public class Graph {
 	 */
 	private static class Node
 	{
+		// The node linked to this one
+		private Node cameFrom;
+
 		// The node's position in the maze
 		private int row, col;
+		
+		// Visitation Status;
+		private boolean visited;
 		
 		// The type of the node
 		private boolean isStart;
