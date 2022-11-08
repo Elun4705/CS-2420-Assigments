@@ -172,45 +172,43 @@ public class Graph {
 		int length = 0;
 		start.visited = true;
 		
+		if(start.isGoal)
+			return 0 ;
+		
 		Node current = start;
 		
-		length = DFS(current);
+		current = DFS(current);
 		
-		int temp = length;
-		while (temp > 0) {
-			current.cameFrom.isOnPath = true;
+		
+		while (current.cameFrom != null) {
 			current = current.cameFrom;
-			temp--;
+			length++;
 			
 		}
 		
 		return length;
 	}
 	
-	public int DFS(Node curr)
-	{
-		
-		int length = 0;
-		
+	public Node DFS(Node curr)
+	{		
 		Node current = curr;
 		
-		current.visited = true;
 		if(current.isGoal)
-			return 0 ;
+			return current;
 		
 		ArrayList<Node> neighbors = getNeighbors(current);
 		if (neighbors.size() == 0) {
-			return 0;
+			return current;
 		}
 		
 		for(Node next : neighbors) {
 			if(!next.visited) {
 				next.cameFrom = current;
-				length++;
-				DFS(next);		
+				current = next;
+				DFS(current);		
 			}
 		}
-		return length;
+		return current;
 	}
 	
 	public ArrayList<Node> getNeighbors(Node n) {
