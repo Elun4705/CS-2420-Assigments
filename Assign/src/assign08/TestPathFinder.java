@@ -21,8 +21,8 @@ public class TestPathFinder {
 		 */
 		
 		// Run the pathfinder with a final argument of true to find the shortest path to the closest goal
-		PathFinder.solveMaze("assignment8_files/bigMaze.txt", "assignment8_files/testOutput1.txt", true);
+		PathFinder.solveMaze("src/assign08/assignment8_files/randomSmall.txt", "src/assign08/assignment8_files/testOutput1.txt", true);
 		// Run the pathfinder with a final argument of false to find any path to any goal
-		PathFinder.solveMaze("assignment8_files/bigMaze.txt", "assignment8_files/testOutput2.txt", false);
+		PathFinder.solveMaze("src/assign08/assignment8_files/bigMaze.txt", "src/assign08/assignment8_files/testOutput2.txt", false);
 	}
 }
