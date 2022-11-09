@@ -170,6 +170,7 @@ public class Graph {
 	public int CalculateAPath()
 	{
 		int length = 0;
+		
 		start.visited = true;
 		
 		if(start.isGoal)
@@ -192,7 +193,7 @@ public class Graph {
 	public Node DFS(Node curr)
 	{		
 		Node current = curr;
-		
+				
 		if(current.isGoal)
 			return current;
 		
@@ -202,10 +203,10 @@ public class Graph {
 		}
 		
 		for(Node next : neighbors) {
-			if(!next.visited) {
+			if(next.visited == false) {
+				next.visited = true;
 				next.cameFrom = current;
-				current = next;
-				DFS(current);		
+				DFS(next);		
 			}
 		}
 		return current;
