@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -183,6 +184,15 @@ public class Graph {
 		current.visited = true;
 		Node temp;
 		
+		if(current.isGoal) {
+			current = current.cameFrom;
+			while (current.cameFrom != null) {
+				current.isOnPath = true;
+				current = current.cameFrom;
+			}
+			return length;
+		}
+		
 		if(getNeighbors(current).size() == 0) {
 			length = 0;
 			while (current.cameFrom != null) {
@@ -190,22 +200,16 @@ public class Graph {
 				current.cameFrom = null;
 				current = temp;
 			}
-		}
-				
-		if(current.isGoal) {
-			while (current.cameFrom != null) {
-				current = current.cameFrom;
-				length++;
-				
-			}
-			return length;
 		}	
 		
-		for(Node next : getNeighbors(current)) {
+		ArrayList<Node> neighbors = getNeighbors(current);
+		Collections.shuffle(neighbors);
+		
+		for(Node next : neighbors) {
 			if(next.visited == false) {
 				next.cameFrom = current;
 				length++;
-				DFS(next, length);		
+				length = DFS(next, length);		
 			}
 		}
 		
