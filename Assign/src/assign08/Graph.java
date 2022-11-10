@@ -173,16 +173,9 @@ public class Graph {
 			return length;
 		}
 
-		if (getNeighbors(current).size() == 0) {
-			while (current.cameFrom != null) {
-				temp = current.cameFrom;
-				current.cameFrom = null;
-				current = temp;
-			}
-		}
-
 		ArrayList<Node> neighbors = getNeighbors(current);
 		Collections.shuffle(neighbors);
+				
 
 		for (Node next : neighbors) {
 			next.cameFrom = current;
