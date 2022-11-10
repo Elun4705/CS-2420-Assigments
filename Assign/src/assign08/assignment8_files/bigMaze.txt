@@ -1,6 +1,6 @@
 5 20
 XXXXXXXXXXXXXXXXXXXX
-XS                 X
-X                  X
-X                 GX
+XS X X             X
+X  X    XX  XXXX X X
+X        XX    X XGX
 XXXXXXXXXXXXXXXXXXXX
