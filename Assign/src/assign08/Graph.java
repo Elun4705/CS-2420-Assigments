@@ -116,7 +116,7 @@ public class Graph {
 
 		queue.offer(start);
 		Node current = start;
-		
+
 		if (getNeighbors(current).size() == 0) {
 			return 0;
 		}
@@ -130,6 +130,7 @@ public class Graph {
 					current.isOnPath = true;
 					current = current.cameFrom;
 				}
+				System.out.println(length);
 				return length;
 			}
 			for (Node n : getNeighbors(current)) {
@@ -138,6 +139,7 @@ public class Graph {
 				queue.offer(n);
 			}
 		}
+		System.out.println(length);
 		return length;
 	}
 
@@ -152,10 +154,38 @@ public class Graph {
 		int length = 0;
 
 		Node current = start;
-
+		Node temp;
+//		LinkedList<Node> stack = new LinkedList<Node>();
+		
+//		stack.push(current);
+//		
+//		current.visited = true;
+//		while(!stack.isEmpty()) {
+//			current = stack.pop();
+//			for (Node next : getNeighbors(current)) {
+//				if(getNeighbors(next) == null) {
+//					while (current.cameFrom != null) {
+//						temp = current.cameFrom;
+//						current.cameFrom = null;
+//						current = temp;
+////					}
+//				}
+//				if(next.isGoal)
+//				{
+//					length++;
+//					break;
+//				}
+//				stack.push(next);
+//				next.visited = true;
+//				next.isOnPath = true;
+//				length++;
+//			}
+//		}
+			
 		length = DFS(current, length);
 		length++;
 
+		System.out.println(length);
 		return length;
 	}
 

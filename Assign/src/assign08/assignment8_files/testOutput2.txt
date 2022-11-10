@@ -1,7 +1,7 @@
 6 6
 XXXXXX
-XGXXXX
-X.XXXX
-X.XXXX
-X...SX
+XG...X
+X S..X
+X... X
+X...GX
 XXXXXX
