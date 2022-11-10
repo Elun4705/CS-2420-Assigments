@@ -153,37 +153,8 @@ public class Graph {
 	public int CalculateAPath() {
 		int length = 0;
 
-		Node current = start;
-		Node temp;
-//		LinkedList<Node> stack = new LinkedList<Node>();
-		
-//		stack.push(current);
-//		
-//		current.visited = true;
-//		while(!stack.isEmpty()) {
-//			current = stack.pop();
-//			for (Node next : getNeighbors(current)) {
-//				if(getNeighbors(next) == null) {
-//					while (current.cameFrom != null) {
-//						temp = current.cameFrom;
-//						current.cameFrom = null;
-//						current = temp;
-////					}
-//				}
-//				if(next.isGoal)
-//				{
-//					length++;
-//					break;
-//				}
-//				stack.push(next);
-//				next.visited = true;
-//				next.isOnPath = true;
-//				length++;
-//			}
-//		}
-			
+		Node current = start;			
 		length = DFS(current, length);
-		length++;
 
 		System.out.println(length);
 		return length;
@@ -194,7 +165,6 @@ public class Graph {
 		Node temp;
 
 		if (current.isGoal) {
-			current = current.cameFrom;
 			while (current.cameFrom != null) {
 				length++;
 				current.isOnPath = true;

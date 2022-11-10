@@ -2,6 +2,6 @@
 XXXXXX
 XG   X
 X.S  X
-X..  X
-X   GX
+X.   X
+X...GX
 XXXXXX
