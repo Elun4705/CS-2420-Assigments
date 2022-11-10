@@ -162,7 +162,6 @@ public class Graph {
 
 	public int DFS(Node current, int length) {
 		current.visited = true;
-		Node temp;
 
 		if (current.isGoal) {
 			while (current.cameFrom != null) {
