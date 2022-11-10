@@ -108,23 +108,31 @@ public class Graph {
 	 * @return - the length of the path
 	 */
 	public int CalculateShortestPath() {
+		
+		// Create a queue for use in the BFS
 		LinkedList<Node> queue = new LinkedList<Node>();
-
+		
 		int length = 0;
-
 		start.visited = true;
 
 		queue.offer(start);
 		Node current = start;
 
+		// If there are no neighbors, return 0.
 		if (getNeighbors(current).size() == 0) {
 			return 0;
 		}
 
+		// Initiate the BFS
 		while (queue.isEmpty() == false) {
 			current = queue.poll();
+			
+			// Check if the current node is the goal
 			if (current.isGoal == true) {
 				current = current.cameFrom;
+				
+				// Travel back through the path to mark each node as part of the path
+				// and calculate length at the same time.
 				while (current.cameFrom != null) {
 					length++;
 					current.isOnPath = true;
@@ -133,13 +141,15 @@ public class Graph {
 				System.out.println(length);
 				return length;
 			}
+			
+			// Add the neighbors to the Queue
 			for (Node n : getNeighbors(current)) {
 				n.visited = true;
 				n.cameFrom = current;
 				queue.offer(n);
 			}
 		}
-		System.out.println(length);
+		
 		return length;
 	}
 
@@ -153,16 +163,25 @@ public class Graph {
 	public int CalculateAPath() {
 		int length = 0;
 
-		Node current = start;			
+		Node current = start;
+		
+		// Call the recursive function
 		length = DFS(current, length);
 
-		System.out.println(length);
 		return length;
 	}
 
+	/**
+	 * The recursive function for traversing a graph with DFS
+	 * 
+	 * @param current - the current node being checked
+	 * @param length - how long the current path is
+	 * @return the length of the path
+	 */
 	public int DFS(Node current, int length) {
 		current.visited = true;
 
+		// check if the current node is the goal
 		if (current.isGoal) {
 			while (current.cameFrom != null) {
 				length++;
@@ -172,10 +191,12 @@ public class Graph {
 			return length;
 		}
 
+		// Find neighbors and put them in random order access
 		ArrayList<Node> neighbors = getNeighbors(current);
 		Collections.shuffle(neighbors);
 				
 
+		// Return to a node with another path
 		for (Node next : neighbors) {
 			next.cameFrom = current;
 			length = DFS(next, length);
@@ -186,6 +207,12 @@ public class Graph {
 		return length;
 	}
 
+	/**
+	 * A helper method which returns a node's neighbors
+	 * 
+	 * @param n - the node being tested
+	 * @return - an ArrayList of the neighbors
+	 */
 	public ArrayList<Node> getNeighbors(Node n) {
 
 		ArrayList<Node> neighbors = new ArrayList<Node>();

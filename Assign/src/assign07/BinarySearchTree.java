@@ -3,6 +3,7 @@ package assign07;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Stack;
 
 /**
  * A generic BinarySearchTree class
@@ -15,8 +16,6 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 	private BinaryNode<Type> root = null;
 	private int size = 0;
-
-	private ArrayList<Type> inOrder = new ArrayList<Type>();
 
 	/**
 	 * A generic BinaryNode Class
@@ -322,48 +321,41 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 			return false;
 		}
 
-		else {
+		BinaryNode<Type> newNode = new BinaryNode<Type>(item);
 
-			BinaryNode<Type> newNode = new BinaryNode<Type>(item);
-
-			if (root == null) {
-				root = newNode;
-				size++;
-				return true;
-			}
-
-			BinaryNode<Type> temp = root;
-			Boolean added = false;
-
-			while (added == false) {
-				if (item.compareTo(temp.data) > 0) {
-					if (temp.getRightChild() != null) {
-						temp = temp.rightChild;
-						continue;
-					} else {
-						temp.setRightChild(newNode);
-						newNode.setParent(temp);
-						added = true;
-						break;
-					}
-				}
-				if (item.compareTo(temp.data) < 0) {
-					if (temp.getLeftChild() != null) {
-						temp = temp.leftChild;
-						continue;
-					} else {
-						temp.setLeftChild(newNode);
-						newNode.setParent(temp);
-						added = true;
-						break;
-					}
-				}
-			}
-
+		if (root == null) {
+			root = newNode;
 			size++;
-			return added;
-
+			return true;
 		}
+
+		BinaryNode<Type> temp = root;
+		Boolean added = false;
+
+		while (added == false) {
+			if (item.compareTo(temp.data) > 0) {
+				if (temp.getRightChild() == null) {
+					temp.setRightChild(newNode);
+					newNode.setParent(temp);
+					size++;
+					return true;
+				} else {
+					temp = temp.rightChild;
+				}
+			} else {
+				if (temp.getLeftChild() == null) {
+					temp.setLeftChild(newNode);
+					newNode.setParent(temp);
+					size++;
+					return true;
+				} else {
+					temp = temp.leftChild;
+				}
+			}
+		}
+
+		size++;
+		return added;
 
 	}
 
@@ -380,8 +372,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		boolean added = false;
 
 		for (Type item : items) {
-			if (this.contains(item) == false) {
-				this.add(item);
+			if (this.add(item)) {
 				added = true;
 			}
 		}
@@ -417,22 +408,19 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
 		while (found == false) {
 			if (item.compareTo(temp.data) == 0) {
-				found = true;
-				break;
+				return true;
 			} else {
 				if (item.compareTo(temp.data) > 0) {
-					if (temp.getRightChild() != null) {
-						temp = temp.rightChild;
-						continue;
-					} else {
+					if (temp.getRightChild() == null) {
 						return false;
+					} else {
+						temp = temp.rightChild;
 					}
 				} else {
-					if (temp.getLeftChild() != null) {
-						temp = temp.leftChild;
-						continue;
-					} else {
+					if (temp.getLeftChild() == null) {
 						return false;
+					} else {		
+						temp = temp.leftChild;
 					}
 				}
 			}
@@ -450,15 +438,13 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 	@Override
 	public boolean containsAll(Collection<? extends Type> items) {
 
-		Boolean containsall = true;
-
 		for (Type item : items) {
 			if (this.contains(item) == false) {
-				containsall = false;
+				return false;
 			}
 		}
 
-		return containsall;
+		return true;
 
 	}
 
@@ -606,8 +592,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 		boolean removed = false;
 
 		for (Type item : items) {
-			if (this.contains(item) == true) {
-				this.remove(item);
+			if (this.remove(item)) {
 				removed = true;
 			}
 		}
@@ -624,38 +609,32 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 	}
 
 	/**
-	 * Helper recursive code for putting the BST in order from smallest to largest
-	 * 
-	 * @param node
-	 */
-	private void order(BinaryNode<Type> node) {
-
-		if (node.getLeftChild() != null) {
-			order(node.leftChild);
-		}
-
-		inOrder.add(node.data);
-
-		if (node.getRightChild() != null) {
-			order(node.rightChild);
-		}
-	}
-
-	/**
 	 * Returns an ArrayList with the objects in the BST from smallest to largest
 	 * 
 	 * @return an ArrayList of the ordered BST
 	 */
 	@Override
 	public ArrayList<Type> toArrayList() {
-		inOrder.clear();
+		ArrayList<Type> inOrder = new ArrayList<Type>();
 
-		if (root == null) {
+		if (root == null)
 			return inOrder;
+
+		Stack<BinaryNode<Type>> orderStack = new Stack<BinaryNode<Type>>();
+		BinaryNode<Type> current = root;
+
+		while (current != null || orderStack.size() > 0) {
+			while (current != null) {
+				orderStack.push(current);
+				current = current.leftChild;
+			}
+
+			current = orderStack.pop();
+
+			inOrder.add(current.data);
+			current = current.rightChild;
 		}
-
-		order(root);
-
+		
 		return inOrder;
 	}
 

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 /**
  * Represents a "dictionary" of strings using a binary search tree and offers
@@ -73,11 +74,9 @@ public class SpellChecker {
 	 */
 	public List<String> spellCheck(File documentFile) {
 		
-		List<String> misspelledWords = new ArrayList<String>();
+		List<String> misspelledWords = new ArrayList<String>(); 
 
-		List<String> wordsToCheck = readFromFile(documentFile);
-
-		for(String word : wordsToCheck) {
+		for(String word : readFromFile(documentFile)) {
 			if(dictionary.contains(word) == false) {
 				misspelledWords.add(word);
 			}
