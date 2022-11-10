@@ -217,6 +217,8 @@ public class Graph {
 		for (Node next : neighbors) {
 			next.cameFrom = current;
 			length = DFS(next, length);
+			if (length > 0)
+				break;
 		}
 
 		return length;
