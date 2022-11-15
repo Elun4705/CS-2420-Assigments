@@ -18,7 +18,7 @@ public class MazeGen {
 	{
 		// Example usage:
 		// Creates a 10x10 maze with about 30% walls and 5 goals
-		randomMaze("assignment8_files/randomSmall.txt", 10, 0.3, 5);
+		randomMaze("C:/Users/EMoon/Documents/GitHub/CS-2420-Assigments/Assign/src/assign08/assignment8_files/randomBig.txt", 50, 0.3, 5);
 	}
 
 	/**

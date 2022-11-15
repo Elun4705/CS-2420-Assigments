@@ -14,6 +14,7 @@ import java.util.List;
  * 
  * @author Daniel Kopta This Graph class acts as a starting point for your maze
  *         path finder. Add to this class as needed.
+ * @author Andy Huo and Emmanuel Luna
  */
 public class Graph {
 
@@ -108,10 +109,10 @@ public class Graph {
 	 * @return - the length of the path
 	 */
 	public int CalculateShortestPath() {
-		
+
 		// Create a queue for use in the BFS
 		LinkedList<Node> queue = new LinkedList<Node>();
-		
+
 		int length = 0;
 		start.visited = true;
 
@@ -126,11 +127,11 @@ public class Graph {
 		// Initiate the BFS
 		while (queue.isEmpty() == false) {
 			current = queue.poll();
-			
+
 			// Check if the current node is the goal
 			if (current.isGoal == true) {
 				current = current.cameFrom;
-				
+
 				// Travel back through the path to mark each node as part of the path
 				// and calculate length at the same time.
 				while (current.cameFrom != null) {
@@ -138,10 +139,9 @@ public class Graph {
 					current.isOnPath = true;
 					current = current.cameFrom;
 				}
-				System.out.println(length);
 				return length;
 			}
-			
+
 			// Add the neighbors to the Queue
 			for (Node n : getNeighbors(current)) {
 				n.visited = true;
@@ -149,7 +149,7 @@ public class Graph {
 				queue.offer(n);
 			}
 		}
-		
+
 		return length;
 	}
 
@@ -164,7 +164,7 @@ public class Graph {
 		int length = 0;
 
 		Node current = start;
-		
+
 		// Call the recursive function
 		length = DFS(current, length);
 
@@ -175,7 +175,7 @@ public class Graph {
 	 * The recursive function for traversing a graph with DFS
 	 * 
 	 * @param current - the current node being checked
-	 * @param length - how long the current path is
+	 * @param length  - how long the current path is
 	 * @return the length of the path
 	 */
 	public int DFS(Node current, int length) {
@@ -194,7 +194,6 @@ public class Graph {
 		// Find neighbors and put them in random order access
 		ArrayList<Node> neighbors = getNeighbors(current);
 		Collections.shuffle(neighbors);
-				
 
 		// Return to a node with another path
 		for (Node next : neighbors) {
