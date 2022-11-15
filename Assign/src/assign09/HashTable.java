@@ -39,8 +39,9 @@ public class HashTable<K, V> implements Map<K, V> {
 
 	@Override
 	public boolean containsValue(V value) {
-		// TODO Auto-generated method stub
-		return false;
+		for (K key : table) {
+			
+		}
 	}
 
 	@Override
