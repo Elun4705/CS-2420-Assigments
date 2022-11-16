@@ -1,6 +1,7 @@
 package assign09;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,8 +9,8 @@ public class HashTable<K, V> implements Map<K, V> {
 	
 	private ArrayList<LinkedList<MapEntry<K, V>>> table;
 	
-	private int capacity;
-	private double lf;
+	private int capacity = 50;
+	private int size = 0;
 	
 	public HashTable() {
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
@@ -19,35 +20,44 @@ public class HashTable<K, V> implements Map<K, V> {
 
 	@Override
 	public void clear() {
-		lf = 0;
-		for(LinkedList<MapEntry<K, V>> item : table) {
-			table.remove(item);
+		for(LinkedList<MapEntry<K, V>> list : table) {
+			list.clear();
 		}
-		
+		size = 0;
 	}
 
 	@Override
 	public boolean containsKey(K key) {
-		int index = key.hashCode();
+		int index = key.hashCode() % capacity;
 
-		if (table.get(index) != null) {
-			return true;
+		if (table.get(index).isEmpty()) {
+			return false;
 		}
-		return false;
+		
+		return true;
 		
 	}
 
 	@Override
 	public boolean containsValue(V value) {
-		for (K key : table) {
-			
+		for (LinkedList<MapEntry<K, V>> list : table) {
+			for (MapEntry<K, V> entry : list) {
+s				
+			}
 		}
+		return true;
 	}
 
 	@Override
 	public List<MapEntry<K, V>> entries() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ArrayList<MapEntry<K, V>> entries = new ArrayList<MapEntry<K, V>>();
+		
+		for (LinkedList<MapEntry<K, V>> list : table) {
+			entries.addAll(list);
+		}
+		
+		return entries;
 	}
 
 	@Override
@@ -62,11 +72,22 @@ public class HashTable<K, V> implements Map<K, V> {
 		return false;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public V put(K key, V value) {
-		if (table.contains(key)) {
-			table
+		int index = key.hashCode() % capacity;
+		LinkedList<MapEntry<K,V>> list = table.get(index);
+		
+		size++;
+		
+		if (list.isEmpty() == false) {
+			V previous = list.getLast().getValue();
+			list.add(new MapEntry(key, value));
+			return previous;
 		}
+		
+		list.add(new MapEntry(key, value));
+		return null;
 	}
 
 	@Override
@@ -78,11 +99,26 @@ public class HashTable<K, V> implements Map<K, V> {
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 	
 	public static void main(String args[]) {
 		HashTable test = new HashTable();
-		tes
+		
+		System.out.println(test.containsKey(1));
+		System.out.println(test.size());
+		
+		test.put(1, "string");
+		System.out.println(test.put(1, "word"));
+		System.out.println(test.put(2, "word"));
+		
+		List<MapEntry<Integer, String>> testEntries = test.entries();
+
+		for (MapEntry<Integer, String> entry : testEntries) {
+			System.out.println(entry.getKey() + " " + entry.getValue());
+		}
+		
+		System.out.println(test.containsKey(1));
+		System.out.println(test.size());
 	}
 }
