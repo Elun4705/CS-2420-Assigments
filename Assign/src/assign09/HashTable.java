@@ -9,7 +9,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	
 	private ArrayList<LinkedList<MapEntry<K, V>>> table;
 	
-	private int capacity = 50;
+	private int capacity = 1;
 	private int size = 0;
 	
 	public HashTable() {
@@ -30,22 +30,28 @@ public class HashTable<K, V> implements Map<K, V> {
 	public boolean containsKey(K key) {
 		int index = key.hashCode() % capacity;
 
-		if (table.get(index).isEmpty()) {
-			return false;
+		LinkedList<MapEntry<K,V>> list = table.get(index);
+		
+		for (MapEntry<K,V> entry : list) {
+			if (entry.getKey() == key) {
+				return true;
+			}
 		}
 		
-		return true;
-		
+		return false;
 	}
 
 	@Override
 	public boolean containsValue(V value) {
 		for (LinkedList<MapEntry<K, V>> list : table) {
 			for (MapEntry<K, V> entry : list) {
-s				
+				if (entry.getValue() == value) {
+					return true;
+				}
 			}
 		}
-		return true;
+		
+		return false;
 	}
 
 	@Override
@@ -62,55 +68,109 @@ s
 
 	@Override
 	public V get(K key) {
-		// TODO Auto-generated method stub
+		int index = key.hashCode() % capacity;
+
+		LinkedList<MapEntry<K,V>> list = table.get(index);
+		
+		for (MapEntry<K, V> entry : list) {
+			if (entry.getKey() == key) {
+				return entry.getValue();
+			}
+		}
+		
 		return null;
+		
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (table.size() == 0);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public V put(K key, V value) {
+		
+		double loadFactor = (size+1)/capacity;
+		
+		if (loadFactor > 10) {
+			this.rehash();
+		}
+		
 		int index = key.hashCode() % capacity;
+		
 		LinkedList<MapEntry<K,V>> list = table.get(index);
 		
-		size++;
-		
-		if (list.isEmpty() == false) {
-			V previous = list.getLast().getValue();
-			list.add(new MapEntry(key, value));
-			return previous;
+		for (MapEntry<K,V> entry : list) {
+			if (entry.getKey() == key) {
+				V preValue = entry.getValue();
+				entry.setValue(value);
+				return preValue;
+			}
 		}
 		
 		list.add(new MapEntry(key, value));
+		size++;
 		return null;
+		
 	}
 
 	@Override
 	public V remove(K key) {
-		// TODO Auto-generated method stub
+		int index = key.hashCode() % capacity;
+		
+		LinkedList<MapEntry<K,V>> list = table.get(index);
+		
+		for (MapEntry<K,V> entry : list) {
+			if (entry.getKey() == key) {
+				V removeValue = entry.getValue();
+				list.remove(entry);
+				size--;
+				return removeValue;
+			}
+		}
+		
 		return null;
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
 		return size;
 	}
+	
+	private void rehash() {
+		List<MapEntry<K, V>> entries = this.entries();
+		
+		ArrayList<LinkedList<MapEntry<K, V>>> newTable = new ArrayList<LinkedList<MapEntry<K, V>>>();
+		
+		capacity *= 2;
+		
+		for(int i = 0; i < capacity; i++)
+		   newTable.add(new LinkedList<MapEntry<K, V>>());
+		
+		size = 0;
+		table = newTable;
+		
+		for (MapEntry<K,V> entry : entries) {
+			this.put(entry.getKey(), (entry.getValue()));
+		}
+		
+	}
+	
 	
 	public static void main(String args[]) {
 		HashTable test = new HashTable();
 		
-		System.out.println(test.containsKey(1));
-		System.out.println(test.size());
-		
-		test.put(1, "string");
-		System.out.println(test.put(1, "word"));
+		System.out.println(test.put(1, "worth"));
 		System.out.println(test.put(2, "word"));
+		System.out.println(test.put(3,"banana"));
+		System.out.println(test.put(4,"sleep"));
+		System.out.println(test.put(5,"asian"));
+		System.out.println(test.put(6,"hispanic"));
+		System.out.println(test.put(7, "blossom"));
+		System.out.println(test.put(8, "vega"));
+		System.out.println(test.put(9,"betelgeuse"));
+		System.out.println(test.put(10,"october"));
 		
 		List<MapEntry<Integer, String>> testEntries = test.entries();
 
@@ -118,7 +178,14 @@ s
 			System.out.println(entry.getKey() + " " + entry.getValue());
 		}
 		
-		System.out.println(test.containsKey(1));
 		System.out.println(test.size());
+		
+		System.out.println(test.put(11,"watcher"));
+		
+		List<MapEntry<Integer, String>> testEntries2 = test.entries();
+
+		for (MapEntry<Integer, String> entry : testEntries2) {
+			System.out.println(entry.getKey() + " " + entry.getValue());
+		}
 	}
 }
