@@ -91,7 +91,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	@Override
 	public V put(K key, V value) {
 		
-		double loadFactor = (size+1)/capacity;
+		double loadFactor = (size+1)/(double) capacity;
 		
 		if (loadFactor > 10) {
 			this.rehash();
@@ -157,6 +157,10 @@ public class HashTable<K, V> implements Map<K, V> {
 		
 	}
 	
+	public int getCapacity() {
+		return capacity;
+	}
+	
 	
 	public static void main(String args[]) {
 		HashTable test = new HashTable();
@@ -181,6 +185,17 @@ public class HashTable<K, V> implements Map<K, V> {
 		System.out.println(test.size());
 		
 		System.out.println(test.put(11,"watcher"));
+		System.out.println(test.put(12,"warden"));
+		System.out.println(test.put(13,"watcher"));
+		System.out.println(test.put(14,"warden"));
+		System.out.println(test.put(15,"watcher"));
+		System.out.println(test.put(16,"warden"));
+		System.out.println(test.put(17,"watcher"));
+		System.out.println(test.put(18,"warden"));
+		System.out.println(test.put(19,"watcher"));
+		System.out.println(test.put(20,"warden"));
+		System.out.println(test.put(21,"watcher"));
+
 		
 		List<MapEntry<Integer, String>> testEntries2 = test.entries();
 
