@@ -3,6 +3,7 @@ package assign09;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.HashMap;
 
 public class HashTableAnalysis {
 
@@ -44,6 +45,10 @@ public class HashTableAnalysis {
 		
 		System.out.println(N + " " + averageTime);
 
+	}
+	
+	private static void oursVsThers(int N) {
+		
 	}
 
 	public static void main(String[] args) {
