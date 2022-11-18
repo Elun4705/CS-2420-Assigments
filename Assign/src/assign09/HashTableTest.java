@@ -296,7 +296,7 @@ class HashTableTest {
 		test.put(7, "blossom");
 		test.put(8, "vega");
 		test.put(9, "betelgeuse");
-		test.put(10, "october");
+		test.put(10, "october");      
 
 		assertEquals(1, test.getCapacity());
 

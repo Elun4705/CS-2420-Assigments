@@ -64,9 +64,8 @@ public class StudentGoodHash {
 	}
 
 	public int hashCode() {
-		// FILL IN and add method comment
 		
-		return 0;
+		return ((firstName.length() * firstName.hashCode()) + (lastName.length() * lastName.hashCode())) + (uid*uid);
+		
 	}
-
 }

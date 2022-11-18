@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A class for a HashTable using separate chaining.  The table's capacity is initially
- * set to 1 for ease of testing, however, this can be changed quite easily at any time by simply
- * changing the instance variable below.
+ * A class for a HashTable using separate chaining. The table's capacity is
+ * initially set to 1 for ease of testing, however, this can be changed quite
+ * easily at any time by simply changing the instance variable below.
  * 
  * @author Andy Huo and Emmanuel Luna
  *
@@ -21,6 +21,7 @@ public class HashTable<K, V> implements Map<K, V> {
 
 	private int capacity = 1;
 	private int size = 0;
+	private int collisions = 0;
 
 	public HashTable() {
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
@@ -47,7 +48,14 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public boolean containsKey(K key) {
-		int index = key.hashCode() % capacity;
+		
+		int index;
+
+		int keyHash = key.hashCode();
+
+		if (keyHash == Integer.MIN_VALUE)
+			keyHash++;
+		index = Math.abs(keyHash) % capacity;
 
 		LinkedList<MapEntry<K, V>> list = table.get(index);
 
@@ -100,11 +108,18 @@ public class HashTable<K, V> implements Map<K, V> {
 	 * Returns the value associated with the given key
 	 * 
 	 * @param key - the key to be searched for
-	 * @return the value associated with the given key, or null if there is no such mapping
+	 * @return the value associated with the given key, or null if there is no such
+	 *         mapping
 	 */
 	@Override
 	public V get(K key) {
-		int index = key.hashCode() % capacity;
+		int index;
+
+		int keyHash = key.hashCode();
+
+		if (keyHash == Integer.MIN_VALUE)
+			keyHash++;
+		index = Math.abs(keyHash) % capacity;
 
 		LinkedList<MapEntry<K, V>> list = table.get(index);
 
@@ -131,9 +146,10 @@ public class HashTable<K, V> implements Map<K, V> {
 	/**
 	 * Adds the given key and value pair as a mapping to the list
 	 * 
-	 * @param key - the mapping key
+	 * @param key   - the mapping key
 	 * @param value - the mapping value
-	 * @return the prior value associated with that key, or null if there was no such value
+	 * @return the prior value associated with that key, or null if there was no
+	 *         such value
 	 */
 	@Override
 	public V put(K key, V value) {
@@ -144,11 +160,20 @@ public class HashTable<K, V> implements Map<K, V> {
 			this.rehash();
 		}
 
-		int index = key.hashCode() % capacity;
+		int index;
+
+		int keyHash = key.hashCode();
+
+		if (keyHash == Integer.MIN_VALUE)
+			keyHash++;
+		index = Math.abs(keyHash) % capacity;
 
 		LinkedList<MapEntry<K, V>> list = table.get(index);
 
 		for (MapEntry<K, V> entry : list) {
+			if (entry.getKey() != key) {
+				collisions++;
+			}
 			if (entry.getKey() == key) {
 				V preValue = entry.getValue();
 				entry.setValue(value);
@@ -166,11 +191,18 @@ public class HashTable<K, V> implements Map<K, V> {
 	 * Removes the mapping associated with the key and returns it
 	 * 
 	 * @param key - the key to find the removeable value
-	 * @return the value last associated with the key, or null if there is no such value
+	 * @return the value last associated with the key, or null if there is no such
+	 *         value
 	 */
 	@Override
 	public V remove(K key) {
-		int index = key.hashCode() % capacity;
+		int index;
+
+		int keyHash = key.hashCode();
+
+		if (keyHash == Integer.MIN_VALUE)
+			keyHash++;
+		index = Math.abs(keyHash) % capacity;
 
 		LinkedList<MapEntry<K, V>> list = table.get(index);
 
@@ -197,7 +229,8 @@ public class HashTable<K, V> implements Map<K, V> {
 	}
 
 	/**
-	 * A private helper method which will rehash the HashTable in the event the load factor might go over 10
+	 * A private helper method which will rehash the HashTable in the event the load
+	 * factor might go over 10
 	 */
 	private void rehash() {
 		List<MapEntry<K, V>> entries = this.entries();
@@ -219,12 +252,17 @@ public class HashTable<K, V> implements Map<K, V> {
 	}
 
 	/**
-	 * A method which returns the current capacity of the HashTable for ease of testing purposes only.
+	 * A method which returns the current capacity of the HashTable for ease of
+	 * testing purposes only.
 	 * 
 	 * @return the capacity of the HashTable (or, the size of the backing array)
 	 */
 	public int getCapacity() {
 		return capacity;
+	}
+	
+	public int getCollisions() {
+		return collisions;
 	}
 
 }

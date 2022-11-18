@@ -74,8 +74,6 @@ public class StudentBadHash {
 	}
 
 	public int hashCode() {
-		// FILL IN and add method comment
-		
-		return 0;
+		return 1;
 	}
 }

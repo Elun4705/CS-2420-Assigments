@@ -64,9 +64,7 @@ public class StudentMediumHash {
 	}
 
 	public int hashCode() {
-		// FILL IN and add method comment
-		
-		return 0;
+		return firstName.length() + lastName.length();
 	}
 
 }
