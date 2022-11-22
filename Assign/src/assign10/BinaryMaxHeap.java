@@ -63,7 +63,8 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 				parent = backingArray.get((index - 1) / 2);
 			}
 			
-			if (item.compareTo(parent) > 0);
+			if (item.innerCompare(parent) > 0)
+				
 
 		}
 	}
@@ -113,9 +114,12 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	}
 
 	// An innerCompare method is intended to isolate your decision of whether to
-	// invoke a
-	// Comparable or Comparator method to just one place in your program.
-	private void innerCompare() {
+	// invoke a Comparable or Comparator method to just one place in your program.
+	public int innerCompare(E item) {
+		int cmp = this.innerCompare(item);
+        if (cmp == 0)
+            cmp = this.innerCompare(item);
+        return cmp;
 	}
 
 }
