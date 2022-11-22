@@ -9,6 +9,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 
 	private ArrayList<E> backingArray = new ArrayList<E>();
 	private int index = 0;
+	private Comparator<? super E> cmp = null;
 
 	// If this constructor is used to create an empty binary heap,
 	// it is assumed that the elements are ordered using their natural
@@ -21,7 +22,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	// is assumed that the elements are ordered using the provided Comparator
 	// object.
 	public BinaryMaxHeap(Comparator<? super E> cmp) {
-
+		this.cmp = cmp;
 	}
 
 	// If this constructor is used, then the binary heap is constructed from the
@@ -44,7 +45,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	// using
 	// the provided Comparator object.
 	public BinaryMaxHeap(List<? extends E> list, Comparator<? super E> cmp) {
-
+		this.cmp = cmp;
 	}
 
 	@Override
@@ -63,39 +64,50 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 				parent = backingArray.get((index - 1) / 2);
 			}
 			
-			if (item.innerCompare(parent) > 0)
-				
-
+//			if (innerCompare() == true) {
+//				if(cmp.compare(item, parent) > 0) {
+//					percolateUp();
+//				}
+//			} else {
+//				if (item.compareTo(parent) > 0) {
+//					percolateUp();
+//				}
+//			}
+			
+			// Check if object is >= to its parent, and percolate up if so.
 		}
 	}
 
 	@Override
 	public E peek() throws NoSuchElementException {
-		return backingArray.get(0);
+		if (backingArray.isEmpty()) {
+			throw new NoSuchElementException();
+		} else {return backingArray.get(0);}
 	}
 
 	@Override
 	public E extractMax() throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+		if (backingArray.isEmpty()) {
+			throw new NoSuchElementException();
+		} else {
+			E max = backingArray.get(0);
+			
+		}
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return backingArray.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return backingArray.isEmpty();
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		backingArray.clear();
 	}
 
 	@Override
@@ -105,6 +117,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	}
 
 	private void buildHeap() {
+		
 	}
 
 	private void percolateUp() {
@@ -115,11 +128,16 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 
 	// An innerCompare method is intended to isolate your decision of whether to
 	// invoke a Comparable or Comparator method to just one place in your program.
-	public int innerCompare(E item) {
-		int cmp = this.innerCompare(item);
-        if (cmp == 0)
-            cmp = this.innerCompare(item);
-        return cmp;
+	private <E extends Comparable<E>> int innerCompare(E o1, E o2) {
+		if (cmp == null) {
+			return o1.compareTo(o2);
+		} else {
+			return(cmp.compare(o1, o2));
+		}
+	}
+
+	public static void main(String[] args) {
+		
 	}
 
 }
