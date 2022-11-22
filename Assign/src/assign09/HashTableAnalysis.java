@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class HashTableAnalysis {
 
 	private static Random rand;
-	private static int timesToLoop = 100;
+	private static int timesToLoop = 1000;
 
 	private static void countCollisions(int N) {
 		long starttime, mediumtime, endtime;
@@ -48,7 +48,66 @@ public class HashTableAnalysis {
 	}
 	
 	private static void oursVsThers(int N) {
+		long Tstarttime, Tmediumtime, Tendtime;
+		long Mstarttime, Mmediumtime, Mendtime;
+		rand.setSeed(System.currentTimeMillis());
+
+		// First, spin computing stuff until one second has gone by.
+		// This allows this thread to stabilize.
+		long startTime = System.nanoTime();
+		while (System.nanoTime() - startTime < 1000000000) { // empty block
+		}
+		Tstarttime = System.nanoTime();
+
+		for (int i = 0; i < timesToLoop; i++) {
+			HashTable<Integer, String> test = new HashTable<Integer, String>();
+
+			for (int j = 0; j < N; j++) {
+				test.put(rand.nextInt(), randomString(10));
+			}
+		}
+
+		Tmediumtime = System.nanoTime();
+
+		for (int i = 0; i < timesToLoop; i++) {
+			HashTable<Integer, String> test = new HashTable<Integer, String>();
+
+			for (int j = 0; j < N; j++) {
+				rand.nextInt(); 
+				randomString(10);
+			}
+		}
 		
+		
+		Tendtime = System.nanoTime();
+		
+		Mstarttime = System.nanoTime();
+		
+		for (int i = 0; i < timesToLoop; i++) {
+			HashMap<Integer, String> test = new HashMap<Integer, String>();
+
+			for (int j = 0; j < N; j++) {
+				test.put(rand.nextInt(9999), randomString(10));
+			}
+		}
+		
+		Mmediumtime = System.nanoTime();
+		
+		for (int i = 0; i < timesToLoop; i++) {
+			HashMap<Integer, String> test = new HashMap<Integer, String>();
+
+			for (int j = 0; j < N; j++) {
+				rand.nextInt(9999); 
+				randomString(10);
+			}
+		}
+		
+		Mendtime = System.nanoTime();
+		
+		long TaverageTime = ((Tmediumtime - Tstarttime) - (Tendtime - Tmediumtime)) / timesToLoop;
+		long MaverageTime = ((Mmediumtime - Mstarttime) - (Mendtime - Mmediumtime)) / timesToLoop;
+		
+		System.out.println(N + " " + TaverageTime + " " + MaverageTime);
 	}
 
 	public static void main(String[] args) {
@@ -56,7 +115,7 @@ public class HashTableAnalysis {
 
 		// Time adding N values to different kinds of queues
 		for (int N = 1000; N <= 15000; N += 1000) {
-			countCollisions(N);
+			oursVsThers(N);
 		}
 	}
 
