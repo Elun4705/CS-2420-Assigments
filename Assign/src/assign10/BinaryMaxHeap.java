@@ -1,6 +1,7 @@
 package assign10;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -9,7 +10,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 
 	private ArrayList<E> backingArray = new ArrayList<E>();
 	private int index = 0;
-	private Comparator<? super E> cmp = null;
+	private Comparator<? super E> cmp;
 
 	// If this constructor is used to create an empty binary heap,
 	// it is assumed that the elements are ordered using their natural
@@ -55,26 +56,17 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 		} else {
 			backingArray.add(item);
 			int index = backingArray.indexOf(item);
+			int parentIndex;
 			
-			E parent;
-
 			if (index % 2 == 0) {
-				parent = backingArray.get((index - 2) / 2);
+				parentIndex = (index - 2) / 2;
 			} else {
-				parent = backingArray.get((index - 1) / 2);
+				parentIndex = (index - 1) / 2;
 			}
 			
-//			if (innerCompare() == true) {
-//				if(cmp.compare(item, parent) > 0) {
-//					percolateUp();
-//				}
-//			} else {
-//				if (item.compareTo(parent) > 0) {
-//					percolateUp();
-//				}
-//			}
+			E parent = backingArray.get(parentIndex);
 			
-			// Check if object is >= to its parent, and percolate up if so.
+			percolateUp(item, parent);
 		}
 	}
 
@@ -82,17 +74,25 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	public E peek() throws NoSuchElementException {
 		if (backingArray.isEmpty()) {
 			throw new NoSuchElementException();
-		} else {return backingArray.get(0);}
+		} else {
+			return backingArray.get(0);
+		}
 	}
 
 	@Override
 	public E extractMax() throws NoSuchElementException {
+		E max;
 		if (backingArray.isEmpty()) {
 			throw new NoSuchElementException();
 		} else {
-			E max = backingArray.get(0);
-			
+			max = backingArray.get(0);
+			E replacement = backingArray.get(backingArray.size() - 1);
+			backingArray.set(0, replacement);
+			if (backingArray.size() != 1) {
+				percolateDown(replacement);
+			}
 		}
+		return max;
 	}
 
 	@Override
@@ -112,32 +112,107 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private void buildHeap() {
+		Object[] array = new Object[backingArray.size()];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = backingArray.get(i);
+		}
 		
+		return array;
 	}
 
-	private void percolateUp() {
+	private void buildHeap(List<? extends E> list) {
+		for (E item : list) {
+			backingArray.add(item);
+		}
+		
+		 
 	}
 
-	private void percolateDown() {
+	private void percolateUp(E o1, E o2) {
+		int index = backingArray.indexOf(o1);
+		int parentIndex = backingArray.indexOf(o2);
+		
+		E child = o1;
+		E parent = o2;
+		
+		while (innerCompare(child, parent) > 0) {
+			
+			backingArray.set(parentIndex, child);
+			backingArray.set(index, parent);
+			
+			index = parentIndex;
+			
+			if (index == 0) {
+				break;
+			}
+			
+			if (index % 2 == 0) {
+				parentIndex = (index - 2) / 2;
+			} else {
+				parentIndex = (index - 1) / 2;
+			}
+			
+			child = backingArray.get(index);
+			parent = backingArray.get(parentIndex);			
+		}
+	
+	}
+
+	private void percolateDown(E o1) {
+		int index = backingArray.indexOf(o1);
+		E item = o1;
+		E biggerChild;
+		int biggerChildIndex;
+		if (innerCompare(backingArray.get((index * 2) +1), backingArray.get((index * 2) +2)) > 0) {
+			biggerChild = backingArray.get((index *2) +1);
+			biggerChildIndex = (index*2)+1;
+		} else {
+			biggerChild = backingArray.get(index * 2 + 2);
+			biggerChildIndex = (index*2)+2;
+		}
+		while (innerCompare(item, biggerChild) < 0) {
+			
+			backingArray.set(index, biggerChild);
+			backingArray.set(biggerChildIndex, item);
+			
+			index = biggerChildIndex;
+			
+			if (biggerChildIndex > backingArray.size()-1) {
+				break;
+			}
+	s
+			if (innerCompare(backingArray.get((index * 2) +1), backingArray.get((index * 2) +2)) > 0) {
+				biggerChild = backingArray.get((index *2) +1);
+				biggerChildIndex = (index*2)+1;
+			} else {
+				biggerChild = backingArray.get(index * 2 + 2);
+				biggerChildIndex = (index*2)+2;
+			}
+			
+			item = backingArray.get(index);
+			biggerChild = backingArray.get(parentIndex);			
+		}
 	}
 
 	// An innerCompare method is intended to isolate your decision of whether to
 	// invoke a Comparable or Comparator method to just one place in your program.
-	private <E extends Comparable<E>> int innerCompare(E o1, E o2) {
+	@SuppressWarnings("unchecked")
+	private int innerCompare(E o1, E o2) {
+
 		if (cmp == null) {
-			return o1.compareTo(o2);
+			return ((Comparable<E>) o1).compareTo((E) o2);
 		} else {
-			return(cmp.compare(o1, o2));
+			return cmp.compare(o1, o2);
 		}
 	}
 
 	public static void main(String[] args) {
+		BinaryMaxHeap<Integer> test = new BinaryMaxHeap<Integer>();
+		test.add(20);
+		test.add(9);
+		test.add(10);
 		
+		System.out.println(Arrays.toString(test.toArray()));
 	}
 
 }
