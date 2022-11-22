@@ -15,9 +15,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	// If this constructor is used to create an empty binary heap,
 	// it is assumed that the elements are ordered using their natural
 	// ordering (i.e., E implements Comparable<? super E>).
-	public BinaryMaxHeap() {
-		// do
-	}
+	public BinaryMaxHeap() {}
 
 	// If this constructor is used to create an empty binary heap, it
 	// is assumed that the elements are ordered using the provided Comparator
@@ -36,9 +34,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	// efficient
 	// than adding them to the binary heap one at a time. This constructor must use
 	// such an operation.
-	public BinaryMaxHeap(List<? extends E> list) {
-
-	}
+	public BinaryMaxHeap(List<? extends E> list) {}
 
 	// If this constructor is used, then the binary heap is constructed from the
 	// given list
