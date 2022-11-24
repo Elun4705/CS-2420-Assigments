@@ -15,7 +15,8 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	// If this constructor is used to create an empty binary heap,
 	// it is assumed that the elements are ordered using their natural
 	// ordering (i.e., E implements Comparable<? super E>).
-	public BinaryMaxHeap() {}
+	public BinaryMaxHeap() {
+	}
 
 	// If this constructor is used to create an empty binary heap, it
 	// is assumed that the elements are ordered using the provided Comparator
@@ -34,7 +35,8 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	// efficient
 	// than adding them to the binary heap one at a time. This constructor must use
 	// such an operation.
-	public BinaryMaxHeap(List<? extends E> list) {}
+	public BinaryMaxHeap(List<? extends E> list) {
+	}
 
 	// If this constructor is used, then the binary heap is constructed from the
 	// given list
@@ -85,7 +87,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 			E replacement = backingArray.get(backingArray.size() - 1);
 			backingArray.set(0, replacement);
 			if (backingArray.size() != 1) {
-				percolateDown();
+				percolateDown(replacement);
 			}
 			backingArray.remove(backingArray.size() - 1);
 		}
@@ -117,9 +119,16 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 		return array;
 	}
 
+	@SuppressWarnings("unused")
 	private void buildHeap(List<? extends E> list) {
 		for (E item : list) {
 			backingArray.add(item);
+		}
+
+		int lastNonLeaf = ((backingArray.size()) / 2) - 1;
+
+		for (int i = lastNonLeaf; i >= 0; i--) {
+			percolateDown(backingArray.get(i));
 		}
 
 	}
@@ -154,17 +163,23 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 
 	}
 
-	private void percolateDown() {
-		int index = 0;
+	private void percolateDown(E o1) {
+		int index = backingArray.indexOf(o1);
 		E item = backingArray.get(index);
 		E biggerChild;
 		int biggerChildIndex;
-		if (innerCompare(backingArray.get((index * 2) + 1), backingArray.get((index * 2) + 2)) > 0) {
+
+		if ((index * 2) + 2 >= backingArray.size()) {
 			biggerChild = backingArray.get((index * 2) + 1);
 			biggerChildIndex = (index * 2) + 1;
 		} else {
-			biggerChild = backingArray.get(index * 2 + 2);
-			biggerChildIndex = (index * 2) + 2;
+			if (innerCompare(backingArray.get((index * 2) + 1), backingArray.get((index * 2) + 2)) > 0) {
+				biggerChild = backingArray.get((index * 2) + 1);
+				biggerChildIndex = (index * 2) + 1;
+			} else {
+				biggerChild = backingArray.get(index * 2 + 2);
+				biggerChildIndex = (index * 2) + 2;
+			}
 		}
 		while (innerCompare(item, biggerChild) < 0) {
 
@@ -210,13 +225,16 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 
 	public static void main(String[] args) {
 		BinaryMaxHeap<Integer> test = new BinaryMaxHeap<Integer>();
-		test.add(20);
-		test.add(9);
-		test.add(10);
-		test.add(11);
-		test.add(15);
-		test.add(19);
-		test.extractMax();
+		ArrayList<Integer> testList = new ArrayList<Integer>();
+		
+		testList.add(9);
+		testList.add(23);
+		testList.add(2);
+		testList.add(5);
+		testList.add(7);
+		testList.add(3);
+		
+		test.buildHeap(testList);
 
 		System.out.println(Arrays.toString(test.toArray()));
 	}
