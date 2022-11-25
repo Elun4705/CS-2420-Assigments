@@ -36,6 +36,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	// than adding them to the binary heap one at a time. This constructor must use
 	// such an operation.
 	public BinaryMaxHeap(List<? extends E> list) {
+		this.buildHeap(list);
 	}
 
 	// If this constructor is used, then the binary heap is constructed from the
@@ -45,6 +46,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	// the provided Comparator object.
 	public BinaryMaxHeap(List<? extends E> list, Comparator<? super E> cmp) {
 		this.cmp = cmp;
+		this.buildHeap(list);
 	}
 
 	@Override
@@ -119,7 +121,6 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 		return array;
 	}
 
-	@SuppressWarnings("unused")
 	private void buildHeap(List<? extends E> list) {
 		for (E item : list) {
 			backingArray.add(item);
@@ -166,49 +167,42 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	private void percolateDown(E o1) {
 		int index = backingArray.indexOf(o1);
 		E item = backingArray.get(index);
+		int biggerChildIndex = returnBiggerChildIndex(index);
 		E biggerChild;
-		int biggerChildIndex;
-
-		if ((index * 2) + 2 >= backingArray.size()) {
-			biggerChild = backingArray.get((index * 2) + 1);
-			biggerChildIndex = (index * 2) + 1;
-		} else {
-			if (innerCompare(backingArray.get((index * 2) + 1), backingArray.get((index * 2) + 2)) > 0) {
-				biggerChild = backingArray.get((index * 2) + 1);
-				biggerChildIndex = (index * 2) + 1;
-			} else {
-				biggerChild = backingArray.get(index * 2 + 2);
-				biggerChildIndex = (index * 2) + 2;
-			}
-		}
-		while (innerCompare(item, biggerChild) < 0) {
-
-			backingArray.set(index, biggerChild);
-			backingArray.set(biggerChildIndex, item);
-
-			index = biggerChildIndex;
-
-			if (index > backingArray.size() - 1) {
-				break;
-			}
-
-			if ((index * 2) + 2 >= backingArray.size()) {
-				biggerChild = backingArray.get((index * 2) + 1);
-				biggerChildIndex = (index * 2) + 1;
-			} else {
-
-				if (innerCompare(backingArray.get((index * 2) + 1), backingArray.get((index * 2) + 2)) > 0) {
-					biggerChild = backingArray.get((index * 2) + 1);
-					biggerChildIndex = (index * 2) + 1;
-				} else {
-					biggerChild = backingArray.get(index * 2 + 2);
-					biggerChildIndex = (index * 2) + 2;
-				}
-
+		
+		if (biggerChildIndex != -1) {
+			biggerChild = backingArray.get(biggerChildIndex);
+			
+			while (innerCompare(item, biggerChild) < 0 && biggerChildIndex != -1) {
+				
+				if (biggerChildIndex != -1) 
+					biggerChild = backingArray.get(biggerChildIndex);
+				
+				backingArray.set(biggerChildIndex, item);
+				backingArray.set(index, biggerChild);
+				
+				index = biggerChildIndex;
 				item = backingArray.get(index);
-				biggerChild = backingArray.get(biggerChildIndex);
+				biggerChildIndex = returnBiggerChildIndex(index);
 			}
 		}
+	}
+	
+	private int returnBiggerChildIndex(int o1) {
+		int leftChildIndex = (o1 * 2) + 1;
+		int rightChildIndex = (o1 * 2) + 2;
+		if (leftChildIndex >= backingArray.size()) {
+			return -1;
+		}
+		
+		if (rightChildIndex >= backingArray.size()) {
+			return leftChildIndex;
+		}
+		
+		if (innerCompare(backingArray.get(rightChildIndex), backingArray.get(leftChildIndex)) >= 0) {
+			return rightChildIndex;
+		} else {return leftChildIndex;}
+		
 	}
 
 	// An innerCompare method is intended to isolate your decision of whether to
@@ -227,16 +221,16 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 		BinaryMaxHeap<Integer> test = new BinaryMaxHeap<Integer>();
 		ArrayList<Integer> testList = new ArrayList<Integer>();
 		
-		testList.add(9);
-		testList.add(23);
-		testList.add(2);
-		testList.add(5);
-		testList.add(7);
-		testList.add(3);
-		
-		test.buildHeap(testList);
-
+		test.add(1);
 		System.out.println(Arrays.toString(test.toArray()));
+
+		test.extractMax();
+		System.out.println(Arrays.toString(test.toArray()));
+
+		
+		test.add(2);
+		System.out.println(Arrays.toString(test.toArray()));
+
 	}
 
 }
