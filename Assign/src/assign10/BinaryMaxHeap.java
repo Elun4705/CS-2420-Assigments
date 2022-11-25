@@ -167,7 +167,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 * 
 	 * @param list - the input list
 	 */
-	private void buildHeap(List<? extends E> list) {
+	public void buildHeap(List<? extends E> list) {
 		for (E item : list) {
 			backingArray.add(item);
 		}
