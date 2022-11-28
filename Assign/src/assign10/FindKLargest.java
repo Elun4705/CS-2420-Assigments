@@ -32,12 +32,11 @@ public class FindKLargest {
 		}
 		
 		BinaryMaxHeap<E> BMH = new BinaryMaxHeap<E>(items);
-		Object[] arr = BMH.toArray();
-
+		
 		ArrayList<E> returnList = new ArrayList<E>();
 
 		for (int i = 0; i < k; i++) {
-			returnList.add(arr[i]);
+			returnList.add((E) BMH.toArray()[i]);
 		}
 
 		return returnList;
@@ -62,11 +61,11 @@ public class FindKLargest {
 		}
 		
 		BinaryMaxHeap<E> BMH = new BinaryMaxHeap<E>(items, cmp);
-		E[] arr = (E[]) BMH.toArray();
+		
+		ArrayList<E> returnList = new ArrayList<E>();
 
-		List<E> returnList = new ArrayList<E>();
 		for (int i = 0; i < k; i++) {
-			returnList.add(arr[i]);
+			returnList.add((E) BMH.toArray()[i]);
 		}
 
 		return returnList;
@@ -101,9 +100,12 @@ public class FindKLargest {
 			throws IllegalArgumentException {
 		return null;
 	}
+	
+	
 
 	public static void main(String[] args) {
 		List<Integer> test = new ArrayList<Integer>();
+		IntegerComparator cmp = new IntegerComparator();
 		
 		test.add(10);
 		test.add(9);
@@ -111,11 +113,18 @@ public class FindKLargest {
 		test.add(14);
 		test.add(1);
 		
-		List<Integer> testList = findKLargestHeap(test, 2);
+		List<Integer> testList = findKLargestHeap(test, 4, cmp);
 		
 		for(Integer item : testList) {
 			System.out.println(item);
 		}
 
+	}
+	
+	private static class IntegerComparator implements Comparator<Integer> {
+
+		public int compare(Integer o1, Integer o2) {
+			return o1.compareTo(o2);
+		}
 	}
 }
