@@ -32,7 +32,7 @@ public class FindKLargest {
 		}
 		
 		BinaryMaxHeap<E> BMH = new BinaryMaxHeap<E>(items);
-		E[] arr = (E[]) BMH.toArray();
+		Object[] arr = BMH.toArray();
 
 		ArrayList<E> returnList = new ArrayList<E>();
 
@@ -64,7 +64,7 @@ public class FindKLargest {
 		BinaryMaxHeap<E> BMH = new BinaryMaxHeap<E>(items, cmp);
 		E[] arr = (E[]) BMH.toArray();
 
-		ArrayList<E> returnList = new ArrayList<E>();
+		List<E> returnList = new ArrayList<E>();
 		for (int i = 0; i < k; i++) {
 			returnList.add(arr[i]);
 		}
