@@ -15,8 +15,10 @@ import java.util.NoSuchElementException;
  */
 public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 
-	private ArrayList<E> backingArray = new ArrayList<E>();
+	@SuppressWarnings("unchecked")
+	private E[] backingArray = (E[]) new Object[10];
 	private int currentIndex = 0;
+	private int currentSize = 0;
 	private Comparator<? super E> cmp;
 
 	/**
@@ -62,11 +64,11 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 */
 	@Override
 	public void add(E item) {
-		if (backingArray.isEmpty()) {
-			backingArray.add(item);
+		if (currentSize == 0) {
+			backingArray[currentIndex] = item;
 		} else {
-			backingArray.add(item);
 			currentIndex++;
+			backingArray[currentIndex] = item;
 			int index = currentIndex;
 			int parentIndex;
 
@@ -76,10 +78,11 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 				parentIndex = (index - 1) / 2;
 			}
 
-			E parent = backingArray.get(parentIndex);
+			E parent = backingArray[parentIndex];
 
-			percolateUp(item, parent);
+			percolateUp(index, parentIndex);
 		}
+		currentSize++;
 	}
 
 	/**
@@ -90,10 +93,10 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 */
 	@Override
 	public E peek() throws NoSuchElementException {
-		if (backingArray.isEmpty()) {
+		if (currentSize == 0) {
 			throw new NoSuchElementException();
 		} else {
-			return backingArray.get(0);
+			return backingArray[0];
 		}
 	}
 
@@ -105,19 +108,20 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	@Override
 	public E extractMax() throws NoSuchElementException {
 		E max;
-		if (backingArray.isEmpty()) {
+		if (currentSize == 0) {
 			throw new NoSuchElementException();
 		} else {
-			max = backingArray.get(0);
-			int replacementIndex = (backingArray.size() - 1);
-			E replacementItem = backingArray.get(replacementIndex);
-			backingArray.set(0, replacementItem);
-			if (backingArray.size() != 1) {
+			max = backingArray[0];
+			int replacementIndex = (currentSize - 1);
+			E replacementItem = backingArray[replacementIndex];
+			backingArray[0] = replacementItem;
+			if (currentSize != 1) {
 				percolateDown(0);
 			}
-			backingArray.remove(replacementIndex);
+			backingArray[replacementIndex] = null;
 		}
 		currentIndex--;
+		currentSize--;
 		return max;
 	}
 
@@ -126,7 +130,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 */
 	@Override
 	public int size() {
-		return backingArray.size();
+		return currentSize;
 	}
 
 	/**
@@ -136,7 +140,7 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return backingArray.isEmpty();
+		return currentSize == 0;
 	}
 
 	/**
@@ -144,7 +148,9 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 */
 	@Override
 	public void clear() {
-		backingArray.clear();
+		backingArray = (E[]) new Object[10];
+		currentSize = 0;
+		currentIndex = 0;
 	}
 
 	/**
@@ -154,9 +160,9 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 */
 	@Override
 	public Object[] toArray() {
-		Object[] array = new Object[backingArray.size()];
+		Object[] array = new Object[currentSize];
 		for (int i = 0; i < array.length; i++) {
-			array[i] = backingArray.get(i);
+			array[i] = backingArray[i];
 		}
 
 		return array;
@@ -168,11 +174,13 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 * @param list - the input list
 	 */
 	public void buildHeap(List<? extends E> list) {
-		for (E item : list) {
-			backingArray.add(item);
+		for (int i = 0; i < list.size(); i++ ) {
+			backingArray[i] = list.get(i);
 		}
+		
+		currentSize = list.size();
 
-		int lastNonLeaf = ((backingArray.size()) / 2) - 1;
+		int lastNonLeaf = (currentSize / 2) - 1;
 
 		for (int i = lastNonLeaf; i >= 0; i--) {
 			percolateDown(i);
@@ -186,17 +194,17 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 * @param o1 - the object to be percolated upward
 	 * @param o2 - the object's initial parent object
 	 */
-	private void percolateUp(E o1, E o2) {
-		int index = backingArray.indexOf(o1);
-		int parentIndex = backingArray.indexOf(o2);
+	private void percolateUp(int o1, int o2) {
+		int index = o1;
+		int parentIndex = o2;
 
-		E child = o1;
-		E parent = o2;
+		E child = backingArray[o1];
+		E parent = backingArray[o2];
 
 		while (innerCompare(child, parent) > 0) {
 
-			backingArray.set(parentIndex, child);
-			backingArray.set(index, parent);
+			backingArray[parentIndex] = child;
+			backingArray[index] = parent;
 
 			index = parentIndex;
 
@@ -210,8 +218,8 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 				parentIndex = (index - 1) / 2;
 			}
 
-			child = backingArray.get(index);
-			parent = backingArray.get(parentIndex);
+			child = backingArray[index];
+			parent = backingArray[parentIndex];
 		}
 
 	}
@@ -224,23 +232,23 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 */
 	private void percolateDown(int o1) {
 		int index = o1;
-		E item = backingArray.get(index);
+		E item = backingArray[index];
 		int biggerChildIndex = returnBiggerChildIndex(index);
 		E biggerChild;
 
 		if (biggerChildIndex != -1) {
-			biggerChild = backingArray.get(biggerChildIndex);
+			biggerChild = backingArray[biggerChildIndex];
 
 			while (innerCompare(item, biggerChild) < 0 && biggerChildIndex != -1) {
 
 				if (biggerChildIndex != -1)
-					biggerChild = backingArray.get(biggerChildIndex);
+					biggerChild = backingArray[biggerChildIndex];
 
-				backingArray.set(biggerChildIndex, item);
-				backingArray.set(index, biggerChild);
+				backingArray[biggerChildIndex] = item;
+				backingArray[index] = biggerChild;
 
 				index = biggerChildIndex;
-				item = backingArray.get(index);
+				item = backingArray[index];
 				biggerChildIndex = returnBiggerChildIndex(index);
 			}
 		}
@@ -257,15 +265,15 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	private int returnBiggerChildIndex(int o1) {
 		int leftChildIndex = (o1 * 2) + 1;
 		int rightChildIndex = (o1 * 2) + 2;
-		if (leftChildIndex >= backingArray.size()) {
+		if (leftChildIndex >= currentSize || backingArray[leftChildIndex] == null) {
 			return -1;
 		}
 
-		if (rightChildIndex >= backingArray.size()) {
+		if (rightChildIndex >= currentSize || backingArray[rightChildIndex] == null) {
 			return leftChildIndex;
 		}
 
-		if (innerCompare(backingArray.get(rightChildIndex), backingArray.get(leftChildIndex)) >= 0) {
+		if (innerCompare(backingArray[rightChildIndex], backingArray[leftChildIndex]) >= 0) {
 			return rightChildIndex;
 		} else {
 			return leftChildIndex;
