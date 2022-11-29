@@ -94,6 +94,40 @@ class BinaryMaxHeapTest {
 	}
 
 	@Test
+	void testExpandCapacity() {
+		BinaryMaxHeap<Integer> test = new BinaryMaxHeap<Integer>();
+		test.add(1);
+		test.add(1);
+		test.add(1);
+		test.add(1);
+		test.add(1);
+
+		test.expandCapacity();
+
+		test.add(1);
+		test.add(1);
+		test.add(1);
+		test.add(1);
+		test.add(1);
+		test.add(1);
+		test.add(1);
+
+		assertEquals(12, test.size());
+
+		test.extractMax();
+		test.extractMax();
+		test.extractMax();
+
+		assertEquals(9, test.size());
+
+		test.add(2);
+		Integer[] testArr = new Integer[] { 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		assertEquals(Arrays.toString(testArr), Arrays.toString(test.toArray()));
+
+		assertEquals(2, test.extractMax());
+	}
+
+	@Test
 	void testIsNotEmpty() {
 		BinaryMaxHeap<Integer> test = new BinaryMaxHeap<Integer>();
 
@@ -156,6 +190,39 @@ class BinaryMaxHeapTest {
 
 		assertEquals(Arrays.toString(test), Arrays.toString(result.toArray()));
 		assertFalse(result.isEmpty());
+	}
+	
+	@Test
+	void testBuildHeapEffect() {
+		BinaryMaxHeap<Integer> test = new BinaryMaxHeap<Integer>();
+		ArrayList<Integer> testList = new ArrayList<Integer>();
+		Integer[] follow1 = new Integer[] {3, 3, 3, 2, 2, 3, 1, 2, 1, 1, 2, 1};
+		
+		testList.add(1);
+		testList.add(2);
+		testList.add(3);
+		testList.add(1);
+		testList.add(2);
+		testList.add(3);
+		testList.add(1);
+		testList.add(2);
+		testList.add(3);
+		testList.add(1);
+		testList.add(2);
+		testList.add(3);
+		
+		test.buildHeap(testList);
+		assertEquals(12, test.size());
+		
+		assertEquals(Arrays.toString(follow1), Arrays.toString(test.toArray()));
+		test.add(20);
+		assertEquals(13, test.size());
+		
+		Integer[] follow2 = new Integer[] {20, 3, 3, 2, 2, 3, 1, 2, 1, 1, 2, 1, 3};
+		assertEquals(Arrays.toString(follow2), Arrays.toString(test.toArray()));
+		
+		assertEquals(20, test.extractMax());
+		assertEquals(12, test.size());
 	}
 
 	@Test

@@ -67,6 +67,9 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 		if (currentSize == 0) {
 			backingArray[currentIndex] = item;
 		} else {
+			if (currentSize == backingArray.length) {
+				expandCapacity();
+			}
 			currentIndex++;
 			backingArray[currentIndex] = item;
 			int index = currentIndex;
@@ -83,6 +86,18 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 			percolateUp(index, parentIndex);
 		}
 		currentSize++;
+	}
+
+	/**
+	 * A private helper method intended to organize duplicating the size of the Backing
+	 * Array in case of an overflow case.
+	 */
+	public void expandCapacity() {
+		E[] array = (E[]) new Object[backingArray.length * 2];
+		for (int i = 0; i < backingArray.length; i++) {
+			array[i] = backingArray[i];
+		}
+		backingArray = array;
 	}
 
 	/**
@@ -174,11 +189,15 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 	 * @param list - the input list
 	 */
 	public void buildHeap(List<? extends E> list) {
-		for (int i = 0; i < list.size(); i++ ) {
+		E[] newArr = (E[]) new Object[list.size()];
+		backingArray = newArr;
+		
+		for (int i = 0; i < list.size(); i++) {
 			backingArray[i] = list.get(i);
 		}
-		
+
 		currentSize = list.size();
+		currentIndex = currentSize - 1;
 
 		int lastNonLeaf = (currentSize / 2) - 1;
 
@@ -300,4 +319,5 @@ public class BinaryMaxHeap<E> implements PriorityQueue<E> {
 			return cmp.compare(o1, o2);
 		}
 	}
+
 }
