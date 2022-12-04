@@ -28,6 +28,7 @@ public class RandomPhraseGenerator<E> {
 // cd Users\EMoon\Documents\GitHub\CS-2420-Assigments\Assign\src
 
 		scanFile("C:/Users/Emoon/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g");
+		extractStart();
 	}
 
 	private static void scanFile(String fileName) throws FileNotFoundException {
@@ -70,7 +71,6 @@ public class RandomPhraseGenerator<E> {
 		}
 
 		// This is what I used to check out the inside of my HashMap.
-		extractStart();
 
 	}
 
