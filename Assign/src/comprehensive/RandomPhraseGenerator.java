@@ -18,7 +18,7 @@ public class RandomPhraseGenerator<E> {
 
 	public static void main(String[] args) throws FileNotFoundException {
 //		String grammer = args[0];
-//		Integer count = Integer.valueOf(args[1]);
+		Integer count = 5;
 
 // cd Documents\GitHub\CS-2420-Assigments\Assign\src
 // java comprehensive/RandomPhraseGenerator
@@ -27,8 +27,8 @@ public class RandomPhraseGenerator<E> {
 // C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g 5
 // cd Users\EMoon\Documents\GitHub\CS-2420-Assigments\Assign\src
 
-		scanFile("C:/Users/Emoon/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g");
-		extractStart();
+		scanFile("C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/assignment_extension_request.g");
+		for (int i = 0; i < count; i++) {extractStart();}
 	}
 
 	private static void scanFile(String fileName) throws FileNotFoundException {
@@ -69,6 +69,10 @@ public class RandomPhraseGenerator<E> {
 				}
 			}
 		}
+		
+		for (String key : groups.keySet()) {
+			System.out.println(key);
+		}
 
 		// This is what I used to check out the inside of my HashMap.
 
@@ -77,34 +81,23 @@ public class RandomPhraseGenerator<E> {
 	private static void extractStart() {
 		String result = "";
 		ArrayList<String> pattern = groups.get("<start>");
-		for (String pat : pattern) {
-			System.out.println(pat);
-		}
 		for (String item : pattern) {
 			String[] innerPattern = item.split(" ");
 
-			String period = innerPattern[innerPattern.length - 1];
-			System.out.println(period);
-			period = period.substring(0, period.length() - 1);
-			innerPattern[innerPattern.length - 1] = period;
+			String lastWord = innerPattern[innerPattern.length - 1];
+			lastWord = lastWord.substring(0, lastWord.length() - 1);
+			innerPattern[innerPattern.length - 1] = lastWord;
 
 			for (String word : innerPattern) {
 				if (groups.containsKey(word)) {
-					String primary = getRandom(groups.get(word));
-					String[] splitWord = primary.split(" ");
-					for (String secondary : splitWord) {
-						if (groups.containsKey(secondary)) {
-							result += " " + getRandom(groups.get(secondary));
-						} else {
-							result += " " + secondary;
-						}
-					}
+					String[] wordSplit = word.split(" ");
+					String terminal = findTerminal(wordSplit);
+					result += "" + terminal;
 				} else {
 					result += " " + word;
 				}
 			}
 		}
-
 		result = result.substring(1);
 		result += ".";
 		System.out.println(result);
@@ -116,7 +109,25 @@ public class RandomPhraseGenerator<E> {
 		int index = rand.nextInt(arr.size() * 100) % arr.size();
 
 		return arr.get(index);
-
+	}
+	
+	private static String findTerminal(String[] ladder) {
+		String returnWord = "";
+		for (String word : ladder) {
+			if (groups.containsKey((word))) {
+				String randomWord = getRandom(groups.get(word));
+				returnWord += findTerminal(randomWord.split(" "));
+			} else {
+				String shortenedWord = word.substring(0, word.length()-1);
+				if (groups.containsKey(shortenedWord)) {
+					returnWord += findTerminal(shortenedWord.split(" ")) + (word.substring(word.length()-1));
+				} else {
+					returnWord += " " + word;
+				}
+			}	
+		}
+		
+		return returnWord;
 	}
 
 }
