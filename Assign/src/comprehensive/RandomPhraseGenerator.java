@@ -4,20 +4,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
-public class RandomPhraseGenerator<E> {
+/**
+ * @author Emmanuel Luna and Andy Huo
+ * 
+ * A random phrase generator class which takes an input grammer file, scans it for
+ * production rules,terminal, and non- terminal objects, then returns a random phrase 
+ * based off of those rules.  Uses a HashMap filled with ArrayList objects corresponding
+ * to the given non-terminal.
+ *
+ */
+public class RandomPhraseGenerator {
 
-	private static String StartPoint = null;
 	private static HashMap<String, ArrayList<String>> groups = new HashMap<String, ArrayList<String>>();
-	private static int currCount = 1;
-	private static boolean open = false;
 
 	public static void main(String[] args) throws FileNotFoundException {
-//		String grammer = args[0];
+		String grammer = args[0];
 		Integer count = 5;
 
 // cd Documents\GitHub\CS-2420-Assigments\Assign\src
@@ -27,32 +32,21 @@ public class RandomPhraseGenerator<E> {
 // C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g 5
 // cd Users\EMoon\Documents\GitHub\CS-2420-Assigments\Assign\src
 
-		scanFile("C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/assignment_extension_request.g");
-		for (int i = 0; i < count; i++) {extractStart();}
+		scanFile(grammer);
+		for (int i = 0; i < count; i++) {Start();}
 	}
 
+	/**
+	 * A method which scans a given grammer file and sorts everything within
+	 * into a HashTable object, sorted by non-terminals and terminals.
+	 * 
+	 * @param fileName - Input Grammer file with very strict formatting rules
+	 * @throws FileNotFoundException
+	 */
 	private static void scanFile(String fileName) throws FileNotFoundException {
 		File file = new File(fileName);
 		Scanner scan = new Scanner(new FileReader(file));
 
-		// From: Andy, To: Emmanuel
-		// Please don't touch this, I worked hard on it. It's three in the morning as
-		// I'm typing this.
-		// For easier access, I changed our HashMap to a HashMap of ArrayLists. Why this
-		// is important will be shown
-		// soon.
-		// Basically, what this will do is when it finds an open bracket, it sets the
-		// next line as "cat" (short for
-		// category.) It will then set the life after cat to "check." "Cat" will become
-		// the Key in our HashMap.
-		// Then it runs a while loop, adding each example of the category to the
-		// ArrayList at the appropriate key.
-		// The examples are kept track of by "check," which is updated through every
-		// iteration of the while loop, and
-		// will continue to do so as long as "check" doesn't become the closed bracket.
-		// Once check finds a closed
-		// bracket, it will go back out to the original while loop, which looks for more
-		// open brackets.
 		while (scan.hasNextLine()) {
 			if (scan.nextLine().compareTo("{") == 0) {
 				String cat = scan.nextLine();
@@ -69,30 +63,21 @@ public class RandomPhraseGenerator<E> {
 				}
 			}
 		}
-		
-		for (String key : groups.keySet()) {
-			System.out.println(key);
-		}
-
-		// This is what I used to check out the inside of my HashMap.
-
 	}
 
-	private static void extractStart() {
+	/**
+	 * A method which essentially serves as a starting point, by scanning the items in
+	 * the grammer pattern and inserting the string objects as needed.  If a recursive
+	 * pattern is found (in which a non-terminal is contained in a non-terminal answer,)
+	 * then the recursive findTerminal method is called to resolve the matter.
+	 */
+	private static void Start() {
 		String result = "";
 		ArrayList<String> pattern = groups.get("<start>");
 		for (String item : pattern) {
-			String[] innerPattern = item.split(" ");
+			String[] startPattern = item.split(" ");
 
-//			String lastWord = innerPattern[innerPattern.length - 1];
-//			if (lastWord.length() != 1) {
-//				
-//			}
-//			
-//			lastWord = lastWord.substring(0, lastWord.length() - 1);
-//			innerPattern[innerPattern.length - 1] = lastWord;
-
-			for (String word : innerPattern) {
+			for (String word : startPattern) {
 				result += "" + findTerminal(word.split(" "));
 			}
 		}
@@ -101,6 +86,13 @@ public class RandomPhraseGenerator<E> {
 
 	}
 
+	/**
+	 * A method which finds a random integer within the bounds of the given ArrayList size and 
+	 * returns the String object found at that index.
+	 * 
+	 * @param arr - The input ArrayList
+	 * @return The String found at that index
+	 */
 	private static String getRandom(ArrayList<String> arr) {
 		Random rand = new Random();
 		int index = rand.nextInt(arr.size() * 100) % arr.size();
@@ -108,6 +100,15 @@ public class RandomPhraseGenerator<E> {
 		return arr.get(index);
 	}
 	
+	/**
+	 * A recursive method which resolves any situation in which a chosen example of a
+	 * non-terminal contains another non-terminal, then returns the result.  It does so
+	 * by navigating an input String array with all values and splitting the Strings inside
+	 * into more arrays for analysis.
+	 * 
+	 * @param ladder - The given String array to start analyzing.
+	 * @return The resulting String pattern
+	 */
 	private static String findTerminal(String[] ladder) {
 		String returnWord = "";
 		for (String word : ladder) {
