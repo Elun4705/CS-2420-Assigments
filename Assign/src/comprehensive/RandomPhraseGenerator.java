@@ -84,22 +84,19 @@ public class RandomPhraseGenerator<E> {
 		for (String item : pattern) {
 			String[] innerPattern = item.split(" ");
 
-			String lastWord = innerPattern[innerPattern.length - 1];
-			lastWord = lastWord.substring(0, lastWord.length() - 1);
-			innerPattern[innerPattern.length - 1] = lastWord;
+//			String lastWord = innerPattern[innerPattern.length - 1];
+//			if (lastWord.length() != 1) {
+//				
+//			}
+//			
+//			lastWord = lastWord.substring(0, lastWord.length() - 1);
+//			innerPattern[innerPattern.length - 1] = lastWord;
 
 			for (String word : innerPattern) {
-				if (groups.containsKey(word)) {
-					String[] wordSplit = word.split(" ");
-					String terminal = findTerminal(wordSplit);
-					result += "" + terminal;
-				} else {
-					result += " " + word;
-				}
+				result += "" + findTerminal(word.split(" "));
 			}
 		}
 		result = result.substring(1);
-		result += ".";
 		System.out.println(result);
 
 	}
