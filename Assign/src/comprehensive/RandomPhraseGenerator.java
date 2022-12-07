@@ -20,10 +20,12 @@ import java.util.Scanner;
 public class RandomPhraseGenerator {
 
 	private static HashMap<String, ArrayList<String>> groups = new HashMap<String, ArrayList<String>>();
+	private static ArrayList<String> pattern;
+	private static String[] startPattern;
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String grammer = args[0];
-		Integer count = 5;
+//		String grammer = args[0];
+//		Integer count = Integer.valueOf(args[1]);
 
 // cd Documents\GitHub\CS-2420-Assigments\Assign\src
 // java comprehensive/RandomPhraseGenerator
@@ -32,8 +34,10 @@ public class RandomPhraseGenerator {
 // C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g 5
 // cd Users\EMoon\Documents\GitHub\CS-2420-Assigments\Assign\src
 
-		scanFile(grammer);
-		for (int i = 0; i < count; i++) {Start();}
+		scanFile("C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g");
+		pattern = groups.get("<start>");
+		startPattern = pattern.get(0).split(" ");
+		for (int i = 0; i < 5; i++) {Start();}
 	}
 
 	/**
@@ -73,14 +77,11 @@ public class RandomPhraseGenerator {
 	 */
 	private static void Start() {
 		String result = "";
-		ArrayList<String> pattern = groups.get("<start>");
-		for (String item : pattern) {
-			String[] startPattern = item.split(" ");
 
-			for (String word : startPattern) {
-				result += "" + findTerminal(word.split(" "));
-			}
+		for (String word : startPattern) {
+			result += "" + findTerminal(word.split(" "));
 		}
+		
 		result = result.substring(1);
 		System.out.println(result);
 
