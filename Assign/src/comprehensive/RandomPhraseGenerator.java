@@ -14,10 +14,10 @@ import java.util.Scanner;
 /**
  * @author Emmanuel Luna and Andy Huo
  * 
- *	A random phrase generator class which takes an input grammar file,
- *  scans it for production rules,terminal, and non- terminal objects,
- *  then returns a random phrase based off of those rules. Uses a HashMap
- *  filled with Production rule Keys and ArrayLists full of values.
+ *         A random phrase generator class which takes an input grammar file,
+ *         scans it for production rules,terminal, and non- terminal objects,
+ *         then returns a random phrase based off of those rules. Uses a HashMap
+ *         filled with Production rule Keys and ArrayLists full of values.
  *
  */
 public class RandomPhraseGenerator {
@@ -42,6 +42,24 @@ public class RandomPhraseGenerator {
 		for (int i = 0; i < count; i++) {
 			Start();
 		}
+	}
+
+	public static void Test(int N) throws IOException {
+
+		// Scans the grammer file and fills the backing HashMap
+		scanFile("C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/abc.g");
+
+		// Sets the beginning pattern as indicated by the Grammar file
+		pattern = groups.get("<start>").get(0);
+
+		// Sets count to the appropriate count
+		setCount(N);
+		
+		// Generates the expected number of phrases
+		for (int i = 0; i < count; i++) {
+			Start();
+		}
+
 	}
 
 	/**
@@ -95,7 +113,7 @@ public class RandomPhraseGenerator {
 
 		result = findTerminal(pattern);
 
-		System.out.println(result);
+//		System.out.println(result);
 	}
 
 	/**
@@ -113,9 +131,9 @@ public class RandomPhraseGenerator {
 	}
 
 	/**
-	 * A recursive method which navigates through an input string via a BufferedReader, 
-	 * looking for non-terminals. If one is found, the method is recursively called, until the
-	 * matter is resolved.
+	 * A recursive method which navigates through an input string via a
+	 * BufferedReader, looking for non-terminals. If one is found, the method is
+	 * recursively called, until the matter is resolved.
 	 * 
 	 * @param start - the input String object
 	 * @return The resulting String pattern
