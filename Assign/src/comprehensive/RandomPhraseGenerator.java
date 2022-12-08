@@ -25,11 +25,11 @@ public class RandomPhraseGenerator {
 
 	private static HashMap<String, ArrayList<String>> groups = new HashMap<String, ArrayList<String>>();
 	private static String pattern;
-	private static int count = 10;
+	private static int count = 0;
 
 	public static void main(String[] args) throws IOException {
 		String grammer = args[0];
-//		Integer count = Integer.valueOf(args[1]);
+//		setCount(Integer.valueOf(args[1]));
 
 // cd Documents\GitHub\CS-2420-Assigments\Assign\src
 // java comprehensive/RandomPhraseGenerator
@@ -44,7 +44,7 @@ public class RandomPhraseGenerator {
 		Start();
 	}
 
-	public static void changeCount(int newCount) {
+	public static void setCount(int newCount) {
 		count = newCount;
 	}
 
