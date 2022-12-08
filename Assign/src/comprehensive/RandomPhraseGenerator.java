@@ -28,8 +28,10 @@ public class RandomPhraseGenerator {
 	private static int count = 0;
 
 	public static void main(String[] args) throws IOException {
+		
+		// Set the reading file and count to their respective input arguments
 		String grammer = args[0];
-//		setCount(Integer.valueOf(args[1]));
+		setCount(Integer.valueOf(args[1]));
 
 // cd Documents\GitHub\CS-2420-Assigments\Assign\src
 // java comprehensive/RandomPhraseGenerator
@@ -38,21 +40,33 @@ public class RandomPhraseGenerator {
 // C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g 5
 // cd Users\EMoon\Documents\GitHub\CS-2420-Assigments\Assign\src
 
+		// Scans the grammer file and fills the backing HashMap
 		scanFile(grammer);
 
+		// Sets the beginning pattern as indicated by the Grammar file
 		pattern = groups.get("<start>").get(0);
-		Start();
+		
+		// Generates the expected number of phrases
+		for (int i = 0; i < count; i++) {
+			Start();
+		}
 	}
 
+	/**
+	 * A public helper method which sets the number of phrases to be
+	 * generated, for ease in testing.
+	 * 
+	 * @param newCount
+	 */
 	public static void setCount(int newCount) {
 		count = newCount;
 	}
 
 	/**
-	 * A method which scans a given grammer file and sorts everything within into a
-	 * HashTable object, sorted by non-terminals and terminals.
+	 * A method which scans a given grammar file and sorts all non-terminals
+	 * into the backing HashMap.
 	 * 
-	 * @param fileName - Input Grammer file with very strict formatting rules
+	 * @param fileName - Input Grammar file with very strict formatting rules
 	 * @throws FileNotFoundException
 	 */
 	private static void scanFile(String fileName) throws FileNotFoundException {
@@ -78,11 +92,9 @@ public class RandomPhraseGenerator {
 	}
 
 	/**
-	 * A method which essentially serves as a starting point, by scanning the items
-	 * in the grammer pattern and inserting the string objects as needed. If a
-	 * recursive pattern is found (in which a non-terminal is contained in a
-	 * non-terminal answer,) then the recursive findTerminal method is called to
-	 * resolve the matter.
+	 * A method which essentially serves as a starting point for constructing
+	 * a random phrase, called only once the start pattern has been identified
+	 * and the backing HashMap has been filled out with values
 	 * @throws IOException 
 	 */
 	private static void Start() throws IOException {
@@ -109,12 +121,11 @@ public class RandomPhraseGenerator {
 	}
 
 	/**
-	 * A recursive method which resolves any situation in which a chosen example of
-	 * a non-terminal contains another non-terminal, then returns the result. It
-	 * does so by navigating an input String array with all values and splitting the
-	 * Strings inside into more arrays for analysis.
+	 * A recursive method which navigates through an input string, looking for
+	 * non terminals.  If one is found, the method is recursively called, until
+	 * the matter is resolved.
 	 * 
-	 * @param ladder - The given String array to start analyzing.
+	 * @param start - the input String object
 	 * @return The resulting String pattern
 	 * @throws IOException 
 	 */
@@ -145,20 +156,6 @@ public class RandomPhraseGenerator {
 		sr.close();
 		
 		return returnWord;
-		
-//		for (String word : ladder) {
-//			if (groups.containsKey((word))) {
-//				String randomWord = getRandom(groups.get(word));
-//				returnWord += findTerminal(randomWord.split(" "));
-//			} else {
-//				String shortenedWord = word.substring(0, word.length() - 1);
-//				if (groups.containsKey(shortenedWord)) {
-//					returnWord += findTerminal(shortenedWord.split(" ")) + (word.substring(word.length() - 1));
-//				} else {
-//					returnWord += " " + word;
-//				}
-//			}
-//		}
 	}
 
 }
