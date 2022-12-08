@@ -14,11 +14,10 @@ import java.util.Scanner;
 /**
  * @author Emmanuel Luna and Andy Huo
  * 
- *         A random phrase generator class which takes an input grammer file,
- *         scans it for production rules,terminal, and non- terminal objects,
- *         then returns a random phrase based off of those rules. Uses a HashMap
- *         filled with ArrayList objects corresponding to the given
- *         non-terminal.
+ *	A random phrase generator class which takes an input grammar file,
+ *  scans it for production rules,terminal, and non- terminal objects,
+ *  then returns a random phrase based off of those rules. Uses a HashMap
+ *  filled with Production rule Keys and ArrayLists full of values.
  *
  */
 public class RandomPhraseGenerator {
@@ -28,24 +27,17 @@ public class RandomPhraseGenerator {
 	private static int count = 0;
 
 	public static void main(String[] args) throws IOException {
-		
+
 		// Set the reading file and count to their respective input arguments
 		String grammer = args[0];
 		setCount(Integer.valueOf(args[1]));
-
-// cd Documents\GitHub\CS-2420-Assigments\Assign\src
-// java comprehensive/RandomPhraseGenerator
-// C:/Users/Emoon/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g 5
-// java comprehensive/RandomPhraseGenerator
-// C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g 5
-// cd Users\EMoon\Documents\GitHub\CS-2420-Assigments\Assign\src
 
 		// Scans the grammer file and fills the backing HashMap
 		scanFile(grammer);
 
 		// Sets the beginning pattern as indicated by the Grammar file
 		pattern = groups.get("<start>").get(0);
-		
+
 		// Generates the expected number of phrases
 		for (int i = 0; i < count; i++) {
 			Start();
@@ -53,8 +45,8 @@ public class RandomPhraseGenerator {
 	}
 
 	/**
-	 * A public helper method which sets the number of phrases to be
-	 * generated, for ease in testing.
+	 * A public helper method which sets the number of phrases to be generated, for
+	 * ease in testing.
 	 * 
 	 * @param newCount
 	 */
@@ -63,8 +55,8 @@ public class RandomPhraseGenerator {
 	}
 
 	/**
-	 * A method which scans a given grammar file and sorts all non-terminals
-	 * into the backing HashMap.
+	 * A method which scans a given grammar file and sorts all non-terminals into
+	 * the backing HashMap.
 	 * 
 	 * @param fileName - Input Grammar file with very strict formatting rules
 	 * @throws FileNotFoundException
@@ -92,18 +84,18 @@ public class RandomPhraseGenerator {
 	}
 
 	/**
-	 * A method which essentially serves as a starting point for constructing
-	 * a random phrase, called only once the start pattern has been identified
-	 * and the backing HashMap has been filled out with values
-	 * @throws IOException 
+	 * A method which essentially serves as a starting point for constructing a
+	 * random phrase, called only once the start pattern has been identified and the
+	 * backing HashMap has been filled out with values
+	 * 
+	 * @throws IOException
 	 */
 	private static void Start() throws IOException {
 		String result = "";
-		
+
 		result = findTerminal(pattern);
 
 		System.out.println(result);
-
 	}
 
 	/**
@@ -121,21 +113,21 @@ public class RandomPhraseGenerator {
 	}
 
 	/**
-	 * A recursive method which navigates through an input string, looking for
-	 * non terminals.  If one is found, the method is recursively called, until
-	 * the matter is resolved.
+	 * A recursive method which navigates through an input string via a BufferedReader, 
+	 * looking for non-terminals. If one is found, the method is recursively called, until the
+	 * matter is resolved.
 	 * 
 	 * @param start - the input String object
 	 * @return The resulting String pattern
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private static String findTerminal(String start) throws IOException {
 		String returnWord = "";
 		String nonTerminal = "";
-		
+
 		StringReader sr = new StringReader(start);
 		BufferedReader br = new BufferedReader(sr);
-		
+
 		int i;
 		while ((i = br.read()) != -1) {
 			if ((char) i == '<') {
@@ -143,18 +135,18 @@ public class RandomPhraseGenerator {
 				nonTerminal += "<";
 				int j;
 				while ((j = br.read()) != 62) {
-					nonTerminal += (char)j;
+					nonTerminal += (char) j;
 				}
 				nonTerminal += ">";
-				
+
 				returnWord += findTerminal(getRandom(groups.get(nonTerminal)));
 			} else {
-				returnWord += (char)i;
+				returnWord += (char) i;
 			}
 		}
 		br.close();
 		sr.close();
-		
+
 		return returnWord;
 	}
 
