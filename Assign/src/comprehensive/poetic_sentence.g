@@ -9,6 +9,11 @@ The <object> <verb> tonight.
 waves
 big yellow flowers
 slugs
+angels
+rainbows
+blossoms
+dandy lions
+problematic zebras
 }
 
 {
@@ -16,10 +21,15 @@ slugs
 sigh <adverb>
 portend like <object>
 die <adverb>
+walk <adverb>
+play guitar <adverb>
 }
 
 {
 <adverb>
 warily
 grumpily
+stupidly
+unhappily
+joyously
 }
