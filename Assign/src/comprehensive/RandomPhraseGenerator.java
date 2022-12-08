@@ -28,7 +28,7 @@ public class RandomPhraseGenerator {
 	private static int count = 10;
 
 	public static void main(String[] args) throws IOException {
-//		String grammer = args[0];
+		String grammer = args[0];
 //		Integer count = Integer.valueOf(args[1]);
 
 // cd Documents\GitHub\CS-2420-Assigments\Assign\src
@@ -38,7 +38,7 @@ public class RandomPhraseGenerator {
 // C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/poetic_sentence.g 5
 // cd Users\EMoon\Documents\GitHub\CS-2420-Assigments\Assign\src
 
-		scanFile("C:/Users/u1050952/Documents/GitHub/CS-2420-Assigments/Assign/src/comprehensive/abc.g");
+		scanFile(grammer);
 
 		pattern = groups.get("<start>").get(0);
 		Start();
